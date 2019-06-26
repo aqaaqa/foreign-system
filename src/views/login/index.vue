@@ -274,16 +274,14 @@ export default {
         if (valid) {
           this.loading = true
           this.$store.dispatch('user/login', this.loginForm).then(() => {
-            this.$store.dispatch('user/getRole').then(() => {
-              this.$store.dispatch('user/getRole').then(res=> {
-                this.$router.addRoutes(res) //动态添加路由
-                this.$router.push({ path: this.redirect || '/' })
-                this.loading = false
-                // next({ ...to, replace: true })
+              this.$store.dispatch('user/getInfo').then(res=> {
+                this.$store.dispatch('user/getRole').then(res=> {
+                  this.$router.addRoutes(res) //动态添加路由
+                  this.$router.push({ path: this.redirect || '/' })
+                  this.loading = false
+                  // next({ ...to, replace: true })
+                })
               })
-              
-            })
-            
           }).catch(() => {
             this.loading = false
           })
