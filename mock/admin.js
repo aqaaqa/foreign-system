@@ -3,41 +3,42 @@ import Mock from 'mockjs'
 const data = Mock.mock({
     'items': [{
         path: "/example",
+        name: 'example',
         state: 1,
         component: "Layout",
-        redirect: '/example/table',
         meta: {
-            icon: "example",
             title: "第一"
         },
         children: [
             {
                 path: "table",
+                name: 'table',
                 component: "table/index",
                 meta: {
-                    icon: "table",
                     title: "第一表格",
                 }
             },
             {
                 path: "tree",
+                name: 'tree',
                 component: "tree/index",
                 meta: {
-                    icon: "tree",
                     title: "第一树",
                 }
             }
         ]
     },{
         path: '/form',
+        name: 'form',
         component: 'Layout',
         state: 1,
-        meta: { title: '一个表格', icon: 'form' },
+        meta: { title: '一个表格'},
         children: [
             {
             path: 'index',
+            name: 'form1',
             component: "form/index",
-            meta: { title: '第一表单', icon: 'form',}
+            meta: { title: '第一表单'}
             }
         ]
     },]

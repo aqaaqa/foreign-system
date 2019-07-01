@@ -42,13 +42,10 @@ export function filterAsyncRouter(asyncRouterMap) { //遍历后台传来的路�
     if (route.component) {
       if (route.component === 'Layout') {//Layout组件特殊处理
         route.component = layout
+        route.redirect = route.path + '/' + route.children[0].path
       } else {
         // console.log(route.component)
         route.component = _import('table/index')
-      }
-
-      if (route.state == 1 || route.state == 0) {
-        route.redirect = route.path + '/' + route.children[0].path
       }
     }
     if (route.children && route.children.length) {

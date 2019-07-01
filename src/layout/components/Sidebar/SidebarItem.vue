@@ -3,8 +3,10 @@
     <template v-if="item.state == 0">
       <router-link :to="{ path: '/activate', query:{ redirect: item.path+'/'+item.children[0].path } }">
         <el-menu-item :class="{'submenu-title-noDropdown':!isNest}">
-          <item v-if="item.meta" :icon="item.state? 'folder' : ''" :title="item.meta.title" />
-          <i v-if="isCollapse" class="el-icon-edit locks"></i>
+          <item v-if="item.meta" :icon="item.state || item.state == 0 ? openMenu.indexOf(item.path) > -1 ? 'folder-open' :'folder' : ''" :title="item.meta.title" />
+          <i v-if="isCollapse" class="locks">
+            <svg-icon :icon-class="'block'" />
+          </i>
         </el-menu-item>
       </router-link>
       
@@ -14,14 +16,14 @@
       <template v-if="!item.state && hasOneShowingChild(item.children,item) && (!onlyOneChild.children||onlyOneChild.noShowingChildren)&&!item.alwaysShow">
         <app-link v-if="onlyOneChild.meta" :to="resolvePath(onlyOneChild.path)">
           <el-menu-item :index="resolvePath(onlyOneChild.path)" :class="{'submenu-title-noDropdown':!isNest}">
-            <item :icon="item.state? 'folder' : ''" :title="item.meta.title" />
+            <item :icon="item.state ? openMenu.indexOf(item.path) > -1 ? 'folder-open' :'folder' :''" :title="item.meta.title" />
           </el-menu-item>
         </app-link>
       </template>
 
       <el-submenu v-else ref="subMenu" :index="resolvePath(item.path)" popper-append-to-body>
         <template slot="title">
-          <item v-if="item.meta" :icon="item.state? 'folder' : ''" :title="item.meta.title" />
+          <item v-if="item.meta" :icon="item.state ? openMenu.indexOf(item.path) > -1 ? 'folder-open' :'folder' :''" :title="item.meta.title" />
         </template>
         <sidebar-item
           v-for="child in item.children"
@@ -51,6 +53,8 @@ export default {
   computed: {
     ...mapGetters([
       'sidebar',
+      'pageId',
+      'menu'
     ]),
     isCollapse() {
       return this.sidebar.opened
@@ -69,17 +73,30 @@ export default {
     basePath: {
       type: String,
       default: ''
-    },
-    actives: {
-      type: String,
-      default: ''
     }
   },
   data() {
     // To fix https://github.com/PanJiaChen/vue-admin-template/issues/237
     // TODO: refactor with render function
     this.onlyOneChild = null
-    return {}
+    return {
+      newRouter: '',
+      openMenu: []
+    }
+  },
+  watch: {
+    $route() {
+      this.newRouter = this.$route.name
+    },
+
+    menu: {
+      handler: function(val) {
+        this.openMenu = val
+      },
+      deep: true
+    }
+  },
+  mounted() {
   },
   methods: {
     hasOneShowingChild(children = [], parent) {
@@ -126,7 +143,6 @@ export default {
   .locks {
     font-size: 14px !important;
     float: right;
-    margin-top: 22px;
     width: 1em !important;
     height: 1em !important;
     position: relative;

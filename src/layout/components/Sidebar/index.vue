@@ -11,8 +11,10 @@
         :active-text-color="variables.menuActiveText"
         :collapse-transition="false"
         mode="vertical"
+        @open="handleOpen" 
+        @close="handleClose"
       >
-        <sidebar-item v-for="route in routes" :key="route.path" :item="route" :actives = "activeMenu" :base-path="route.path" />
+        <sidebar-item v-for="route in routes" :key="route.path" :item="route" :base-path="route.path" />
       </el-menu>
     </el-scrollbar>
   </div>
@@ -27,13 +29,17 @@ import { roleList } from '@/api/user'
 
 export default {
   components: { SidebarItem, Logo },
+  data() {
+    return {
+      openMenu: []
+    }
+  },
   computed: {
     ...mapGetters([
       'sidebar',
       'role'
     ]),
     routes() {
-      // console.log(this.$router.options.routes)
       return this.role
     },
     activeMenu() {
@@ -57,13 +63,19 @@ export default {
     }
   },
   methods: {
-
+    handleOpen(key, keyPath) {
+      this.openMenu.push(key)
+      this.$store.dispatch('page/changeMenu',this.openMenu)
+    },
+    handleClose(key, keyPath) {
+      this.openMenu = this.openMenu.filter(e => e != key)
+      this.$store.dispatch('page/changeMenu',this.openMenu)
+    }
   },
   mounted() {
-    // let _this = this
-    // roleList().then(res => {
-    //   _this.routes =  res.data.items
-    // })
+    let arr=this.activeMenu.trim().split('/');
+    this.openMenu.push('/'+arr[1])
+    this.$store.dispatch('page/changeMenu',this.openMenu)
   }
 }
 </script>
