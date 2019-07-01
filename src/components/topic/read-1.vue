@@ -1,25 +1,30 @@
 <template>
-  <div class="lang3">
-    <div class="video-box">
+  <div class="read1">
+    <!-- <div class="video-box">
       <el-button size="mini" @click="lookAnswer">查看脚本</el-button>
+    </div> -->
+    <div class="read1-main">
+      <div class="read1-article">{{item.article}}</div>
+      <ul class="read1-topic">
+        <li v-for="(items, index) in list" :key="index">
+          <p>{{items.steam}}</p>
+          <p class="read1-changes" :class="items.line ? 'line' : ''">
+            <span v-for="(change, indexs) in items.options" :key="indexs">
+              {{change}}
+            </span>
+          </p>
+          <p>正确答案 {{items.correct[0]}}</p>
+        </li>
+      </ul>
     </div>
-    <ul class="lang3-main">
-      <li v-for="(item,index) in list" :key="index">
-        <p>{{item}}</p>
-        <p>
-          <span v-show="showAnswer">
-            {{answer[index]}}
-          </span>
-        </p>
-      </li>
-    </ul>
   </div>
 </template>
 
 <script>
 import {letterArr} from '@/utils/auth'
+
 export default {
-  name: 'lang6',
+  name: 'read1',
   props:{
     itemList: {
       type: Object,
@@ -27,15 +32,8 @@ export default {
   },
   data() {
     return {
-      item: {
-        directions:{
-          en: '',
-          zh: ''
-        }
-      },
-      list: [],
-      answer: [],
-      listArr: [],
+      item: this.itemList,
+      list: this.itemList.detail,
       showAnswer: false,
       change: letterArr()
     }
@@ -43,8 +41,7 @@ export default {
   watch: {
     itemList(val) {
       this.item = val
-      this.list = val.detail[0].steam
-      this.answer = val.detail[0].correct
+      this.list = val.detail
     },
     
   },
@@ -52,7 +49,15 @@ export default {
    
   },
   created() {
-    
+    let newArrs = this.list.map(e=> {
+      for(let a of e.options){
+        let arr = a.split(' ')
+        if(arr.length > 5) {
+          return e.line = true
+        }
+      }
+      return e
+    })
   },
   mounted() {
     
@@ -67,30 +72,31 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.lang3-main {
-  margin-top: 10px;
-  li {
-    margin-bottom: 20px;
-  }
-  p{
-    font-size:14px;
-    font-weight:400;
-    color:rgba(0,0,0,0.85);
-    &:nth-child(1){
-      height:20px;
-      line-height:20px;
-    }
-    &:nth-child(2) {
-      width:600px;
-      height:32px;
-      line-height: 32px;
-      border-bottom: 1px solid #ccc;
-      margin-left: 20px;
-      margin-top: 4px;
-    }
-  }
-  
+.read1-main {
+  width: 600px;
+  font-size: 14px;
+  font-weight:400;
+  color:rgba(0,0,0,0.85);
+  line-height:26px;
 }
+
+.read1-topic {
+  li {
+    padding: 4px 0;
+  }
+  .read1-changes {
+    margin-left: 20px;
+    span {
+      margin-right: 10px;
+    }
+  }
+  .line {
+    span {
+      display: block;
+    }
+  }
+}
+
+
 </style>
-<style lang="scss">
-</style>
+

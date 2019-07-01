@@ -1,12 +1,6 @@
 <template>
   <div class="alltopic-box">
     <div class="search-box">
-      <!-- input搜索 -->
-      <div class="search-input">
-        <el-input v-model="search.input" size="mini" placeholder="试题ID/关键字/出题人"></el-input>
-        <el-button size="mini" type="primary" @click="searchBtn()">搜索</el-button>
-      </div>
-
       <!-- 选项 -->
       <div class="search-check">
         <!-- 题型 -->
@@ -23,71 +17,6 @@
             <el-radio v-model="search.radio" label="8">单词拼写</el-radio>
             <el-radio v-model="search.radio" label="9">短文改错</el-radio>
           </div>
-        </div>
-        <!-- 主要选择 -->
-        <div class="check-main">
-          <div class="check-center">
-            <label class="check-title">所属题型:</label>
-            <div class="check-right">
-              <el-radio v-model="search.radio" label="1">全部</el-radio>
-              <el-radio v-model="search.radio" label="2">完形填空</el-radio>
-              <el-radio v-model="search.radio" label="3">阅读理解</el-radio>
-              <el-radio v-model="search.radio" label="4">单词拼写</el-radio>
-              <el-radio v-model="search.radio" label="5">短文改错</el-radio>
-              <el-radio v-model="search.radio" label="6">快速阅读</el-radio>
-              <el-radio v-model="search.radio" label="7">阅读理解</el-radio>
-              <el-radio v-model="search.radio" label="9">短文改错</el-radio>
-            </div>
-          </div>
-          <div class="check-center">
-            <label class="check-title">所属题型:</label>
-            <div class="check-right">
-              <el-radio v-model="search.radio" label="1">全部</el-radio>
-              <el-radio v-model="search.radio" label="2">完形填空</el-radio>
-              <el-radio v-model="search.radio" label="3">阅读理解</el-radio>
-              <el-radio v-model="search.radio" label="4">单词拼写</el-radio>
-              <el-radio v-model="search.radio" label="5">短文改错</el-radio>
-              <el-radio v-model="search.radio" label="6">快速阅读</el-radio>
-              <el-radio v-model="search.radio" label="7">阅读理解</el-radio>
-              <el-radio v-model="search.radio" label="8">单词拼写</el-radio>
-            </div>
-          </div>
-          <div class="check-center">
-            <label class="check-title">所属题型:</label>
-            <div class="check-right">
-              <el-radio v-model="search.radio" label="1">全部</el-radio>
-              <el-radio v-model="search.radio" label="2">完形填空</el-radio>
-              <el-radio v-model="search.radio" label="3">阅读理解</el-radio>
-              <el-radio v-model="search.radio" label="4">单词拼写</el-radio>
-              <el-radio v-model="search.radio" label="5">短文改错</el-radio>
-              <el-radio v-model="search.radio" label="6">快速阅读</el-radio>
-              <el-radio v-model="search.radio" label="7">阅读理解</el-radio>
-              <el-radio v-model="search.radio" label="8">单词拼写</el-radio>
-            </div>
-          </div>
-        </div>
-
-        <!-- 下拉选项 -->
-
-        <div class="select-check">
-          <label class="check-title">其他选项：</label>
-          <div class="select-right">
-            <div>
-              <label class="select-title">出题人:</label>
-              <el-select size="mini" v-model="search.difficulty" placeholder="不限">
-                <el-option label="区域一" value="shanghai"></el-option>
-                <el-option label="区域二" value="beijing"></el-option>
-              </el-select>
-            </div>
-            <div>
-              <label class="select-title">难度:</label>
-              <el-select size="mini" v-model="search.difficulty" placeholder="不限">
-                <el-option label="区域一" value="shanghai"></el-option>
-                <el-option label="区域二" value="beijing"></el-option>
-              </el-select>
-            </div>
-          </div>
-          
         </div>
       </div>
     </div>
@@ -120,7 +49,7 @@ import { TopicMain } from '../topic'
 import { topicList } from '@/api/topic'
 
 export default {
-  name: 'alltopic',
+  name: 'changetopic',
   data() {
     return {
       search: {
@@ -243,7 +172,7 @@ export default {
 
 .search-check {
   background: #fff;
-  padding: 20px;
+  padding: 10px 20px;
   .el-radio {
     // margin-right: 0px;
     margin-bottom: 18px;

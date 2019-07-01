@@ -1,14 +1,15 @@
 <template>
-  <div class="lang3">
-    <div class="video-box">
+  <div class="read4">
+    <!-- <div class="video-box">
       <el-button size="mini" @click="lookAnswer">查看脚本</el-button>
-    </div>
+    </div> -->
+
     <ul class="lang3-main">
-      <li v-for="(item,index) in list" :key="index">
-        <p>{{item}}</p>
+      <li v-for= "(items, index) in list" :key="index">
+        <p>{{items.steam}}</p>
         <p>
           <span v-show="showAnswer">
-            {{answer[index]}}
+            {{items.correct}}
           </span>
         </p>
       </li>
@@ -18,7 +19,7 @@
 
 <script>
 export default {
-  name: 'lang6',
+  name: 'read4',
   props:{
     itemList: {
       type: Object,
@@ -27,17 +28,14 @@ export default {
   data() {
     return {
       item: this.itemList,
-      list: this.itemList.detail[0].steam,
-      answer: this.itemList.detail[0].correct,
-      listArr: [],
-      showAnswer: false
+      list: this.itemList.detail,
+      showAnswer: false,
     }
   },
   watch: {
     itemList(val) {
       this.item = val
-      this.list = val.detail[0].steam
-      this.answer = val.detail[0].correct
+      this.list = val.detail
     },
     
   },
@@ -45,7 +43,6 @@ export default {
    
   },
   created() {
-    
   },
   mounted() {
     
@@ -62,5 +59,4 @@ export default {
 <style lang="scss" scoped>
   @import "~@/styles/topic/lang3.scss";
 </style>
-<style lang="scss">
-</style>
+

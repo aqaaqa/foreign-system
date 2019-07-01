@@ -1,8 +1,8 @@
 <template>
   <div class="listen5">
-    <div class="video-box">
+    <!-- <div class="video-box">
       <el-button size="mini" @click="lookAnswer">查看脚本</el-button>
-    </div>
+    </div> -->
     <div class="listen5-main" style="margin-top:20px;">
       <div>
         <p>左侧栏</p>
@@ -15,7 +15,7 @@
           style="">
           <el-table-column>
           <template slot-scope="scope">
-            <template>{{scope.$index+1 +'. ' +scope.row.left}}</template>
+            <span class="fonts">{{scope.$index+1 +'. ' +scope.row.left}}</span>
           </template>
           </el-table-column>
           <el-table-column
@@ -23,7 +23,7 @@
             align="center"
             width="50">
           <template v-if="showAnswer" slot-scope="scope" >
-            <template>{{scope.row.answer}}</template>
+            <span class="fonts">{{scope.row.answer}}</span>
           </template>
           </el-table-column>
         </el-table>
@@ -40,7 +40,7 @@
           style="">
           <el-table-column>
           <template slot-scope="scope">
-            <template>{{change[scope.$index]+ '. ' +scope.row.right}}</template>
+            <span class="fonts">{{change[scope.$index]+ '. ' +scope.row.right}}</span>
           </template>
           </el-table-column>
         </el-table>
@@ -61,13 +61,9 @@ export default {
   },
   data() {
     return {
-      item: {
-        directions:{
-          en: '',
-          zh: ''
-        }
-      },
-      list: [],
+      item: this.itemList,
+      list: this.itemList.detail[0].steam,
+      answer: this.itemList.detail[0].correct,
       listArr: [],
       showAnswer: false,
       change: letterArr()
@@ -77,26 +73,6 @@ export default {
     itemList(val) {
       this.item = val
       this.list = val.detail[0].steam
-      let list = JSON.parse(JSON.stringify(this.list))
-      let answerList = JSON.parse(JSON.stringify(val.detail[0].correct))
-      let aList = []
-      for(let i =0 ; i < answerList.length; i++) {
-        let str = answerList[i]
-        let index = str.lastIndexOf("R");
-        let result = str.substr(index + 1,str.length);
-        aList.push(this.change[result-1])
-      }
-      let arr = []
-      if(list) {
-        for( let i = 0; i < list.length/2 ;i++){
-          arr[i] = {
-            left: list[i],
-            answer: aList[i],
-            right: list[list.length/2+i]
-          }
-        }
-        this.listArr = arr
-      }
     },
     
   },
@@ -104,7 +80,26 @@ export default {
    
   },
   created() {
-    
+    let list = JSON.parse(JSON.stringify(this.list))
+    let answerList = JSON.parse(JSON.stringify(this.answer))
+    let aList = []
+    for(let i =0 ; i < answerList.length; i++) {
+      let str = answerList[i]
+      let index = str.lastIndexOf("R");
+      let result = str.substr(index + 1,str.length);
+      aList.push(this.change[result-1])
+    }
+    let arr = []
+    if(list) {
+      for( let i = 0; i < list.length/2 ;i++){
+        arr[i] = {
+          left: list[i],
+          answer: aList[i],
+          right: list[list.length/2+i]
+        }
+      }
+      this.listArr = arr
+    }
   },
   mounted() {
     
@@ -135,6 +130,12 @@ export default {
     color:rgba(0,0,0,0.85);
     line-height:36px;
   }
+}
+.fonts {
+  font-size: 14px;
+  font-weight:400;
+  color:rgba(0,0,0,0.85);
+  line-height:24px;
 }
 
 .listen5-main {

@@ -1,8 +1,10 @@
 import { saveObjArr, getObjArr } from '@/utils/role'
+import { letterArr } from '@/utils/auth'
 
 const state = {
   pageId: getObjArr('page'),
-  menu: getObjArr('menu')
+  menu: getObjArr('menu'),
+  letter: [1,2,3]
 }
 
 const mutations = {
@@ -11,6 +13,9 @@ const mutations = {
   },
   SET_MENU: (state, menu) => {
     state.menu = menu
+  },
+  SET_LETTER: (state, letter) => {
+    state.letter = letter
   }
 }
 
@@ -22,6 +27,9 @@ const actions = {
   changeMenu({commit}, data) {
     commit('SET_MENU', data)
     saveObjArr('menu', data)
+  },
+  setLetter({commit}) {
+    commit('SET_LETTER',letterArr())
   }
 }
 

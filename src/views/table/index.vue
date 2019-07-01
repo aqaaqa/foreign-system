@@ -10,8 +10,8 @@
       </el-radio-group>
     </div>
     <template>
-      <!-- <alltopic v-if=" postion == 'all'"></alltopic> -->
-      <TopicMain></TopicMain>
+      <alltopic v-if=" postion == 'all'"></alltopic>
+      <changetopic v-else-if="postion == 'change'"></changetopic>
     </template>
 
   </div>
@@ -19,7 +19,8 @@
 
 <script>
 import Alltopic from '@/components/alltopic'
-import { TopicMain } from '@/components/topic'
+import changetopic from '@/components/changetopic'
+// import { TopicMain } from '@/components/topic'
 
 export default {
   filters: {
@@ -32,7 +33,8 @@ export default {
   },
   components: {
     Alltopic,
-    TopicMain
+    changetopic
+    // TopicMain
   },
   created() {
   },

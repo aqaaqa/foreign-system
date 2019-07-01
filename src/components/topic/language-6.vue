@@ -1,12 +1,12 @@
 <template>
   <div class="lang6">
-    <div class = "lisetn2-title">
+    <!-- <div class = "lisetn2-title">
       <p>{{item.directions.en}}</p>
       <p>{{item.directions.zh}}</p>
     </div>
     <div class="video-box">
       <el-button size="mini" @click="lookAnswer">查看脚本</el-button>
-    </div>
+    </div> -->
     <div>
       <div class="gap-box" v-for = "(list,index) in list" :key="index" >
         <p v-for="(gap,gapIndex) in list.steam" :key="gapIndex" v-html="gap"></p>
@@ -26,13 +26,8 @@ export default {
   },
   data() {
     return {
-      item: {
-        directions:{
-          en: '',
-          zh: ''
-        }
-      },
-      list: [],
+      item: this.itemList,
+      list: this.itemList.detail,
       showAnswer: false,
     }
   },

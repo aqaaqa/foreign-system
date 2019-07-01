@@ -181,6 +181,10 @@ const data = Mock.mock({
 			"steam": "1. Which of the following can replace the underlined word “aid” in Paragraph 1?",
 			"options": ["A. staff", "B. help", "C. information", "D. cost"],
 			"correct": ["A"]
+		},{
+			"steam": "2. Which of the following can replace the underlined word “aid” in Paragraph 1?",
+			"options": ["A. Which of the following can", "B. Which of the following can", "C. information", "D. cost"],
+			"correct": ["A"]
 		}]
 	}, {
 		"part": "阅读",
@@ -219,8 +223,8 @@ const data = Mock.mock({
 			"zh": "回答下列问题。"
 		},
 		"detail": [{
-			"steam": ["1. Why more and more visitors are able to visit polar regions?"],
-			"correct": [""]
+			"steam": "1. Why more and more visitors are able to visit polar regions?",
+			"correct": ""
 		}, {
 			"steam": "2. What were the Antarctic cruises like in 1960s?",
 			"correct": ""
