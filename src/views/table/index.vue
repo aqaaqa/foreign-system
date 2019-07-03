@@ -20,7 +20,6 @@
 <script>
 import Alltopic from '@/components/alltopic'
 import changetopic from '@/components/changetopic'
-// import { TopicMain } from '@/components/topic'
 
 export default {
   filters: {
@@ -28,13 +27,12 @@ export default {
   },
   data() {
     return {
-      postion: 'all'
+      postion: 'change'
     }
   },
   components: {
     Alltopic,
     changetopic
-    // TopicMain
   },
   created() {
   },

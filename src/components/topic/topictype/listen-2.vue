@@ -1,12 +1,5 @@
 <template>
   <div class="listen2">
-    <!-- <div class = "lisetn2-title">
-      <p>{{item.directions.en}}</p>
-      <p>{{item.directions.zh}}</p>
-    </div>
-    <div class="video-box">
-      <el-button size="mini" @click="lookAnswer">查看脚本</el-button>
-    </div> -->
     <div>
       <div class="gap-box" v-for = "(list,index) in list" :key="index" >
         <p v-for="(gap,gapIndex) in list.steam" :key="gapIndex" v-html="gapIndex+1 + '. '+gap"></p>
@@ -22,26 +15,43 @@ export default {
   props:{
     itemList: {
       type: Object,
-    }
+    },
   },
   data() {
     return {
       item: this.itemList,
       list: this.itemList.detail,
-      showAnswer: false,
+      showAnswer: this.itemList.isShow,
+      listFilter: []
     }
   },
   watch: {
-    itemList(val) {
-      this.item = val
-      this.list = val.detail
+    itemList:{
+      handler(val) {
+        this.item = val
+        this.list = val.detail
+        this.showAnswer = val.isShow
+        this.lookAnswer()
+      },
+      deep: true
+      
     }
   },
   computed: {
    
   },
   created() {
-    
+    let list = JSON.parse(JSON.stringify(this.item.detail))
+    let listFilter = list.map(e=> {
+      let replauceList = e.steam.map((j,index) => {
+        let c = j.replace(/_+/g,`<i class='listen2-answer'>${e.correct[index]}</i>`)
+        j = c
+        return j
+      })
+      e.steam = replauceList
+      return e
+    })
+    this.listFilter = listFilter
   },
   mounted() {
     
@@ -49,22 +59,11 @@ export default {
   },
   methods: {
     lookAnswer() {
-      if(this.showAnswer) {
+      if(!this.showAnswer) {
         this.list = this.item.detail
       } else {
-        let list = JSON.parse(JSON.stringify(this.item.detail))
-        let listFilter = list.map(e=> {
-          let replauceList = e.steam.map((j,index) => {
-            let c = j.replace(/_+/g,`<i class='listen2-answer'>${e.correct[index]}</i>`)
-            j = c
-            return j
-          })
-          e.steam = replauceList
-          return e
-        })
-        this.list = listFilter
+        this.list = this.listFilter
       }
-      this.showAnswer = !this.showAnswer
     }
   }
 }

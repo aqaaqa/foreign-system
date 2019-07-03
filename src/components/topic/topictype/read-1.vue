@@ -9,11 +9,10 @@
         <li v-for="(items, index) in list" :key="index">
           <p>{{items.steam}}</p>
           <p class="read1-changes" :class="items.line ? 'line' : ''">
-            <span v-for="(change, indexs) in items.options" :key="indexs">
+            <span v-for="(change, indexs) in items.options" :key="indexs" :style="change.indexOf(items.correct[0]+'.') == 0 && showAnswer ? 'color: #409EFF' : ''">
               {{change}}
             </span>
           </p>
-          <p>正确答案 {{items.correct[0]}}</p>
         </li>
       </ul>
     </div>
@@ -34,14 +33,19 @@ export default {
     return {
       item: this.itemList,
       list: this.itemList.detail,
-      showAnswer: false,
+      showAnswer: this.itemList.isShow,
       change: letterArr()
     }
   },
   watch: {
-    itemList(val) {
-      this.item = val
-      this.list = val.detail
+    itemList: {
+      handler(val) {
+        this.item = val
+        this.list = val.detail
+        this.showAnswer = val.isShow
+      },
+      deep: true
+      
     },
     
   },
@@ -74,6 +78,7 @@ export default {
 <style lang="scss" scoped>
 .read1-main {
   width: 600px;
+  margin-top: 20px;
   font-size: 14px;
   font-weight:400;
   color:rgba(0,0,0,0.85);

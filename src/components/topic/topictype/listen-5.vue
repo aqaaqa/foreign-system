@@ -65,14 +65,20 @@ export default {
       list: this.itemList.detail[0].steam,
       answer: this.itemList.detail[0].correct,
       listArr: [],
-      showAnswer: false,
+      showAnswer: this.itemList.isShow,
       change: letterArr()
     }
   },
   watch: {
-    itemList(val) {
-      this.item = val
-      this.list = val.detail[0].steam
+    itemList: {
+      handler(val) {
+        this.item = val
+        this.list = val.detail[0].steam
+        this.showAnswer = val.isShow
+        // this.lookAnswer()
+      },
+      deep: true
+      
     },
     
   },
@@ -116,14 +122,13 @@ export default {
 <style lang="scss" scoped>
 .listen5 {
   background: #fff;
-  padding: 10px;
 }
 .video-box {
   margin-top: 10px;
 }
 
 .gap-box {
-  margin: 10px auto;
+  margin: 20px auto 0;
   p {
     font-size: 14px;
     font-weight:400;

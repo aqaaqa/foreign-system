@@ -110,13 +110,11 @@
       </li>
     </ul>
 
-
-    <!-- <TopicMain></TopicMain> -->
   </div>
   
 </template>
 <script>
-import { TopicMain } from '../topic'
+import TopicMain from '../topic/index'
 import { topicList } from '@/api/topic'
 
 export default {

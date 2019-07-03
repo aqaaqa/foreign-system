@@ -18,18 +18,22 @@
 </template>
 
 <script>
-import listen2 from './listen-2'
-import listen5 from './listen-5'
-import language3 from './language-3'
-import language6 from './language-6'
-import read1 from './read-1'
-import read4 from './read-4'
+import { listen2, listen5, language3, language6, read1, read4} from './topictype'
+// import listen2 from './listen-2'
+// import listen5 from './listen-5'
+// import language3 from './language-3'
+// import language6 from './language-6'
+// import read1 from './read-1'
+// import read4 from './read-4'
 
 export default {
   name: 'topic',
   props:{
     allitem: {
       type: Object,
+    },
+    isShow: {
+      type: boolean
     }
   },
   data() {

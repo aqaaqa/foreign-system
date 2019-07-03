@@ -1,9 +1,5 @@
 <template>
   <div class="read4">
-    <!-- <div class="video-box">
-      <el-button size="mini" @click="lookAnswer">查看脚本</el-button>
-    </div> -->
-
     <ul class="lang3-main">
       <li v-for= "(items, index) in list" :key="index">
         <p>{{items.steam}}</p>
@@ -29,13 +25,18 @@ export default {
     return {
       item: this.itemList,
       list: this.itemList.detail,
-      showAnswer: false,
+      showAnswer: this.itemList.isShow,
     }
   },
   watch: {
-    itemList(val) {
-      this.item = val
-      this.list = val.detail
+    itemList: {
+      handler(val) {
+        this.item = val
+        this.list = val.detail
+        this.showAnswer = val.isShow
+      },
+      deep:true
+      
     },
     
   },

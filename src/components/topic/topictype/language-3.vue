@@ -1,8 +1,5 @@
 <template>
   <div class="lang3">
-    <div class="video-box">
-      <el-button size="mini" @click="lookAnswer">查看脚本</el-button>
-    </div>
     <ul class="lang3-main">
       <li v-for="(item,index) in list" :key="index">
         <p>{{item}}</p>
@@ -18,7 +15,7 @@
 
 <script>
 export default {
-  name: 'lang6',
+  name: 'lang3',
   props:{
     itemList: {
       type: Object,
@@ -30,14 +27,18 @@ export default {
       list: this.itemList.detail[0].steam,
       answer: this.itemList.detail[0].correct,
       listArr: [],
-      showAnswer: false
+      showAnswer: this.itemList.isShow
     }
   },
   watch: {
-    itemList(val) {
-      this.item = val
-      this.list = val.detail[0].steam
-      this.answer = val.detail[0].correct
+    itemList:{
+      handler(val) {
+        this.item = val
+        this.list = val.detail[0].steam
+        this.answer = val.detail[0].correct
+        this.showAnswer = val.isShow
+      },
+      deep:true
     },
     
   },
@@ -52,9 +53,7 @@ export default {
     
   },
   methods: {
-    lookAnswer() {
-      this.showAnswer = !this.showAnswer
-    }
+ 
   }
 }
 </script>

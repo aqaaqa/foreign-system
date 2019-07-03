@@ -7,17 +7,23 @@ const data = Mock.mock({
 		"zh": ""
 	},
 	"questions": [{
-		"part": "听力",
-		"name": "一、听短对话，选择正确的答案",
-		"type": "单选",
+		"id":'1233',
+		'part': '听力',
+		'name': '一、听短对话，选择正确的答案',
+		'type': '单选',
 		"directions": {
-			"en": "Listen to 10 short conversations and choose the correct answer for each question.",
-			"zh": "听对话，从每题所给的A，B，C三个选项中选择正确选项。"
+			'en': 'Listen to 10 short conversations and choose the correct answer for each question.',
+			'zh': '听对话，从每题所给的A，B，C三个选项中选择正确选项。'
 		},
-		"detail": [{
-			"steam": ["1. What is next to the playground?"],
-			"options": ["A", "B", "C", "D"],
-			"correct": ["A"]
+		"mp3Path":'1.mp3',
+		'detail': [{
+			'steam': ['What is next to the playground?'],
+			'options': ['A. Sports centre Sports centre Sports centre Sports centre Sports centreSports centre', 'B. Sports centre Sports centreSports ', 'C.Sports centre Sports', 'D. Sports centre Sports centreSports'],
+			'correct': ['A']
+		}, {
+			'steam': ['What is next to the playground?'],
+			'options': ['A. Sports centre', 'B. Sports centreSports centre', 'C. Sports centre', 'D. Sports centre'],
+			'correct': ['B']
 		}]
 	}, {
 		"part": "听力",
@@ -71,13 +77,17 @@ const data = Mock.mock({
 		"part": "语言知识运用",
 		"name": "单选题",
 		"type": "单选",
-		"directions": "Choose the correct answer from A, B and C. 从A，B和C三个选项中选出正确选项。",
+		"directions": {'en': "Choose the correct answer from A, B and C. 从A，B和C三个选项中选出正确选项。"},
 		"detail": [{
 			"steam": ["--- Do you know the girl ______ the bike? I probably saw her when I was in Mexico. \\n --- Really? It’s my sister. She went to Mexico last summer."],
-			"options": ["A", "B", "C", "D"],
+			"options": ['A. Sports centre', 'B. Sports centreSports centre', 'C. Sports centre', 'D. Sports centre'],
+			"correct": ["A"]
+		},{
+			"steam": ["--- Do you know the girl ______ the bike? I probably saw her when I was in Mexico. \\n --- Really? It’s my sister. She went to Mexico last summer."],
+			"options": ['A. Sports centre', 'B. Sports centreSports centre', 'C. Sports centre', 'D. Sports centre'],
 			"correct": ["A"]
 		}]
-	}, {
+	},{
 		"part": "语言知识运用",
 		"name": "匹配题",
 		"type": "匹配",
@@ -86,7 +96,8 @@ const data = Mock.mock({
 			"zh": "将单词与其释义连线."
 		},
 		"detail": [{
-			"steam": ["1. approach", "2. athlete", "A. having strong power", "B. a shorter text that shows the main idea"]
+			"steam": ["1. approach", "2. athlete", "A. having strong power", "B. a shorter text that shows the main idea"],
+			"correct": ["0-1","1-0"]
 		}]
 	}, {
 		"part": "语言知识运用",
@@ -111,9 +122,10 @@ const data = Mock.mock({
 		"detail": [{
 			"steam": ["1. We haven’t chosen a ______ for our summer vacation.", "2. Many tourists come to Australia to see ______ and koalas."],
 			"select_words": ["landscape", "remote", "kangaroos", "chain", "aboard", "vehicle", "soccer", "destination", "cash", "route"],
-			"correct": ["landscape", "remote", "kangaroos", "chain", "aboard", "vehicle", "soccer", "destination", "cash", "route"]
+			"correct": ["kangaroos", "chain", "kangaroos", "chain", "aboard", "vehicle", "soccer", "destination", "cash", "route"]
 		}]
-	}, {
+	},{
+		id:'122',
 		"part": "语言知识运用",
 		"name": "短文填空题",
 		"type": "选词填空",
@@ -121,9 +133,10 @@ const data = Mock.mock({
 			"en": "Fill in the blanks with the correct form of the words below.",
 			"zh": "用下列单词的正确形式填空。"
 		},
+		article:'I still remember the ___1___ Day even though I have ___2___ from the university for many years. I went to the school alone carrying a big suitcase filled with books.',
 		"detail": [{
-			"steam": ["I still remember the ___1___ Day even though I have ___2___ from the university for many years.", "I went to the school alone carrying a big suitcase filled with books."],
-			"select_words": ["landscape", "remote", "kangaroos", "chain", "aboard", "vehicle", "soccer", "destination", "cash", "route"],
+			"steam": null,
+			"select_words": ["landscape", "remote", "kangaroos", "chain", "aboard", "vehicle", "soccer", "destination", "cash", "route","aaaa"],
 			"correct": ["landscape", "remote", "kangaroos", "chain", "aboard", "vehicle", "soccer", "destination", "cash", "route"]
 		}]
 	}, {
@@ -151,6 +164,7 @@ const data = Mock.mock({
 			"correct": ["2.1 A", "2.2 B"]
 		}]
 	}, {
+		id:"123",
 		"part": "语言知识运用",
 		"name": "完形填空题",
 		"type": "完形填空",
@@ -158,10 +172,10 @@ const data = Mock.mock({
 			"en": null,
 			"zh": null
 		},
-		"article": "Since the beginning of the twentieth century the number of wild Tigers has been on an alarming decrease. ___1___, it appears the tide has finally turned. The ___2___ of dedicated conservation programmes has ___3___ the first growth in wild population numbers for over a century and, while still vulnerable, the big cat’s future is looking a little more assured.",
+		"article": "Since the beginning of the twentieth century the number of wild Tigers has been on an alarming decrease. ____1___, it appears the tide has finally turned. The ___2___ of dedicated conservation programmes has ___3___ the first growth in wild population numbers for over a century and, while still vulnerable, the big cat’s future is looking a little more assured.",
 		"detail": [{
 			"steam": null,
-			"options": ["A. Though", "B.Therefore", "C.However", "D. Instead"],
+			"options": ["A. Thoughssss", "B.Therefore", "C.However", "D. Instead"],
 			"correct": ["A"]
 		}, {
 			"steam": null,
@@ -199,7 +213,7 @@ const data = Mock.mock({
 			"options": ["A. It is risky to start on your work a few days before your deadline.", "B. If it is due to valid reasons, it’s understandable to be late or absent"],
 			"correct": ["A", "C", "D", "B"]
 		}]
-	}, {
+	},{
 		"part": "阅读",
 		"name": "判断题",
 		"type": "判断",
@@ -208,11 +222,8 @@ const data = Mock.mock({
 			"zh": "判断下列表述的正误。"
 		},
 		"detail": [{
-			"steam": ["1. People can see many on-screen scenes in Harry Potter movie series, but they will still not know how the secret of magic."],
-			"correct": 1
-		}, {
-			"steam": ["2. The entrance ticket of Warner Bros. Studio is included in the tour fee."],
-			"correct": 0
+			"steam": ["It's always a problem for a family with children to find a suitable restaurant on holiday.", "Children can cook by themselves and their parents can clean up for them."],
+			"correct": [0, 1]
 		}]
 	}, {
 		"part": "阅读",
@@ -224,10 +235,10 @@ const data = Mock.mock({
 		},
 		"detail": [{
 			"steam": "1. Why more and more visitors are able to visit polar regions?",
-			"correct": ""
+			"correct": "more and more"
 		}, {
 			"steam": "2. What were the Antarctic cruises like in 1960s?",
-			"correct": ""
+			"correct": "more and more"
 		}]
 	}, {
 		"part": "写作",
