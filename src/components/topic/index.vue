@@ -3,7 +3,7 @@
     <template v-if="list.part == '听力'">
       <listen1 v-if='list.type == "单选"' :item='list' />
       <listen2 v-else-if="list.type == '填空'" :itemList="list"  />
-      <listen3 v-else-if='list.type == "填表格"'  :item='list' />
+      <listen3 v-else-if='list.type == "填表格"'  :itemList='list' />
       <listen4 v-else-if='list.type == "判断"'  :item='list'/>
       <listen5 v-else-if="list.type == '匹配'" :itemList="list" />
     </template>
@@ -18,6 +18,7 @@
     </template>
     <template v-else-if="list.part == '阅读'">
       <read1 v-if="list.type == '阅读单选'" :itemList="list" />
+      <read2 v-else-if="list.type == '选句填空'" :itemList="list" />
       <read3 v-else-if="list.type == '判断'" :item="list" />
       <read4 v-else-if="list.type == '简答'" :itemList="list" />
     </template>
@@ -25,7 +26,7 @@
 </template>
 
 <script>
-import { listen1, listen3, listen4, listen2, listen5, language1, language2, language3, language4, language5, language6, language8, read1, read3, read4} from './topictype'
+import { listen1, listen3, listen4, listen2, listen5, language1, language2, language3, language4, language5, language6, language8, read1, read2, read3, read4} from './topictype'
 
 export default {
   name: 'topic',
@@ -61,6 +62,7 @@ export default {
     language8,
     language6,
     read1,
+    read2,
     read3,
     read4
   },

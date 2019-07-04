@@ -56,25 +56,25 @@ export default {
   methods: {
     words_Group (wordsAll,n) {
       var leg = wordsAll.length;
-      var wordsGroup = [];
-      var c = (n+1)*5;
-      if(c > leg){
-        c = leg;
+      var count = 5;
+      var yushu = leg%5;
+      var chushu = parseInt(leg/5);
+      if(leg > count){
+        if(yushu != 0){
+            wordsAll.length = (chushu+1)*count
+        }
       }
-      for(let i=n*5; i<c;i++){
-        wordsGroup.push(wordsAll[i]);
-        if(c<leg){
-          if(i === (5*n+4)){
-            this.wordsAll.push(wordsGroup);
-            var m = n;
-            n = m+1;
-            this.words_Group(wordsAll,n); 
-        
-          }
-        }else{
-          wordsGroup.length = 5;
+      var wordsGroup = [];
+      var c = (n+1)*count;
+      for(let i=n*count; i<c;i++){
+        wordsGroup.push(wordsAll[i]); 
+        if(i === (count*n+4)){
           this.wordsAll.push(wordsGroup);
-          return false;
+          if(c<leg){
+            var m = n;
+            n = m+1; 
+            this.words_Group(wordsAll,n); 
+          }
         }
       }
     },

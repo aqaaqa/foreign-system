@@ -15,4 +15,11 @@ npm install --registry=https://registry.npm.taobao.org
 
 # 启动服务
 npm run dev
+
+# 项目打包
+#注意事项 vue-cli打包成dist后默认是必须在http服务器环境下才能正常运行
+npm run build:prod
+npm run build:stage
+
+
 ```

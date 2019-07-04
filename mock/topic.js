@@ -38,6 +38,7 @@ const data = Mock.mock({
 			"correct": ["in", "It"]
 		}]
 	}, {
+		"id": '2',
 		"part": "听力",
 		"name": "听对话，填表格",
 		"type": "填表格",
@@ -201,6 +202,7 @@ const data = Mock.mock({
 			"correct": ["A"]
 		}]
 	}, {
+		"id":'1',
 		"part": "阅读",
 		"name": "任务型阅读",
 		"type": "选句填空",
@@ -208,10 +210,19 @@ const data = Mock.mock({
 			"en": "Read the passage. According to the context, choose the sentence that can fill in the blank. There are two options you may not use.",
 			"zh": "根据短文内容，从短文后的选项中选出能填入空白处的最佳选项。选项中有两项为多余选项。"
 		},
+		"article": "___1___ Moving up to senior high school is a chance, not a problem. Things are different, and all you need to do is to be open-minded and learn the new rules. ___2___ If you don’t know what to do or have problems in learning or relationship, you should ask for help. Teachers are certainly the best people to turn to because they have experience in dealing with students’ problems, including helping them get used to the new environment. Also, if you cannot attend the school for some days, ask your teachers about any missed work. It is your responsibility to catch up, not theirs. \r\n___5___ \r\n",
 		"detail": [{
-			"steam": ["Maybe you do not notice that everybody else in your grade are just as nervous as you are.  ___1___ ...."],
-			"options": ["A. It is risky to start on your work a few days before your deadline.", "B. If it is due to valid reasons, it’s understandable to be late or absent"],
-			"correct": ["A", "C", "D", "B"]
+			"stems": null,
+			"options": [
+				"A. It is risky to start on your work a few days before your deadline. ",
+				"B. If it is due to valid reasons",
+				"C. Do not put your future to waste. ",
+				"D. So remember that you all are in the same boat. ",
+				"E. Your friends will help you solve them. ",
+				"F. The teachers will help. ",
+				"G. Some students find it hard to get up early in the morning."
+			],
+			"corrects": ["A", "B"]
 		}]
 	},{
 		"part": "阅读",
