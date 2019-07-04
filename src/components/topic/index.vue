@@ -16,6 +16,7 @@
       <language6 v-else-if="list.type == '提示填空'" :itemList="list" />
       <language8 v-else-if='list.type == "完形填空"' :item="list" />
     </template>
+    
     <template v-else-if="list.part == '阅读'">
       <read1 v-if="list.type == '阅读单选'" :itemList="list" />
       <read2 v-else-if="list.type == '选句填空'" :itemList="list" />
