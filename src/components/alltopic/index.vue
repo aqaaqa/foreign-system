@@ -130,6 +130,7 @@ export default {
         difficulty: ''
       },
       list: []
+      
     }
   },
   components: {
