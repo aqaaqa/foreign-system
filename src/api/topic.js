@@ -1,8 +1,9 @@
 import request from '@/utils/request'
 
-export function topicList() {
+export function questList() {
   return request({
-    url:'/topic/list',
+    url:'/quest/list',
     method: 'get',
   })
 }
+

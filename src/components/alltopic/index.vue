@@ -95,15 +95,17 @@
     <!-- 题目展示 -->
     <ul class="all-main">
       <li class="all-main-list" v-for="(item,index) in list" :key="index">
-        <el-button style="float:right" size="mini" type="primary" icon="el-icon-circle-plus-outline">添加</el-button>
+        <div class="add-btn">
+          <el-button size="mini" type="primary" icon="el-icon-circle-plus-outline">添加</el-button>
+        </div>
         <TopicMain :allitem="item"></TopicMain>
         <div class="all-main-bottom">
-          <span>ID: {{item.part}}</span>
-          <span>题型: {{}}</span>
+          <span>ID: {{item.id}}</span>
+          <span>题型: {{item.type}}</span>
           <span>使用次数: {{}}</span>
           <span>本校使用次数: {{}}</span>
           <span>
-            <el-button type="text">查看答案</el-button>
+            <el-button type="text" @click="lookAnswer(index)">查看答案</el-button>
           </span>
           <span style="float:right">展开</span>
         </div>
@@ -115,7 +117,7 @@
 </template>
 <script>
 import TopicMain from '../topic/index'
-import { topicList } from '@/api/topic'
+import { questList } from '@/api/topic'
 
 export default {
   name: 'alltopic',
@@ -136,12 +138,19 @@ export default {
   methods: {
     searchBtn() {
       console.log(this.search.input)
-    }
+    },
+    lookAnswer(index) {
+      this.list[index].isShow = !this.list[index].isShow
+    },
   },
   created() {
     let _this = this
-    topicList().then( res=> {
-      _this.list = res.res.questions
+    questList().then( res=> {
+      _this.list = res.data.questList
+      _this.list.forEach(e=> {
+        e.isShow = false;
+        e.opentopic = false;
+      })
     })
   },
   mounted() {
@@ -196,6 +205,14 @@ export default {
 }
 
 .all-main {
+  .all-main-list {
+    position: relative;
+  }
+  .add-btn {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+  }
   &-list {
     background:rgba(255,255,255,1);
     border-radius:2px;
@@ -206,12 +223,13 @@ export default {
     float: right
   }
   &-bottom {
-    height: 48px;
-    line-height: 48px;
+    height: 40px;
+    line-height: 40px;
     border-top: 1px dashed #D9D9D9;
     font-size:14px;
     font-weight:400;
     color:rgba(0,0,0,1);
+    margin-top: 20px;
     span {
       margin-right: 40px;
     }

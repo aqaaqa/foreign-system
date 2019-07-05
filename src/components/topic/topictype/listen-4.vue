@@ -3,7 +3,7 @@
     <div class="listen4-detail" v-if='itemAll.detail && itemAll.detail.length != 0'>
       <div v-for='(dItem, index) in itemAll.detail' :key="index">
         <div v-for='(sItem, sIdx) in dItem.steam' :key="sIdx" class="listen4-steam">
-          <span class="listen4-num">{{sIdx+1}}. </span>
+          <!-- <span class="listen4-num">{{sIdx+1}}. </span> -->
           <div class="listen4-sentence">
             <span>{{sItem+sItem}}</span>
             <span class="listen4-line">{{isShow ? dItem.ftCorrect[sIdx] : ''}}</span>
@@ -11,14 +11,6 @@
         </div>
       </div>
     </div>
-    <!--查看脚本-->
-    <el-dialog
-      title="脚本"
-      :visible.sync="isScript"
-      width="30%"
-    >
-      <span>这是一段判断题型音频脚本信息</span>
-    </el-dialog>
   </div>
 </template>
 

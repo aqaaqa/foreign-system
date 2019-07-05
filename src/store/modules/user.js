@@ -1,12 +1,12 @@
-import { login, logout, getInfo, roleList, activate } from '@/api/user'
+import { login, logout, roleList, activate } from '@/api/user'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 import { saveObjArr, getObjArr, filterAsyncRouter, getState, removeObjArr } from '@/utils/role'
 import { resetRouter } from '@/router'
 
 const state = {
   token: getToken(),
-  name: '',
-  avatar: '',
+  name: getObjArr('name'),
+  avatar: 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif',
   role: getObjArr()
 }
 
@@ -32,29 +32,11 @@ const actions = {
     return new Promise((resolve, reject) => {
       login({ username: username.trim(), password: password }).then(response => {
         const { data } = response
-        commit('SET_TOKEN', data.token)
-        setToken(data.token)
-        resolve()
-      }).catch(error => {
-        reject(error)
-      })
-    })
-  },
-
-  // get user info
-  getInfo({ commit, state }) {
-    return new Promise((resolve, reject) => {
-      getInfo(state.token).then(response => {
-        const { data } = response
-
-        if (!data) {
-          reject('Verification failed, please Login again.')
-        }
-
-        const { name, avatar } = data
-
-        commit('SET_NAME', name)
-        commit('SET_AVATAR', avatar)
+        commit('SET_TOKEN', data.userId)
+        commit('SET_NAME', data.username)
+        commit('SET_AVATAR', 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif' )
+        setToken(data.id)
+        saveObjArr('name', data.username)
         resolve(data)
       }).catch(error => {
         reject(error)
@@ -83,9 +65,9 @@ const actions = {
     })
   },
   // get user role
-  getNewRole({ commit, codes}) {
+  getNewRole({ commit, codes},params) {
     return new Promise((resolve, reject) => {
-      activate().then(response => {
+      activate({id:params.id,code: params.code}).then(response => {
         if(response.code == 20000) {
           const { data } = response
           const { items } = data
@@ -103,7 +85,7 @@ const actions = {
   // user logout
   logout({ commit, state }) {
     return new Promise((resolve, reject) => {
-      logout(state.token).then(() => {
+      logout().then(() => {
         commit('SET_TOKEN', '')
         removeToken()
         removeObjArr('router')

@@ -2,7 +2,7 @@
   <div class="listen2">
     <div>
       <div class="gap-box" v-for = "(list,index) in list" :key="index" >
-        <p v-for="(gap,gapIndex) in list.steam" :key="gapIndex" v-html="gapIndex+1 + '. '+gap"></p>
+        <p v-for="(gap,gapIndex) in list.steam" :key="gapIndex" v-html="gap"></p>
       </div>
     </div>
 

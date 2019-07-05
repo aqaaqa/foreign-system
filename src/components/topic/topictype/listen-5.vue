@@ -15,7 +15,7 @@
           style="">
           <el-table-column>
           <template slot-scope="scope">
-            <span class="fonts">{{scope.$index+1 +'. ' +scope.row.left}}</span>
+            <span class="fonts">{{scope.row.left}}</span>
           </template>
           </el-table-column>
           <el-table-column

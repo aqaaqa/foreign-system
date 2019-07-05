@@ -8,7 +8,7 @@
       <ul class="read1-topic">
         <li v-for="(items, index) in list" :key="index">
           <p>
-            <span style="display:inline-block; vertical-align:top;">{{index+1+'. '}}</span>
+            <!-- <span style="display:inline-block; vertical-align:top;">{{}}</span> -->
             <span style="display:inline-block; vertical-align:top" v-html="items.steam[0].replace(/\\n/g,'<br/>')"></span>
           </p>
           <p class="read1-changes" :class="items.line ? 'line' : ''">

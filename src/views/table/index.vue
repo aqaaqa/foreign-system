@@ -27,7 +27,7 @@ export default {
   },
   data() {
     return {
-      postion: 'change'
+      postion: 'all'
     }
   },
   components: {

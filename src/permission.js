@@ -32,11 +32,9 @@ router.beforeEach((to, from, next) => {
       if (!hasGetRole) {
         try {
           // get user info
-          store.dispatch('user/getInfo').then(res=> {
-            store.dispatch('user/getRole').then(res=> {
-              router.addRoutes(res) //动态添加路由
-              next({ ...to, replace: true })
-            })
+          store.dispatch('user/getRole').then(res=> {
+            router.addRoutes(res) //动态添加路由
+            next({ ...to, replace: true })
           })
           next()
         } catch (error) {

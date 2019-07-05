@@ -44,6 +44,7 @@ export default {
   watch: {
     allitem:{
       handler(val) {
+        console.log(val)
         this.list = val
       },
       deep: true

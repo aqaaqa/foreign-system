@@ -2,37 +2,30 @@ import request from '@/utils/request'
 
 export function login(data) {
   return request({
-    url: '/user/login',
+    url: '/passport/dologin',
     method: 'post',
     data
   })
 }
 
-export function getInfo(token) {
-  return request({
-    url: '/user/info',
-    method: 'get',
-    params: { token }
-  })
-}
-
 export function logout() {
   return request({
-    url: '/user/logout',
+    url: '/passport/logout',
     method: 'post'
   })
 }
 
 export function roleList() {
     return request({
-        url: '/role/list',
+        url: '/quest/menu',
         method: 'get'
     })
 }
 
-export function activate() {
+export function activate(data) {
   return request({
-      url: '/activate',
-      method: 'post'
+      url: '/quest/active',
+      method: 'post',
+      data
   })
 }

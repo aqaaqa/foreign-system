@@ -158,7 +158,7 @@
 
 <script>
 import { validUsername, validPhone, validEmail, validPass } from '@/utils/validate'
-
+import { getObjArr } from '@/utils/role'
 export default {
   name: 'Login',
   data() {
@@ -198,8 +198,8 @@ export default {
       codeSend: false,
       //登录
       loginForm: {
-        username: 'admin',
-        password: '111111'
+        username: 'user1',
+        password: '123456'
       },
       //注册
       signForm: {
@@ -274,13 +274,11 @@ export default {
         if (valid) {
           this.loading = true
           this.$store.dispatch('user/login', this.loginForm).then(() => {
-              this.$store.dispatch('user/getInfo').then(res=> {
-                this.$store.dispatch('user/getRole').then(res=> {
-                  this.$router.addRoutes(res) //动态添加路由
-                  this.$router.push({ path: this.redirect || '/' })
-                  this.loading = false
-                  // next({ ...to, replace: true })
-                })
+              this.$store.dispatch('user/getRole').then(res=> {
+                this.$router.addRoutes(res) //动态添加路由
+                this.$router.push({ path: this.redirect || '/' })
+                this.loading = false
+                // next({ ...to, replace: true })
               })
           }).catch(() => {
             this.loading = false

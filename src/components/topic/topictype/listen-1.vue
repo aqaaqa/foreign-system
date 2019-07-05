@@ -4,7 +4,7 @@
       <ul v-for='(itm, index) in itemAll.detail' v-bind:key='index' class="listen1-steam">
         <li>
           <div class="listen1-tigan">
-            <span class="listen1-num">{{index+1}}.</span>
+            <!-- <span class="listen1-num">{{index+1}}.</span> -->
             <p class="listen1-item" v-for="(steamItem, sIdx) in itm.steam" :key="sIdx">{{steamItem}}</p>
           </div>
           <div class="listen1-options">
