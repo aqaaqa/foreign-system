@@ -7,6 +7,9 @@ const getters = {
   role: state => state.user.role,
   pageId: state => state.page.pageId,
   menu: state => state.page.menu,
-  letter: state => state.page.letter
+  count: state => state.page.count,
+  score: state => state.page.score,
+  changeTopic: state => state.page.changeTopic,
+  changeTab: state => state.page.changeTab
 }
 export default getters

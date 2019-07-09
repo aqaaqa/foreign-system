@@ -1,10 +1,12 @@
-import { saveObjArr, getObjArr } from '@/utils/role'
-import { letterArr } from '@/utils/auth'
+import { saveObjArr, getObjArr, saveSession, getSession } from '@/utils/role'
 
 const state = {
-  pageId: getObjArr('page'),
+  pageId: getSession('pageId'),
   menu: getObjArr('menu'),
-  letter: [1,2,3]
+  count: getSession('count'),
+  score: getSession('score'),
+  changeTopic: getSession('changeTopic'),
+  changeTab: getSession('tab')
 }
 
 const mutations = {
@@ -14,22 +16,56 @@ const mutations = {
   SET_MENU: (state, menu) => {
     state.menu = menu
   },
-  SET_LETTER: (state, letter) => {
-    state.letter = letter
+  SET_COUNT: (state, count) => {
+    state.count = count
+  },
+  SET_SCORE: (state,score) => {
+    state.score = score
+  },
+  SET_CHANGE: (state,changeTopic) => {
+    state.changeTopic = changeTopic
+  },
+  SET_CHANGETAB: (state,changeTab) => {
+    state.changeTab = changeTab
   }
 }
 
 const actions = {
   setId({commit}, id) {
-    commit('SET_PAGEID', id)
-    saveObjArr('pageId', id)
+    return new Promise(resolve => {
+      commit('SET_PAGEID', id)
+      saveSession('pageId', id)
+      resolve()
+    })
+  },
+  setTopic({commit}, id) {
+    return new Promise(resolve => {
+      commit('SET_CHANGE', id)
+      saveSession('changeTopic', id)
+      resolve()
+    })
+  },
+  setTab({commit}, tab) {
+    return new Promise(resolve => {
+      commit('SET_CHANGETAB', tab)
+      saveSession('tab', tab)
+      resolve()
+    })
+  },
+  setScore({commit}, score) {
+    return new Promise(resolve => {
+      commit('SET_CHANGE', score)
+      saveSession('score', score)
+      resolve()
+    })
   },
   changeMenu({commit}, data) {
     commit('SET_MENU', data)
     saveObjArr('menu', data)
   },
-  setLetter({commit}) {
-    commit('SET_LETTER',letterArr())
+  setCount({commit},data) {
+    commit('SET_COUNT', data)
+    saveSession('count', data)
   }
 }
 

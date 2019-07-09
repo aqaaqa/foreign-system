@@ -21,5 +21,6 @@ npm run dev
 npm run build:prod
 npm run build:stage
 
-
+#数组里的属性改变，视图不渲染解决办法
+https://blog.csdn.net/dong8508/article/details/80734528
 ```

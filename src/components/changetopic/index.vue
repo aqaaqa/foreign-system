@@ -1,122 +1,156 @@
 <template>
-  <div class="change-box">
-    <div class="search-box">
-      <!-- 选项 -->
-      <div class="search-check">
-        <!-- 题型 -->
-        <div class="check-center">
-          <label class="check-title">所属题型:</label>
-          <div class="check-right">
-            <el-radio v-model="search.radio" label="1">全部</el-radio>
-            <el-radio v-model="search.radio" label="2">完形填空</el-radio>
-            <el-radio v-model="search.radio" label="3">阅读理解</el-radio>
-            <el-radio v-model="search.radio" label="4">单词拼写</el-radio>
-            <el-radio v-model="search.radio" label="5">短文改错</el-radio>
-            <el-radio v-model="search.radio" label="6">快速阅读</el-radio>
-            <el-radio v-model="search.radio" label="7">阅读理解</el-radio>
-            <el-radio v-model="search.radio" label="8">单词拼写</el-radio>
-            <el-radio v-model="search.radio" label="9">短文改错</el-radio>
+  <div class="change-box" v-loading.fullscreen.lock="loading1">
+    <template v-if="list.length > 0">
+      <div class="search-box">
+        <!-- 选项 -->
+        <div class="search-check">
+          <!-- 题型 -->
+          <div class="check-center">
+            <label class="check-title">所属题型:</label>
+            <div class="check-right">
+              <el-radio v-model="radio" label="0">全部</el-radio>
+              <el-radio  v-for="(item,index) in allList" :key="index" v-model="radio" :label="index+1">{{item.part ? item.part + item.data.length : ''}}</el-radio>
+            </div>
           </div>
         </div>
       </div>
-    </div>
     
-    <!-- 题目展示 -->
-    <ul class="all-main" v-for="(obj,indexList) in list" :key="indexList">
-      <div class="all-main-top-title">
-        <div>
-          {{obj.part}}
-        </div>
-        <div>
-          <span>此题总分: {{20}}</span>
-          <div class="move-scope">
-            <el-button size="mini" type="primary" icon="el-icon-caret-top" style="background:rgba(239,247,255,1); color:#BFDEFF;" @click="moveUp(indexList, obj)"></el-button>
-            <el-button size="mini" type="primary" icon="el-icon-caret-bottom" style="background:rgba(222,238,255,1); color:#007AFF;" @click="moveDown(indexList, list.length, obj)"></el-button>
-          </div>
-          
-        </div>
-      </div>
-      <li class="all-main-list" v-for="(item,index) in obj.data" :key="index">
-        <div class="all-main-bottom">
+      <!-- 题目展示 -->
+      <ul class="all-main" v-for="(obj,indexList) in list" :key="indexList">
+        <div class="all-main-top-title">
           <div>
-            <span>ID: {{15456754356}}</span>
-            <span>题型: {{'长对话'}}</span>
-            <span>使用次数: {{23}}</span>
-            <span>本校使用次数: {{25}}</span>
-            <span>
-              <el-button size="mini" type="text" style="font-size: 12px;" @click="lookAnswer(index,indexList)">查看答案</el-button>
-            </span>
+            {{obj.part ? obj.part + '　' + obj.data.length : ''}}
           </div>
           <div>
-            <el-tag size="small">此题总分: {{20}}</el-tag>
-            <div class="scores-input">
-              <label>小题分数: </label>
-              <el-input size="mini" style="text-align:right; " placeholder="10" v-model="input2">
-                <template slot="append">分/题</template>
-              </el-input>
-            </div>
-            <div>
-              <el-button plain size="mini">
-                <svg-icon :icon-class="'change'" />
-                替换
-              </el-button>
-              <el-button size="mini" plain>
-                <svg-icon :icon-class="'remove'" />
-                移除
-              </el-button>
-            </div>
+            <span>此题总分: {{obj.score}}</span>
             <div class="move-scope">
-              <el-button size="mini" type="primary" icon="el-icon-caret-top" style="background:rgba(239,247,255,1); color:#BFDEFF;" @click="moveitemUp(index,indexList,item)"></el-button>
-              <el-button size="mini" type="primary" icon="el-icon-caret-bottom" style="background:rgba(222,238,255,1); color:#007AFF;" @click ="moveitemDown(index,indexList, obj.data.length,item)"></el-button>
+              <el-button size="mini" type="primary" icon="el-icon-caret-top" style="background:rgba(239,247,255,1); color:#BFDEFF;" @click="moveUp(indexList, obj)"></el-button>
+              <el-button size="mini" type="primary" icon="el-icon-caret-bottom" style="background:rgba(222,238,255,1); color:#007AFF;" @click="moveDown(indexList, list.length, obj)"></el-button>
             </div>
             
           </div>
         </div>
-        <div class="all-main-center">
-          <div class="all-main-title">{{item.name}}</div>
-          <div class = "lisetn2-title" v-show="item.directions.en">
-            <p>{{item.directions.en}}</p>
-            <p>{{item.directions.zh}}</p>
-          </div>
-          <div class="video-box" v-if="item.part == '听力'">
-            <div class="audio-box" >
-              <VueAudio :theUrl="audios.url" :theControlList="audios.controlList"/>
+        <li class="all-main-list" v-for="(item,index) in obj.data" :key="index">
+          <div class="all-main-bottom">
+            <div>
+              <span>ID: {{15456754356}}</span>
+              <span>题型: {{'长对话'}}</span>
+              <span>使用次数: {{23}}</span>
+              <span>本校使用次数: {{25}}</span>
+              <span>
+                <el-button size="mini" type="text" style="font-size: 12px;" @click="lookAnswer(index,indexList)">查看答案</el-button>
+              </span>
             </div>
-            <el-button type="info" size="small" plain>查看脚本</el-button>
+            <div>
+              <el-tag size="small">此题总分: {{obj.score}}</el-tag>
+              <div class="scores-input">
+                <label>小题分数: </label>
+                <el-input size="mini" style="text-align:right; " placeholder="0" v-model="item.score" @blur.prevent="changeScore(item.score, item.id, index, indexList)">
+                  <template slot="append">分/题</template>
+                </el-input>
+              </div>
+              <div>
+                <el-button plain size="mini" @click="changes(item.id)">
+                  <svg-icon :icon-class="'change'" />
+                  替换
+                </el-button>
+                <el-button size="mini" plain @click="removeTopic(item.id,index,indexList)">
+                  <svg-icon :icon-class="'remove'" />
+                  移除
+                </el-button>
+              </div>
+              <div class="move-scope">
+                <el-button size="mini" type="primary" icon="el-icon-caret-top" style="background:rgba(239,247,255,1); color:#BFDEFF;" @click="moveitemUp(index,indexList,item)"></el-button>
+                <el-button size="mini" type="primary" icon="el-icon-caret-bottom" style="background:rgba(222,238,255,1); color:#007AFF;" @click ="moveitemDown(index,indexList, obj.data.length,item)"></el-button>
+              </div>
+              
+            </div>
           </div>
-          <TopicMain :allitem="item"></TopicMain>
-        </div>
-      </li>
-    </ul>
+          <div class="all-main-center">
+            <div class="all-main-title">{{item.name}}</div>
+            <div class = "lisetn2-title" v-if="item.directions">
+              <p>{{item.directions.en}}</p>
+              <p>{{item.directions.zh}}</p>
+            </div>
+            <div class="video-box" v-if="item.part == '听力'">
+              <div class="audio-box" >
+                <VueAudio :theUrl="audios.url" :theControlList="audios.controlList"/>
+              </div>
+              <el-button type="info" size="small" plain @click="dialogVisible = true">查看脚本</el-button>
+            </div>
+            <TopicMain :allitem="item"></TopicMain>
+          </div>
+        </li>
+      </ul>
+    </template>
+    <template v-else>
+      <div class="null-change">暂无已选试题</div>
+    </template>
+
+    <el-dialog
+      :visible.sync="dialogVisible"
+      width="60%"
+      >
+      <span>这是一段信息</span>
+      <span slot="footer" class="dialog-footer">
+        <el-button type="primary" size="mini" @click="dialogVisible = false">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
   
 </template>
 <script>
 import  TopicMain from '../topic/index'
 import  VueAudio  from '../audio'
-import { topicList } from '@/api/topic'
+import { listSeled, cacheDel, cacheUp, cacheDown, cacheUpdate } from '@/api/topic'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'changetopic',
   data() {
     return {
+      loading1: false,
       input2: '',
-      search: {
-        input: '',
-        radio: '1',
-        name: '',
-        difficulty: ''
-      },
+      radio: '0',
       list: [],
+      allList: [
+        {
+          data:[]
+        }
+      ],
+      dialogVisible: false,
       audios: {
         url:'/static/img/1.mp3',
         controlList: "noDownload noSpeed onlyOnePlaying"
       },
     }
   },
+  props: ['clear'],
+
+  computed: {
+    ...mapGetters([
+      'pageId'
+    ])
+  },
   components: {
     TopicMain,
     VueAudio
+  },
+  watch:{
+    radio(val) {
+      if(val == 0) {
+        this.list = this.allList
+      } else {
+        this.list = []
+        this.list.push(this.allList[val-1])
+      }
+    },
+    clear(val) {
+      if(val) {
+        this.alllist = []
+        this.list = []
+      }
+    }
   },
   methods: {
     searchBtn() {
@@ -125,13 +159,44 @@ export default {
     lookAnswer(index, indexList) {
       this.list[indexList].data[index].isShow = !this.list[indexList].data[index].isShow
     },
+    //模块总分 删除---修改分数
+    allscores() {
+      let arr = this.list
+      let score = 0
+      for(let i of arr) {
+        score = score + Number(i.score)
+      }
+      this.$store.dispatch('page/setScore', score)
+    },
+    //子题总分  删除---修改分数
+    childScore(lists) {
+      let allScore = 0;
+      for(let i of lists) {
+        allScore = allScore + Number(i.score)
+      }
+      return allScore
+    },
+    changeScore(score, id, index, indexList) {
+      let lists = this.list[indexList].data
+      let allScore = this.childScore(lists)
+      if(allScore == this.list[indexList].score) {
+        return false
+      } else {
+        cacheUpdate({id: id,score: score}).then(()=> {
+          this.list[indexList].score = allScore
+          this.allscores()
+        })
+      }
+    },
     moveUp(index, obj) {
       if(index <= 0 ) {
         return false
       } else {
-        let a = this.list[index-1]
-        this.$set(this.list, index, a)
-        this.$set(this.list, index-1, obj)
+        cacheUp({oindex: index, index: -1}).then(res=> {
+          let a = this.list[index-1]
+          this.$set(this.list, index, a)
+          this.$set(this.list, index-1, obj)
+        })
       }
       
     },
@@ -139,9 +204,12 @@ export default {
       if(index <= 0 ) {
         return false
       } else {
-        let a = this.list[indexList].data[index-1]
-        this.$set(this.list[indexList].data, index, a)
-        this.$set(this.list[indexList].data, index-1, obj)
+        cacheUp({oindex: indexList, index: index }).then(res=> {
+          let a = this.list[indexList].data[index-1]
+          this.$set(this.list[indexList].data, index, a)
+          this.$set(this.list[indexList].data, index-1, obj)
+        })
+        
       }
       
     },
@@ -149,47 +217,79 @@ export default {
       if(index+1 >= len) {
         return false
       } else {
-        let a = this.list[indexList].data[index+1]
-        this.$set(this.list[indexList].data, index, a)
-        this.$set(this.list[indexList].data, index+1, obj)
+        cacheDown({oindex: indexList, index: index}).then(res=>{
+          let a = this.list[indexList].data[index+1]
+          this.$set(this.list[indexList].data, index, a)
+          this.$set(this.list[indexList].data, index+1, obj)
+        })
+        
       }
     },
     moveDown(index, len ,obj) {
       if(index+1 >= len) {
         return false
       } else {
-        let a = this.list[index+1]
-        this.$set(this.list, index, a)
-        this.$set(this.list, index+1, obj)
+        cacheDown({oindex: index, index: -1}).then(res=>{
+          let a = this.list[index+1]
+          this.$set(this.list, index, a)
+          this.$set(this.list, index+1, obj)
+        })
+        
       }
+    },
+    removeTopic(id,index,indexList) {
+      let _this = this
+      cacheDel({id: id}).then(res=> {
+        _this.list[indexList].data.splice(index,1)
+        _this.list[indexList].score = this.childScore(_this.list[indexList].data)
+        _this.allscores()
+        this.$store.dispatch('page/setCount', res.data.count)
+        this.$message({
+          message: '删除成功',
+          type: 'success'
+        })
+      })
+    },
+    changes(id) {
+      this.$store.dispatch('page/setTopic', id)
+      this.$emit('changeTab')
     }
   },
   created() {
     let _this = this
-    topicList().then( res=> {
-      let list = res.res.questions
-      let map = {},
-      lists = [];
-      for(let i =0; i<list.length; i++) {
-        var item = list[i]
-        item.isShow = false
-        if(!map[item.part]) {
-          lists.push({
-            part : item.part,
-            data: [item]
-          })
-          map[item.part] = item
-        } else {
-          for(let k = 0; k < lists.length; k++) {
-            let list2 = lists[k]
-            if(list2.part == item.part) {
-              list2.data.push(item)
-              break;
-            }
-          }
-        }
-      }
-      _this.list = lists
+    this.loading1 = true
+    listSeled().then( res=> {
+      this.allList = res.data.qests
+      this.list = res.data.qests
+      this.allscores()
+      this.loading1 = false
+      // let list = res.data.qests
+      // let map = {},
+      // lists = [];
+      // if(list.length > 0) {
+      //   for(let i =0; i<list.length; i++) {
+      //     var item = list[i]
+      //     item.isShow = false
+      //     if(!map[item.part]) {
+      //       lists.push({
+      //         part : item.part,
+      //         data: [item]
+      //       })
+      //       map[item.part] = item
+      //     } else {
+      //       for(let k = 0; k < lists.length; k++) {
+      //         let list2 = lists[k]
+      //         if(list2.part == item.part) {
+      //           list2.data.push(item)
+      //           break;
+      //         }
+      //       }
+      //     }
+      //   }
+      // }
+      // _this.allList = lists
+      // _this.list = lists
+      // console.log(_this.allList)
     })
   },
   mounted() {
@@ -199,7 +299,7 @@ export default {
 </script>
 <style lang="scss" scoped>
 .change-box {
-  margin-top: 15px;
+  margin-top: 0px;
   height: 100%;
   min-width: 1028px;
 }
@@ -357,6 +457,18 @@ export default {
   .audio-box {
     display: inline-block;
   }
+}
+
+.null-change {
+  width: 100%;
+  border: 1px solid #D9D9D9;
+  padding: 30px 0;
+  text-align: center;
+  background: #fff;
+  margin-top: 30px;
+  font-size:14px;
+  font-weight:500;
+  color:rgba(0,0,0,0.85);
 }
 </style>
 <style lang="scss">

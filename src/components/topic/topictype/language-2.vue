@@ -3,15 +3,15 @@
     <div class="language2-detail" v-if='itemAll.detail && itemAll.detail.length != 0'>
       <div v-for='(item,index) in itemAll.detail' :key="index">
         <table class="language2-tab">
-          <tr v-for='(dItem, dIdx) in item.lData' :key="dIdx">
+          <tr v-for='(dItem, dIdx) in item.steam' :key="dIdx">
             <td class="language2-border">
               <span class="language2-word">{{dItem}}</span>
               <span class="language2-ans">{{isShow?item.corArr[dIdx].r:''}}</span>
             </td>
-            <td v-if="dIdx === 0" :rowspan='item.length' class="language2-blank">
+            <td v-if="dIdx === 0" :rowspan='item.steam.length' class="language2-blank">
               <span class="language2-line"></span>
             </td>
-            <td class="language2-border language2-padR">{{item.rData[dIdx]}}</td>
+            <td class="language2-border language2-padR">{{item.options[dIdx]}}</td>
           </tr>
         </table>
       </div>

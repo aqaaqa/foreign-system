@@ -5,7 +5,6 @@
       </div>
       <div class="language8-box" v-if="itemAll.detail&&itemAll.detail.length!=0">
         <div class="language8-options" v-for="(item,index) in itemAll.detail" :key="index">
-          <span class="language8-num">{{index+1}}. </span>
           <ul class="language8-select">
               <li v-for='(liItem, liIde) in item.options' :key="liIde">{{liItem}}</li>
           </ul>
@@ -39,8 +38,13 @@ export default {
   computed: {
     itemAll () {
       var zm = "ABCDEFGHI";
-      var opAr = this.item.article;
-      opAr = opAr.replace(/(_)+(\d)?(_)+/g,'<span class="line" style=" border-bottom: 1px #000 solid;line-height:20px;display: inline-block;width:100px;height:20px;text-align:center"></span>');
+      
+      var opAr = '';
+      for(let i=0;i<this.item.detail[0].steam.length; i++) {
+        let a = this.item.detail[0].steam[i].replace(/(_)+([0-9]{0,2})?(_)+/g,'<span class="line" style=" border-bottom: 1px #000 solid;line-height:20px;display: inline-block;width:100px;height:20px;text-align:center"></span>');
+        opAr = opAr + a +'</br>' 
+      }
+      // opAr = opAr.replace(/(_)+(\d)?(_)+/g,'<span class="line" style=" border-bottom: 1px #000 solid;line-height:20px;display: inline-block;width:100px;height:20px;text-align:center"></span>');
       this.item.opAr = opAr;
       this.id = this.item.id;
       var correctArr = [];
@@ -113,9 +117,9 @@ export default {
   }
 }
 .language8-options{
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
+    // display: flex;
+    // justify-content: flex-start;
+    // align-items: center;
     margin-bottom: 16px;
     .language8-num{
       width: 24px;
@@ -123,12 +127,12 @@ export default {
     }
     .language8-select{
       padding: 0;
-      display: flex;
-      justify-content: flex-start;
-      align-items: center;
+      // display: flex;
+      // justify-content: flex-start;
+      // align-items: center;
       font-size:14px;
       color:rgba(0,0,0,0.85);
-      line-height:20px;
+      line-height:36px;
       li{
         margin-right:40px;
       }

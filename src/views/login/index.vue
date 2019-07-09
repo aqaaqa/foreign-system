@@ -15,7 +15,7 @@
         </p>
       </div>
 
-      <div v-if="loginCheck == 'login'" class="login-input">
+      <div v-show="loginCheck == 'login'" class="login-input">
         <el-form-item prop="username" >
           <span class="svg-container">
             <svg-icon icon-class="user" />
@@ -50,21 +50,17 @@
             <svg-icon :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'" />
           </span>
         </el-form-item>
-
-        <div class="user-action">
+        <!-- <div class="user-action">
           <p>不登录,先逛逛</p>
           <p>忘记密码</p>
-        </div>
-
+        </div> -->
         <el-button :loading="loading" size="small" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">登录</el-button>
-      
-        
       </div>
-      <div v-else-if="loginCheck == 'newlogin'" class="sign-input" >
+      <div v-show="loginCheck == 'newlogin'" class="sign-input" >
         <el-form-item prop="emial" >
           <el-input
             ref="email"
-            v-model="signForm.emial"
+            v-model="signForm.email"
             placeholder="邮箱"
             name="email"
             type="email"
@@ -75,8 +71,9 @@
         <el-form-item prop="pass" >
           <el-input
             ref="pass"
+            maxlength="16"
             v-model="signForm.password"
-            placeholder="6-16位密码，区分大小写"
+            placeholder="6-16位密码，可包含数字字母"
             name="pass"
             type="password"
             tabindex="1"
@@ -85,8 +82,9 @@
         </el-form-item>
         <el-form-item prop="confirmPass" >
           <el-input
+            maxlength="16"
             ref="confirmPass"
-            v-model="signForm.confirmPass"
+            v-model="signForm.confirm"
             placeholder="确认密码"
             name="confirmPass"
             type="password"
@@ -94,12 +92,12 @@
             auto-complete="on"
           />
         </el-form-item>
-        <el-select class="school" v-model="signForm.school" placeholder="选择学校" size="small">
+        <el-select class="school" v-model="signForm.tenantId" placeholder="选择学校" size="small">
           <el-option
             v-for="item in options"
             :key="item.value"
-            :label="item.label"
-            :value="item.value">
+            :label="item.fullName"
+            :value="item.name">
           </el-option>
         </el-select>
         <div class="area-code">
@@ -110,13 +108,11 @@
             type="tel"
             tabindex="1"
             auto-complete="on" 
-            v-model="signForm.phone" 
+            v-model="signForm.mobile" 
             maxlength="11"
             >
-            <el-select v-model="select" slot="prepend" placeholder="请选择">
+            <el-select v-model="select" slot="prepend" disabled placeholder="请选择">
               <el-option label="+86" value="1"></el-option>
-              <el-option label="+86" value="2"></el-option>
-              <el-option label="+86" value="3"></el-option>
             </el-select>
           </el-input>
         </div>
@@ -125,7 +121,7 @@
           <el-form-item prop="code" class="code-number">
             <el-input
               ref="code"
-              v-model="signForm.code"
+              v-model="signForm.captcha"
               placeholder="输入验证码"
               name="code"
               type="text"
@@ -159,6 +155,7 @@
 <script>
 import { validUsername, validPhone, validEmail, validPass } from '@/utils/validate'
 import { getObjArr } from '@/utils/role'
+import { userSchool, register, sms } from '@/api/user'
 export default {
   name: 'Login',
   data() {
@@ -177,22 +174,7 @@ export default {
       }
     }
     return {
-      options: [{
-        value: '选项1',
-        label: '黄金糕'
-      }, {
-        value: '选项2',
-        label: '双皮奶'
-      }, {
-        value: '选项3',
-        label: '蚵仔煎'
-      }, {
-        value: '选项4',
-        label: '龙须面'
-      }, {
-        value: '选项5',
-        label: '北京烤鸭'
-      }],
+      options: [],
       select: '1',
       codeText: '获取验证码',
       codeSend: false,
@@ -205,10 +187,10 @@ export default {
       signForm: {
         email: '',
         password: '',
-        confirmPass: '',
-        school:'',
-        phone: '',
-        code: ''
+        confirm: '',
+        tenantId:'',
+        mobile: '',
+        captcha: ''
       },
       //input 规则
       loginRules: {
@@ -229,9 +211,17 @@ export default {
       immediate: true
     }
   },
+  created() {
+    
+  },
   methods: {
     tabLogin(name) {
       this.loginCheck = name
+      if(name == 'newlogin') {
+        userSchool().then( res =>{
+          this.options = res.data
+        })
+      }
     },
     showPwd() {
       if (this.passwordType === 'password') {
@@ -244,9 +234,10 @@ export default {
       })
     },
     getCode() {
+      
       if(this.codeSend) {
         return
-      } else if(validPhone(this.signForm.phone)) {
+      } else if(validPhone(this.signForm.mobile)) {
         this.codeSend = true
         let _this = this;
         var num = 60, 
@@ -259,6 +250,13 @@ export default {
             _this.codeSend = false;
           }
         }, 1000);
+        sms({mobile: this.signForm.mobile}).then( res=> {
+          this.$notify({
+            title: '提示信息',
+            message: '验证码发送成功，请注意查收',
+            type: 'success'
+          })
+        })
       } else {
         this.$notify({
           title: '提示信息',
@@ -273,13 +271,13 @@ export default {
       this.$refs.loginForm.validate(valid => {
         if (valid) {
           this.loading = true
-          this.$store.dispatch('user/login', this.loginForm).then(() => {
-              this.$store.dispatch('user/getRole').then(res=> {
-                this.$router.addRoutes(res) //动态添加路由
-                this.$router.push({ path: this.redirect || '/' })
-                this.loading = false
-                // next({ ...to, replace: true })
-              })
+          this.$store.dispatch('user/login', this.loginForm).then( data => {
+            this.loading = false
+            this.$store.dispatch('user/getRole', data).then(res=> {
+              this.$router.addRoutes(res) //动态添加路由
+              this.$router.push({ path: this.redirect || '/' })
+              // next({ ...to, replace: true })
+            })
           }).catch(() => {
             this.loading = false
           })
@@ -294,31 +292,37 @@ export default {
     handleSign() {
       var msg = null
       for(var i in this.signForm) {
-          if(!this.signForm[i]) {
-              msg = '资料不能为空'
-          }
-
-          if(i == 'email') {
-              if(!validEmail(this.signForm[i])) {
-                  msg = '邮箱格式错误'
-              }
-          }
-
-          if(i == 'password') {
-            if(!validPass(this.signForm[i])) {
-                msg = '请输入6-16位密码，区分大小写'
-            } else if(this.signForm.password!= this.signForm.confirmPass) {
-                msg = '密码不一致，请重新输入'
+        if(!this.signForm[i]) {
+            msg = '资料不能为空'
+        }
+        if(i == 'email') {
+            if(!validEmail(this.signForm[i])) {
+                msg = '邮箱格式错误'
             }
+        }
+        if(i == 'password') {
+          if(!validPass(this.signForm[i])) {
+              msg = '请输入6-16位密码，可包含数字字母'
+          } else if(this.signForm.password!= this.signForm.confirm) {
+              msg = '密码不一致，请重新输入'
           }
+        }
       }
-
       if(msg) {
           this.$message.error(msg)
           return false
       }
 
-      console.log(this.signForm)
+      register(this.signForm).then( res=> {
+        console.log(res)
+        this.$notify({
+          title: '提示信息',
+          message: '注册成功',
+          type: 'success'
+        })
+        this.loginCheck = 'login'
+        this.loginForm.username = this.signForm.email
+      })
     }
   }
 }

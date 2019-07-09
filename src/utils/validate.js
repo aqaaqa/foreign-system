@@ -49,7 +49,7 @@ export function validEmail(str) {
  */
 
 export function validPass(str) {
-  const PASS_REGEXP = /^[a-zA-Z]\w{5,15}$/;
+  const PASS_REGEXP = /^(\w){6,16}$/;
   return PASS_REGEXP.test(str)
 }
 

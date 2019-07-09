@@ -1,24 +1,38 @@
 <template>
   <div v-if="!item.hidden" class="menu-wrapper">
     <template v-if="item.state == 0">
-      <router-link :to="{ path: '/activate', query:{ redirect: item.path+'/'+item.children[0].path } }">
+      <!-- <router-link :to="{ path: '/activate', query:{ redirect: item.path+'/'+item.children[0].path, id:item.children[0].id } }">
         <el-menu-item :class="{'submenu-title-noDropdown':!isNest}">
           <item v-if="item.meta" :icon="item.state || item.state == 0 ? openMenu.indexOf(item.path) > -1 ? 'folder-open' :'folder' : ''" :title="item.meta.title" />
           <i v-if="isCollapse" class="locks">
             <svg-icon :icon-class="'block'" />
           </i>
         </el-menu-item>
-      </router-link>
+      </router-link> -->
+
+      <div @click="toRouter('/activate',item.children[0].meta.id,item.children[0].path, item.meta.baseId)">
+        <el-menu-item :class="{'submenu-title-noDropdown':!isNest}">
+          <item v-if="item.meta" :icon="item.state || item.state == 0 ? openMenu.indexOf(item.path) > -1 ? 'folder-open' :'folder' : ''" :title="item.meta.title" />
+          <i v-if="isCollapse" class="locks">
+            <svg-icon :icon-class="'block'" />
+          </i>
+        </el-menu-item>
+      </div>
       
     </template>
     
     <template v-else>
       <template v-if="!item.state && hasOneShowingChild(item.children,item) && (!onlyOneChild.children||onlyOneChild.noShowingChildren)&&!item.alwaysShow">
-        <app-link v-if="onlyOneChild.meta" :to="resolvePath(onlyOneChild.path)">
+        <!-- <app-link v-if="onlyOneChild.meta" :to="{path: resolvePath(onlyOneChild.path) , query :{id:onlyOneChild.id }}">
           <el-menu-item :index="resolvePath(onlyOneChild.path)" :class="{'submenu-title-noDropdown':!isNest}">
             <item :icon="item.state ? openMenu.indexOf(item.path) > -1 ? 'folder-open' :'folder' :''" :title="item.meta.title" />
           </el-menu-item>
-        </app-link>
+        </app-link> -->
+        <div v-if="onlyOneChild.meta" @click="toRouter(resolvePath(onlyOneChild.path),onlyOneChild.meta.id)">
+          <el-menu-item :index="resolvePath(onlyOneChild.path)" :class="{'submenu-title-noDropdown':!isNest}">
+            <item :icon="item.state ? openMenu.indexOf(item.path) > -1 ? 'folder-open' :'folder' :''" :title="item.meta.title" />
+          </el-menu-item>
+        </div>
       </template>
 
       <el-submenu v-else ref="subMenu" :index="resolvePath(item.path)" popper-append-to-body>
@@ -53,7 +67,6 @@ export default {
   computed: {
     ...mapGetters([
       'sidebar',
-      'pageId',
       'menu'
     ]),
     isCollapse() {
@@ -131,6 +144,16 @@ export default {
         return this.basePath
       }
       return path.resolve(this.basePath, routePath)
+    },
+    toRouter(next, id, redirect,base) {
+      this.$store.dispatch('page/setId', id).then( res=> {
+        if(redirect) {
+          this.$router.push(`${next}?redirect=${redirect}&&base=${base}`)
+        } else {
+          this.$router.push(next)
+        }
+      })
+      
     }
   }
 }

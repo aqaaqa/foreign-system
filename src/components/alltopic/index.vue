@@ -1,11 +1,11 @@
 <template>
-  <div class="alltopic-box">
+  <div class="alltopic-box" v-loading.fullscreen.lock="loading">
     <div class="search-box">
       <!-- input搜索 -->
-      <div class="search-input">
+      <!-- <div class="search-input">
         <el-input v-model="search.input" size="mini" placeholder="试题ID/关键字/出题人"></el-input>
         <el-button size="mini" type="primary" @click="searchBtn()">搜索</el-button>
-      </div>
+      </div> -->
 
       <!-- 选项 -->
       <div class="search-check">
@@ -13,19 +13,11 @@
         <div class="check-center">
           <label class="check-title">所属题型:</label>
           <div class="check-right">
-            <el-radio v-model="search.radio" label="1">全部</el-radio>
-            <el-radio v-model="search.radio" label="2">完形填空</el-radio>
-            <el-radio v-model="search.radio" label="3">阅读理解</el-radio>
-            <el-radio v-model="search.radio" label="4">单词拼写</el-radio>
-            <el-radio v-model="search.radio" label="5">短文改错</el-radio>
-            <el-radio v-model="search.radio" label="6">快速阅读</el-radio>
-            <el-radio v-model="search.radio" label="7">阅读理解</el-radio>
-            <el-radio v-model="search.radio" label="8">单词拼写</el-radio>
-            <el-radio v-model="search.radio" label="9">短文改错</el-radio>
+            <el-radio  v-for="(name,index) in types" :key="index" v-model="radio" :label="name">{{name}}</el-radio>
           </div>
         </div>
         <!-- 主要选择 -->
-        <div class="check-main">
+        <!-- <div class="check-main">
           <div class="check-center">
             <label class="check-title">所属题型:</label>
             <div class="check-right">
@@ -65,11 +57,11 @@
               <el-radio v-model="search.radio" label="8">单词拼写</el-radio>
             </div>
           </div>
-        </div>
+        </div> -->
 
         <!-- 下拉选项 -->
 
-        <div class="select-check">
+        <!-- <div class="select-check">
           <label class="check-title">其他选项：</label>
           <div class="select-right">
             <div>
@@ -88,7 +80,7 @@
             </div>
           </div>
           
-        </div>
+        </div> -->
       </div>
     </div>
     
@@ -96,9 +88,11 @@
     <ul class="all-main">
       <li class="all-main-list" v-for="(item,index) in list" :key="index">
         <div class="add-btn">
-          <el-button size="mini" type="primary" icon="el-icon-circle-plus-outline">添加</el-button>
+          <el-button size="mini" type="primary" icon="el-icon-circle-plus-outline" @click="addTopic(item.id)">添加</el-button>
         </div>
-        <TopicMain :allitem="item"></TopicMain>
+        <div class="items-height" :class="item.opentopic ? 'show-allheight' : ''">
+          <TopicMain :allitem="item"></TopicMain>
+        </div>
         <div class="all-main-bottom">
           <span>ID: {{item.id}}</span>
           <span>题型: {{item.type}}</span>
@@ -107,30 +101,63 @@
           <span>
             <el-button type="text" @click="lookAnswer(index)">查看答案</el-button>
           </span>
-          <span style="float:right">展开</span>
+          <span class="show-topic-btn">
+            <el-button v-if="item.opentopic" type="text" size="mini" @click="openTopic(index)">收起<i class="el-icon-arrow-up el-icon--right"></i></el-button>
+            <el-button v-else type="text" size="mini" @click="openTopic(index)">展开<i class="el-icon-arrow-down el-icon--right"></i></el-button>
+          </span>
         </div>
       </li>
     </ul>
-
+    <div class="pageinat">
+      <el-pagination background
+      size="mini"
+        :current-page="page"
+        layout="prev, pager, next"
+        @current-change="choosePage"
+        :total="total"
+        :page-size="10">
+      </el-pagination>
+    </div>
   </div>
   
 </template>
 <script>
+import { mapGetters } from 'vuex'
 import TopicMain from '../topic/index'
-import { questList } from '@/api/topic'
+import { questList, cacheAdd, questTypes, cacheRep } from '@/api/topic'
 
 export default {
   name: 'alltopic',
   data() {
     return {
-      search: {
-        input: '',
-        radio: '1',
-        name: '',
-        difficulty: ''
-      },
-      list: []
-      
+      // search: {
+      //   input: '',
+      //   radio: '1',
+      //   name: '',
+      //   difficulty: ''
+      // },
+      list: [],
+      total: 0,
+      page: 1,
+      types: [],
+      radio: '全部',
+      loading: false
+    }
+  },
+  computed: {
+    ...mapGetters([
+      'pageId',
+      'changeTopic'
+    ])
+  },
+  watch: {
+    radio(val) {
+      this.page = 1
+      if(val == '全部') {
+        this.pageList('')
+      } else {
+        this.pageList(val)
+      }
     }
   },
   components: {
@@ -143,15 +170,57 @@ export default {
     lookAnswer(index) {
       this.list[index].isShow = !this.list[index].isShow
     },
+    openTopic(index) {
+      this.list[index].opentopic = !this.list[index].opentopic
+      this.list = [...this.list] 
+    },
+
+		choosePage(current) {
+			this.page = current
+			this.pageList()
+		},
+		pageList(types) {
+      this.loading = true
+			questList({id: this.pageId,pageNumber: this.page,pageSize: 10, type: types}).then( res=> {
+        this.total = res.data.totalRow
+        this.list = [] = res.data.qests
+        this.$store.dispatch('page/setCount', res.data.count)
+        this.list.forEach(e=> {
+          e.isShow = false;
+          e.opentopic = false;
+        })
+        this.loading = false
+      })
+    },
+    addTopic(id) {
+      if(this.changeTopic) {
+        cacheRep({did: this.changeTopic, rid: id}).then(res=> {
+          this.$message({
+            message: '替换成功',
+            type: 'success'
+          })
+          this.$store.dispatch('page/setTopic', '')
+          this.$emit('changeTab')
+        })
+      } else {
+        cacheAdd({id:id}).then( res => {
+          this.$store.dispatch('page/setCount', res.data.count)
+          this.$message({
+            message: '添加成功',
+            type: 'success'
+          })
+        })
+      } 
+      
+    }
   },
   created() {
-    let _this = this
-    questList().then( res=> {
-      _this.list = res.data.questList
-      _this.list.forEach(e=> {
-        e.isShow = false;
-        e.opentopic = false;
-      })
+    this.pageList()
+    questTypes().then( res=> {
+      
+      this.types = res.data
+      this.types.unshift('全部')
+
     })
   },
   mounted() {
@@ -172,6 +241,10 @@ export default {
   margin-right: 20px;
   width: 60px;
   vertical-align: top;
+}
+.check-center {
+  height: 36px;
+  line-height: 36px;
 }
 
 .check-right {
@@ -204,6 +277,24 @@ export default {
     margin-right: 15px;
   }
 }
+
+.pageinat {
+  margin: 30px 0;
+
+}
+.items-height {
+  height: 200px;
+  overflow: hidden;
+}
+
+.show-allheight{
+  height: 100%;
+  min-height: 200px;
+  overflow: auto;
+}
+.show-topic-btn {
+  float: right;
+} 
 
 .all-main {
   .all-main-list {

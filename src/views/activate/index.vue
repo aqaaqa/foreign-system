@@ -24,7 +24,6 @@
 import { validCode } from '@/utils/validate'
 import router from '@/router'
 import store from '@/store'
-var routers
 
 export default {
   name: 'activate',
@@ -41,6 +40,7 @@ export default {
         {input:'',isnull: true}
       ],
       redirect: undefined,
+      base: ''
     }
   },
   created() {
@@ -53,6 +53,7 @@ export default {
     $route: {
       handler: function(route) {
         this.redirect = route.query && route.query.redirect
+        this.base = route.query.base
       },
       immediate: true
     }
@@ -71,17 +72,16 @@ export default {
         }
         codeStr = codeStr + code.input
       }
-      store.dispatch('user/getNewRole').then(res=> {
-        console.log(res)
-        if(res.code == 20000) {
-          this.$router.replace({ path: this.redirect})
-        } else {
-          this.$notify({
-            title: '提示信息',
-            message: res.msg,
-            type: 'error'
-          })
-        }
+
+
+      store.dispatch('user/getNewRole', { id: this.base ,code: codeStr}).then(res=> {
+        this.$notify({
+          title: '提示信息',
+          message: '激活成功',
+          type: 'success'
+        })
+        this.$router.replace({ path: this.redirect})
+        
         
       })
     },
@@ -152,6 +152,9 @@ export default {
 
   p:nth-child(1) {
     font-size: 20px;
+  }
+  p:nth-child(2) {
+    line-height: 40px;
   }
   .btns {
     margin-top: 16px;

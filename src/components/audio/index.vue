@@ -273,6 +273,9 @@
       margin: 0;
       background: #510099;
     }
+    .el-slider__button-wrapper {
+      z-index: 0;
+    }
     .el-slider__button {
       border:none;
       width: 4px;

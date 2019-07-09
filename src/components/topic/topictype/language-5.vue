@@ -43,11 +43,15 @@ export default {
         var count = 5;
         var leg = words.length;
         var n = 0;
+        this.wordsAll = []
         this.words_Group(words,n);
         ele.wordsGroup = this.wordsAll;
       });
-      var opAr = this.item.article;
-      opAr = opAr.replace(/(_)+(\d)?(_)+/g,'<span class="line" style=" border-bottom: 1px #000 solid;line-height:20px;display: inline-block;width:100px;height:20px;text-align:center"></span>');
+      var opAr = '';
+      for(let i = 0; i < this.item.detail[0].steam.length; i++){
+        let a = this.item.detail[0].steam[i].replace(/(_)+(\d)?(_)+/g,'<span class="line" style=" border-bottom: 1px #000 solid;line-height:20px;display: inline-block;width:100px;height:20px;text-align:center"></span>');
+        opAr = opAr + a + '<br/>'
+      }
       this.item.opAr = opAr;
       this.id = this.item.id;
       return this.item

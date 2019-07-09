@@ -49,6 +49,9 @@ export default {
       if (meta.activeMenu) {
         return meta.activeMenu
       }
+      if(meta.id) {
+        this.$store.dispatch('page/setId',meta.id)
+      }
       return path
       // return '/example/table'
     },

@@ -5,7 +5,7 @@
         <div v-for='(sItem, sIdx) in dItem.steam' :key="sIdx" class="listen4-steam">
           <!-- <span class="listen4-num">{{sIdx+1}}. </span> -->
           <div class="listen4-sentence">
-            <span>{{sItem+sItem}}</span>
+            <span>{{sItem}}</span>
             <span class="listen4-line">{{isShow ? dItem.ftCorrect[sIdx] : ''}}</span>
           </div>
         </div>
@@ -71,6 +71,7 @@ export default {
     justify-content: flex-start;
     align-items: flex-start;
     margin-bottom:16px;
+    width: 80%;
     .listen4-num{
       width:24px;
       line-height: 22px;

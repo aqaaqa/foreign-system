@@ -1,4 +1,6 @@
 import axios from 'axios'
+import router from '../router'
+import store from '../store'
 import { Message } from 'element-ui'
 
 axios.defaults.withCredentials = true
@@ -51,12 +53,17 @@ service.interceptors.response.use(
         type: 'error',
         duration: 5 * 1000
       })
+      return Promise.reject(new Error(res.message || 'Error'))
     } else {
       return res
     }
   },
   error => {
-    console.log(error) // for debug
+    // || (error+1).indexOf('500') > -1
+    if((error+1).indexOf('401') > -1 ) {
+      store.dispatch('user/postError')
+      router.push(`/login`)
+    } 
     Message({
       message: error.msg,
       type: 'error',
