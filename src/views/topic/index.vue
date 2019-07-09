@@ -8,6 +8,7 @@
             <el-radio-button label="change">已选试题</el-radio-button>
           </el-badge>
           <el-radio-button v-else label="change">已选试题</el-radio-button>
+          
         </el-radio-group>
         <div style="display:inline-block" v-show="postion == 'change'">
           <el-button style="margin-left: 12px;" v-popover:popover2 type="primary" size = "mini" plain>
