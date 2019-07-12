@@ -124,7 +124,7 @@ const actions = {
         })
         commit('SET_ROLE', getRouter)
         saveObjArr('router', getRouter) //存储路由到localStorage
-        resolve(response)
+        resolve(getRouter)
       }).catch(error => {
         reject(error)
       })

@@ -24,6 +24,7 @@
 import { validCode } from '@/utils/validate'
 import router from '@/router'
 import store from '@/store'
+import { resetRouter } from '@/router'
 
 export default {
   name: 'activate',
@@ -81,7 +82,9 @@ export default {
           message: '激活成功',
           type: 'success'
         })
-        this.$router.replace(this.redirect)
+        resetRouter()
+        router.addRoutes(res) //动态添加路由
+        router.replace(this.redirect)
 
         // this.$nextTick(() => {
         // })
