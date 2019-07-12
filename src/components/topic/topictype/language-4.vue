@@ -42,7 +42,9 @@ export default {
           ele.wordsGroup = this.wordsAll;
         });
         this.showAnswer = val.isShow
-        this.viewAnswer()
+        this.$nextTick(function() {
+          this.viewAnswer()
+        })
         
       },
       deep:true

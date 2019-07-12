@@ -61,8 +61,9 @@ service.interceptors.response.use(
   error => {
     // || (error+1).indexOf('500') > -1
     if((error+1).indexOf('401') > -1 ) {
+      // console.log(router)
       store.dispatch('user/postError')
-      router.push(`/login`)
+      router.push(`/login?redirect=${router.app._route.fullPath}`)
     } 
     Message({
       message: error.msg,

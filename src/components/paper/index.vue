@@ -84,7 +84,7 @@
       </ul>
     </template>
     <template v-else>
-      <div class="null-change">暂无已选试题</div>
+      <div class="null-change">暂无试题</div>
     </template>
 
     <el-dialog
@@ -103,7 +103,7 @@
 import  TopicMain from '../topic/index'
 import  VueAudio  from '../audio'
 import { listSeled, cacheDel, cacheUp, cacheDown, cacheUpdate } from '@/api/topic'
-import { paperEdit } from '@/api/mytopic'
+import { paperEdit, paperUpdate} from '@/api/mytopic'
 import { mapGetters } from 'vuex'
 
 export default {
@@ -127,10 +127,8 @@ export default {
     }
   },
   props: ['clear'],
-
   computed: {
     ...mapGetters([
-      'pageId',
       'paper'
     ])
   },
@@ -159,9 +157,7 @@ export default {
       console.log(this.search.input)
     },
     lookAnswer(index, indexList) {
-      let keys = JSON.parse(JSON.stringify(this.list[indexList].data[index]))
-      keys.isShow = !keys.isShow
-      this.$set(this.list[indexList].data,[index],keys)
+      this.list[indexList].data[index].isShow = !this.list[indexList].data[index].isShow
     },
     //模块总分 删除---修改分数
     allscores() {
@@ -186,7 +182,7 @@ export default {
       if(allScore == this.list[indexList].score) {
         return false
       } else {
-        cacheUpdate({id: id,score: score}).then(()=> {
+        paperUpdate({paperId: this.paper,id: id,score: score}).then(()=> {
           this.list[indexList].score = allScore
           this.allscores()
         })
@@ -262,64 +258,12 @@ export default {
   created() {
     let _this = this
     this.loading1 = true
-    if(this.paper) {
-      paperEdit({paperId: this.paper}).then(res=> {
-        this.allList = res.data.qests
-        this.list = res.data.qests
-        this.allscores()
-        this.loading1 = false
-        this.$emit('savepapers',{
-          paperName: res.data.paperName,
-          count: res.data.count,
-          paperId: res.data.paperId
-        })
-      })
-    } else {
-      listSeled().then( res=> {
-        this.allList = res.data.qests
-        this.list = res.data.qests
-        this.allscores()
-        this.loading1 = false
-        this.$emit('savepapers',{
-          paperName: res.data.paperName,
-          count: res.data.count,
-          paperId: res.data.paperId
-        })
-      })
-    }
-    // listSeled().then( res=> {
-    //   this.allList = res.data.qests
-    //   this.list = res.data.qests
-    //   this.allscores()
-    //   this.loading1 = false
-      // let list = res.data.qests
-      // let map = {},
-      // lists = [];
-      // if(list.length > 0) {
-      //   for(let i =0; i<list.length; i++) {
-      //     var item = list[i]
-      //     item.isShow = false
-      //     if(!map[item.part]) {
-      //       lists.push({
-      //         part : item.part,
-      //         data: [item]
-      //       })
-      //       map[item.part] = item
-      //     } else {
-      //       for(let k = 0; k < lists.length; k++) {
-      //         let list2 = lists[k]
-      //         if(list2.part == item.part) {
-      //           list2.data.push(item)
-      //           break;
-      //         }
-      //       }
-      //     }
-      //   }
-      // }
-      // _this.allList = lists
-      // _this.list = lists
-      // console.log(_this.allList)
-    // })
+    paperEdit({id: this.paper}).then( res=> {
+      this.allList = res.data.qests
+      this.list = res.data.qests
+      this.allscores()
+      this.loading1 = false
+    })
   },
   mounted() {
     

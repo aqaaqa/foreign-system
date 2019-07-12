@@ -1,6 +1,6 @@
 <template>
   <div>
-    <template v-if="list.part == '听力'">
+    <template v-if="list.part == '听力题'">
       <listen1 v-if='list.type == "单选"' :item='list' />
       <listen2 v-else-if="list.type == '填空'" :itemList="list"  />
       <listen3 v-else-if='list.type == "填表格"'  :itemList='list' />

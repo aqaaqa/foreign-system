@@ -46,7 +46,10 @@ export default {
     item: {
       handler(val) {
         this.show = val.isShow
-        this.viewAnswer()
+        this.$nextTick(() => {
+          this.viewAnswer()
+        })
+        
       },
       deep: true
     }

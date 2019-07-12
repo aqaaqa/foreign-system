@@ -2,6 +2,10 @@ import { login, logout, roleList, activateBase } from '@/api/user'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 import { saveObjArr, getObjArr, removeSession, filterAsyncRouter, getState, removeObjArr } from '@/utils/role'
 import { resetRouter } from '@/router'
+import layout from '@/layout'
+const _import = require('@/router/_import_' + process.env.NODE_ENV)
+
+
 
 const state = {
   token: getToken(),
@@ -51,11 +55,32 @@ const actions = {
         const { data } = response
         const { items } = data
         let getRouter = filterAsyncRouter(getState(items)) //过滤路由
+        getRouter.push({
+          path: '/paper',
+          component: layout,
+          state: 2,
+          meta: {
+            title: '我的试卷',
+          },
+          redirect: '/paper/index',
+          children: [
+            {
+            path: '/paper/index',
+            name:'paper',
+            component: _import('topic/index'),
+            meta: { 
+              id: '0',
+              title: '我的试卷', 
+            }
+          }
+        ]
+        })
         getRouter.push({ 
           path: '*', 
           redirect: '/404', 
           hidden: true
         })
+
         commit('SET_ROLE', getRouter)
         saveObjArr('router', getRouter) //存储路由到localStorage
         resolve(getRouter)
@@ -68,13 +93,37 @@ const actions = {
   getNewRole({ commit},params) {
     return new Promise((resolve, reject) => {
       activateBase({baseId:params.id,actKey: params.code}).then(response => {
-        // if(response.code == 20000) {
-        //   const { data } = response
-        //   const { items } = data
-        //   let getRouter = filterAsyncRouter(getState(items)) //过滤路由
-        //   commit('SET_ROLE', getRouter)
-        //   saveObjArr('router', getRouter) //存储路由到localStorage
-        // }
+        console.log(response)
+        const { data } = response
+        const { items } = data
+        let getRouter = filterAsyncRouter(getState(items)) //过滤路由
+        getRouter.push({
+          path: '/paper',
+          component: layout,
+          state: 2,
+          meta: {
+            title: '我的试卷',
+          },
+          redirect: '/paper/index',
+          children: [
+            {
+            path: '/paper/index',
+            name:'paper',
+            component: _import('topic/index'),
+            meta: { 
+              id: '0',
+              title: '我的试卷', 
+            }
+          }
+        ]
+        })
+        getRouter.push({ 
+          path: '*', 
+          redirect: '/404', 
+          hidden: true
+        })
+        commit('SET_ROLE', getRouter)
+        saveObjArr('router', getRouter) //存储路由到localStorage
         resolve(response)
       }).catch(error => {
         reject(error)

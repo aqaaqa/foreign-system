@@ -314,7 +314,6 @@ export default {
       }
 
       register(this.signForm).then( res=> {
-        console.log(res)
         this.$notify({
           title: '提示信息',
           message: '注册成功',
@@ -394,7 +393,7 @@ $fc: rgb(24, 144, 255);
     margin-bottom: 14px;
     .el-input-group__prepend {
       background: #fff;
-      width: 70px;
+      width: 80px;
     }
   }
   

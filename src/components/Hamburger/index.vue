@@ -24,7 +24,7 @@ export default {
   },
   methods: {
     toggleClick() {
-      this.$emit('toggleClick')
+      // this.$emit('toggleClick')
     }
   }
 }
@@ -36,6 +36,7 @@ export default {
   vertical-align: middle;
   width: 20px;
   height: 20px;
+  display: none;
 }
 
 .hamburger.is-active {

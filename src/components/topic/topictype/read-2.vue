@@ -24,7 +24,10 @@
         handler(val) {
           this.item = val
           this.isShow = val.isShow
-          this.viewAnswer()
+          this.$nextTick(() => {
+            this.viewAnswer()
+          })
+          
         },
         deep:true
       }

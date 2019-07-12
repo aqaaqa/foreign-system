@@ -1,11 +1,13 @@
 <template>
   <el-breadcrumb class="app-breadcrumb" separator="/">
-    <transition-group name="breadcrumb">
+    <!-- <transition-group name="breadcrumb"> -->
       <!-- <el-breadcrumb-item v-for="(item,index) in levelList" :key="item.path">
         <span v-if="item.redirect==='noRedirect'||index==levelList.length-1" class="no-redirect">{{ item.meta.title }}</span>
         <a v-else @click.prevent="handleLink(item)">{{ item.meta.title }}</a>
-      </el-breadcrumb-item> -->
-    </transition-group>
+      </el-breadc"rumb-item> -->
+      <!-- <span v-if="name == '我的试卷'">{{name}}</span> -->
+    <!-- </transition-group> -->
+    <span v-if="name == 'paper'" class="fontSize">/ 我的试卷</span>
   </el-breadcrumb>
 </template>
 
@@ -27,6 +29,7 @@ export default {
   },
   created() {
     this.getBreadcrumb()
+    this.name = this.$route.name
   },
   methods: {
     getBreadcrumb() {
@@ -77,5 +80,10 @@ export default {
     color: #97a8be;
     cursor: text;
   }
+}
+.fontSize {
+  font-size:14px;
+  font-weight:500;
+  color:rgba(0,0,0,0.85);
 }
 </style>

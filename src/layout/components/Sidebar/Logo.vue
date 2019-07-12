@@ -2,11 +2,11 @@
   <div class="sidebar-logo-container" :class="{'collapse':collapse}">
     <router-link to="/">
       <transition name="sidebarLogoFade">
-        <div v-if="collapse" key="collapse" class="sidebar-logo-link">
+        <!-- <div key="collapse" class="sidebar-logo-link">
           <img v-if="logo" :src="logo" class="sidebar-logo">
           <h1 v-else class="sidebar-title">{{ title }} </h1>
-        </div>
-        <div v-else key="expand" class="sidebar-logo-link">
+        </div> -->
+        <div key="expand" class="sidebar-logo-link">
           <img v-if="logo" :src="logo" class="sidebar-logo">
           <h1 class="sidebar-title">{{ title }} </h1>
         </div>
@@ -19,13 +19,14 @@
 export default {
   name: 'SidebarLogo',
   props: {
-    collapse: {
-      type: Boolean,
-      required: true
-    }
+    // collapse: {
+    //   type: Boolean,
+    //   required: true
+    // }
   },
   data() {
     return {
+      collapse: true,
       title: '外研社新标准英语测评系统',
       logo: 'https://wpimg.wallstcn.com/69a1c46c-eb1c-4b46-8bd4-e9e686ef5251.png'
     }

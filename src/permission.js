@@ -13,6 +13,7 @@ NProgress.configure({ showSpinner: false }) // NProgress Configuration
 const whiteList = ['/login'] // no redirect whitelist
 var getRouter
 router.beforeEach((to, from, next) => {
+  console.log(to)
   // start progress bar
   NProgress.start()
 
@@ -46,7 +47,8 @@ router.beforeEach((to, from, next) => {
       } else {
         if(!to.hidden) {
           if(from.path === '/activate' && to.meta.state == 0) {
-            router.go(0)
+            console.log(to)
+            next(`${from.fullPath}`)
           } else if(to.meta.state == 0) {
             next(`/activate?redirect=${to.path}`)
           }

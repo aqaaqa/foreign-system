@@ -8,7 +8,7 @@
         <p>抱歉您！无权限访问此题库</p>
         <p>输入激活码，立刻获取权限</p>
         <div class="act-input">
-          <el-input size="small" v-for="(item,index) in codes" :key="index" :isnull = 'isnull' ref="input" type="text" v-model.trim="item.input" maxlength="1" 
+          <el-input size="small" v-for="(item,index) in codes" :key="index" :isnull = 'item.isnull' ref="input" type="text" v-model.trim="item.input" maxlength="1" 
           @keyup.native="getCode(item.input, index, $event)" 
           @keydown.native="valueIsNull(item.input, index, $event)">
           </el-input>
@@ -73,16 +73,18 @@ export default {
         codeStr = codeStr + code.input
       }
 
-
+      
       store.dispatch('user/getNewRole', { id: this.base ,code: codeStr}).then(res=> {
+        // console.log(res)
         this.$notify({
           title: '提示信息',
           message: '激活成功',
           type: 'success'
         })
-        this.$router.replace({ path: this.redirect})
-        
-        
+        this.$router.replace(this.redirect)
+
+        // this.$nextTick(() => {
+        // })
       })
     },
     valueIsNull(value, index, event) {

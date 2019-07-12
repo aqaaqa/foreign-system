@@ -6,7 +6,8 @@ const state = {
   count: getSession('count'),
   score: getSession('score'),
   changeTopic: getSession('changeTopic'),
-  changeTab: getSession('tab')
+  changeTab: getSession('tab'),
+  paper: getSession('paper')
 }
 
 const mutations = {
@@ -27,6 +28,9 @@ const mutations = {
   },
   SET_CHANGETAB: (state,changeTab) => {
     state.changeTab = changeTab
+  },
+  SET_PAPER: (state,paper) => {
+    state.paper = paper
   }
 }
 
@@ -45,6 +49,13 @@ const actions = {
       resolve()
     })
   },
+  setPaper({commit}, id) {
+    return new Promise(resolve => {
+      commit('SET_PAPER', id)
+      saveSession('paper', id)
+      resolve()
+    })
+  },
   setTab({commit}, tab) {
     return new Promise(resolve => {
       commit('SET_CHANGETAB', tab)
@@ -54,7 +65,7 @@ const actions = {
   },
   setScore({commit}, score) {
     return new Promise(resolve => {
-      commit('SET_CHANGE', score)
+      commit('SET_SCORE', score)
       saveSession('score', score)
       resolve()
     })

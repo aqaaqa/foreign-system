@@ -59,16 +59,19 @@ export default {
         }
         ele.lData = lData;
         ele.rData = rData;
-        var correct = ele.correct;
-        var corArr = []
-        correct.forEach(c=>{
-          var rCatch = 0, lCatch =0;
-          var rCatch = parseInt(c.split('-')[1]);
-          rCatch = zm[rCatch];
-          var lCatch = parseInt(c.split('-')[0]);
-          corArr.push({l:lCatch,r:rCatch})
-        })
-        ele.corArr = corArr;
+        if(ele.correct.length) {
+          var correct = ele.correct;
+          var corArr = []
+          correct.forEach(c=>{
+            var rCatch = 0, lCatch =0;
+            var rCatch = parseInt(c.split('-')[1]);
+            rCatch = zm[rCatch];
+            var lCatch = parseInt(c.split('-')[0]);
+            corArr.push({l:lCatch,r:rCatch})
+          })
+          ele.corArr = corArr;
+        }
+        
       });
       return this.item;
     }

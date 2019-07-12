@@ -128,7 +128,7 @@ export function cacheUpdate(data) {
  */
 export function paprerWord(params) {
   return request({
-    url:'/paper/toWord',
+    url:'/paper/download',
     method: 'get',
     params
   })

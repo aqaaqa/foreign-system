@@ -85,39 +85,45 @@
     </div>
     
     <!-- 题目展示 -->
-    <ul class="all-main">
-      <li class="all-main-list" v-for="(item,index) in list" :key="index">
-        <div class="add-btn">
-          <el-button size="mini" type="primary" icon="el-icon-circle-plus-outline" @click="addTopic(item.id)">添加</el-button>
-        </div>
-        <div class="items-height" :class="item.opentopic ? 'show-allheight' : ''">
-          <TopicMain :allitem="item"></TopicMain>
-        </div>
-        <div class="all-main-bottom">
-          <span>ID: {{item.id}}</span>
-          <span>题型: {{item.type}}</span>
-          <span>使用次数: {{}}</span>
-          <span>本校使用次数: {{}}</span>
-          <span>
-            <el-button type="text" @click="lookAnswer(index)">查看答案</el-button>
-          </span>
-          <span class="show-topic-btn">
-            <el-button v-if="item.opentopic" type="text" size="mini" @click="openTopic(index)">收起<i class="el-icon-arrow-up el-icon--right"></i></el-button>
-            <el-button v-else type="text" size="mini" @click="openTopic(index)">展开<i class="el-icon-arrow-down el-icon--right"></i></el-button>
-          </span>
-        </div>
-      </li>
-    </ul>
-    <div class="pageinat">
-      <el-pagination background
-      size="mini"
-        :current-page="page"
-        layout="prev, pager, next"
-        @current-change="choosePage"
-        :total="total"
-        :page-size="10">
-      </el-pagination>
+    <template v-if="list.length">
+      <ul class="all-main">
+        <li class="all-main-list" v-for="(item,index) in list" :key="index">
+          <div class="add-btn">
+            <el-button size="mini" type="primary" icon="el-icon-circle-plus-outline" @click="addTopic(item.id)">添加</el-button>
+          </div>
+          <div class="items-height" :class="item.opentopic ? 'show-allheight' : ''">
+            <TopicMain :allitem="item"></TopicMain>
+          </div>
+          <div class="all-main-bottom">
+            <span>ID: {{item.id}}</span>
+            <span>题型: {{item.type}}</span>
+            <span>使用次数: {{}}</span>
+            <span>本校使用次数: {{}}</span>
+            <span>
+              <el-button type="text" @click="lookAnswer(index)">查看答案</el-button>
+            </span>
+            <span class="show-topic-btn">
+              <el-button v-if="item.opentopic" type="text" size="mini" @click="openTopic(index)">收起<i class="el-icon-arrow-up el-icon--right"></i></el-button>
+              <el-button v-else type="text" size="mini" @click="openTopic(index)">展开<i class="el-icon-arrow-down el-icon--right"></i></el-button>
+            </span>
+          </div>
+        </li>
+      </ul>
+      <div class="pageinat">
+        <el-pagination background
+        size="mini"
+          :current-page="page"
+          layout="prev, pager, next"
+          @current-change="choosePage"
+          :total="total"
+          :page-size="10">
+        </el-pagination>
+      </div>
+    </template>
+    <div v-else class="null-topic">
+      暂无试题
     </div>
+    
   </div>
   
 </template>
@@ -168,7 +174,9 @@ export default {
       console.log(this.search.input)
     },
     lookAnswer(index) {
-      this.list[index].isShow = !this.list[index].isShow
+      let keys = JSON.parse(JSON.stringify(this.list[index]))
+      keys.isShow = !keys.isShow
+      this.$set(this.list,[index],keys)
     },
     openTopic(index) {
       this.list[index].opentopic = !this.list[index].opentopic
@@ -217,7 +225,6 @@ export default {
   created() {
     this.pageList()
     questTypes().then( res=> {
-      
       this.types = res.data
       this.types.unshift('全部')
 
@@ -326,6 +333,17 @@ export default {
       margin-right: 40px;
     }
   }
+}
+.null-topic {
+  width: 100%;
+  border: 1px solid #D9D9D9;
+  padding: 30px 0;
+  text-align: center;
+  background: #fff;
+  margin-top: 30px;
+  font-size:14px;
+  font-weight:500;
+  color:rgba(0,0,0,0.85);
 }
 </style>
 <style lang="scss">

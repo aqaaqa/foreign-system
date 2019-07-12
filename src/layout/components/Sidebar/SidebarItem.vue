@@ -11,15 +11,23 @@
       </router-link> -->
 
       <div @click="toRouter('/activate',item.children[0].meta.id,item.children[0].path, item.meta.baseId)">
-        <el-menu-item :class="{'submenu-title-noDropdown':!isNest}">
+        <el-menu-item :index="'/activate?base ='+item.meta.baseId" :class="{'submenu-title-noDropdown':!isNest}">
           <item v-if="item.meta" :icon="item.state || item.state == 0 ? openMenu.indexOf(item.path) > -1 ? 'folder-open' :'folder' : ''" :title="item.meta.title" />
-          <i v-if="isCollapse" class="locks">
+          <i class="locks">
             <svg-icon :icon-class="'block'" />
           </i>
         </el-menu-item>
       </div>
       
     </template>
+    <template v-else-if="item.state == 2">
+      <router-link :to="{ path: '/paper/index'}">
+        <el-menu-item :index="'/paper/index'" :class="{'submenu-title-noDropdown':!isNest}">
+          <item v-if="item.meta" :icon="item.state || item.state == 0 ? openMenu.indexOf(item.path) > -1 ? 'folder-open' :'folder' : ''" :title="item.meta.title" />
+        </el-menu-item>
+      </router-link>
+    </template>
+    
     
     <template v-else>
       <template v-if="!item.state && hasOneShowingChild(item.children,item) && (!onlyOneChild.children||onlyOneChild.noShowingChildren)&&!item.alwaysShow">

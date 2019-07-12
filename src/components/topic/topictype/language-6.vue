@@ -29,7 +29,10 @@ export default {
         this.item = val
         this.list = val.detail
         this.showAnswer = val.isShow
-        this.lookAnswer()
+        this.$nextTick(()=> {
+          this.lookAnswer()
+        })
+        
       },
       deep:true
     }

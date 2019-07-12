@@ -13,7 +13,7 @@
     data() {
       return {
         isShow: this.itemList.isShow,
-        detailW: this.itemList.detail[0],
+        detailW: JSON.parse(JSON.stringify(this.itemList.detail[0])),
         str: '',
         first: '',
         last: '',
@@ -27,9 +27,12 @@
     watch: {
       itemList: {
         handler(val) {
-          this.detailW = val.detail[0]
+          this.detailW = JSON.parse(JSON.stringify(val.detail[0]))
           this.isShow = val.isShow
-          this.viewAnswer()
+          this.$nextTick(() => {
+            this.viewAnswer()
+          })
+          
         },
         deep: true
       }
@@ -40,12 +43,12 @@
     methods: {
       viewAnswer() {
         if (this.isShow) {
-          var lineList = document.getElementById(this.itemList.id).querySelectorAll('.line');
+          let lineList = document.getElementById(this.itemList.id).querySelectorAll('.line');
           for (let index = 0; index < lineList.length; index++) {
             lineList[index].value = this.detailW.correct[index];
           }
         }else{
-           var lineList = document.getElementById(this.itemList.id).querySelectorAll('.line');
+           let lineList = document.getElementById(this.itemList.id).querySelectorAll('.line');
           for (let index = 0; index < lineList.length; index++) {
             lineList[index].value = index+1
           }
@@ -55,9 +58,9 @@
       look() {
 
         let that = this
-        var arr2 = [];
+        let arr2 = [];
         for (let index = 0; index < this.arr.length; index++) {
-          var a = this.arr[index].replace(/(_)+(\d)?(_)+/g, function (a) {
+          let a = this.arr[index].replace(/(_)+(\d)?(_)+/g, function (a) {
             return that.correct[0]
           });
           arr2.push(a);
@@ -76,11 +79,11 @@
         this.detailW.steam.forEach(element => {
           arr.push(element.substring(element.indexOf(" ") + 1));
         });
-        var f = 0;
+        let f = 0;
         for (let i = 0; i < this.first; i++) { //3 6
-          var tr = '<tr>'
+          let tr = '<tr>'
           for (let j = 0; j < this.last; j++) {
-            var td = '<td>' +
+            let td = '<td>' +
               arr[this.index].replace(/___\d+___/g, function (v) {
                 f++
                 return '<input type="text" class="line" value="' + f + '"/>'

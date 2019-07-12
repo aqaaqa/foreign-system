@@ -1,153 +1,148 @@
 <template>
-  <div class="main-box">
-    <sticky :z-index="10">
-      <div class="title-box">
-        <el-radio-group size="mini" v-model="postion">
-          <el-radio-button label="all">全部试题</el-radio-button>
-          <el-badge v-if="count > 0" :value="count" class="item">
-            <el-radio-button label="change">已选试题</el-radio-button>
-          </el-badge>
-          <el-radio-button v-else label="change">已选试题</el-radio-button>
-          
-        </el-radio-group>
-        <div style="display:inline-block" v-show="postion == 'change'">
-          <el-button style="margin-left: 12px;" v-popover:popover2 type="primary" size = "mini" plain>
-            <svg-icon :icon-class="'word'" />
-            导出为word文档
-          </el-button>
-          <el-button type="danger" size = "mini" plain @click="removeAll()">
-            <svg-icon :icon-class="'remove'" />
-            移除全部
-          </el-button>
-
-          <el-tag style="margin-left: 20px;"  type="warning">当前试卷总分：{{score}}</el-tag>
-        </div>
+<div>
+  <el-table
+    :data="list"
+    v-loading="loading"
+    border
+    size="mini"
+    style="width: 100%; margin:10px; ">
+    <el-table-column
+      prop="name"
+      label="试卷名称"
+      min-width="180">
+    </el-table-column>
+    <el-table-column
+      prop="createTime"
+      label="创建时间"
+      width="180">
+    </el-table-column>
+    <el-table-column
+      prop="school"
+      label="学校">
+    </el-table-column>
+    <el-table-column
+      prop="username"
+      label="创建者">
+    </el-table-column>
+    <el-table-column
+      prop="paperType"
+      min-width="100"
+      label="题型">
+    </el-table-column>
+    <el-table-column
+      prop="count"
+      label="题目数">
+    </el-table-column>
+    <el-table-column
+      prop="score"
+      label="总分">
+    </el-table-column>
+    <el-table-column
+      min-width="320"
+      label="操作">
+      <div slot-scope="scope">
+        <el-button type="text" size="mini" @click="exportWord(scope.row.paperId)">
+          <svg-icon :icon-class="'word'" />
+          导出为word文档
+        </el-button>
+        <el-button type="text" size="mini" @click="toEdit(scope.row.paperId)">
+          <svg-icon :icon-class="'form'" />
+          编辑
+        </el-button>
+        <el-button type="text" size="mini" style="color: #ff3B30" @click="delPaper(scope.row.paperId)">
+          <svg-icon :icon-class="'del'" />
+          删除
+        </el-button>
       </div>
-    </sticky>
+    </el-table-column>
+  </el-table>
 
-    <!-- 保存试卷 -->
-    <el-popover
-      ref="popover2"
-      placement="bottom-start"
-      width="320"
-      trigger="click"
-      v-model="visible2">
-      <div class="saveCache">
-        <p>试卷名称</p>
-        <el-input style="margin: 10px 0;" v-model.trim="topicName" size="mini" placeholder="请输入试卷名称"></el-input>
-        <el-checkbox v-model="checked">同时保存在我的试卷中</el-checkbox>
-        <div style="text-align: right; margin-top: 10px">
-          <el-button size="mini" type="text" @click="visible2 = false">取消</el-button>
-          <el-button type="primary" size="mini" @click="exportPaper">确定</el-button>
-        </div>
-      </div>
-    </el-popover>
-    <template>
-      <alltopic v-if=" postion == 'all'" @changeTab="changeTabs"></alltopic>
-      <changetopic v-else-if="postion == 'change'" @changeTab="changeTabs" :clear = "clear"></changetopic>
-    </template>
-
+  <div class="pageinat">
+    <el-pagination background
+      size="mini"
+      :current-page="page"
+      layout="prev, pager, next"
+      @current-change="choosePage"
+      :total="total"
+      :page-size="10">
+    </el-pagination>
   </div>
+</div>
+  
 </template>
 
 <script>
-import Alltopic from '@/components/alltopic'
-import changetopic from '@/components/changetopic'
+import { myPaper, paperDel, paperInfo } from '@/api/mytopic'
 import { mapGetters } from 'vuex'
-import Sticky from '@/components/Sticky' // 粘性header组件
-import { cacheDelall, paprerWord } from '@/api/topic'
-
 
 export default {
-  filters: {
-    
-  },
-  data() {
-    return {
-      postion: 'all',
-      clear: false,
-      topicName: '',
-      visible2: false,
-      checked: true
+  data(){
+    return{
+      loading: false,
+      page: 1,
+      total: 0,
+      list : [],
+      info: {}
     }
-  },
-  components: {
-    Alltopic,
-    changetopic,
-    Sticky
   },
   computed: {
     ...mapGetters([
-      'count',
-      'score',
-      'changeTab',
-    ]) 
+      'role'
+    ])
   },
   created() {
-    // this.$store.dispatch('page/setTab', 'all')
+    this.myList()
+    paperInfo().then(res=> {
+      this.info = res.data
+    })
   },
   methods: {
-    changeTabs() {
-      this.postion == 'all' ? this.postion = 'change' : this.postion = 'all'
-      // console.log(this.postion)
+    exportWord(id) {
+      const { ip, port, addr} = this.info
+      let url = window.location.href
+      let ports = url.substring(0, url.indexOf('/#'))
+      let a = document.createElement('a')
+      a.href =`${ports}${addr}?paperId=${id}`
+      a.click();
     },
-    //转成word
-    exportPaper() {
-      if(!this.topicName) {
-        this.$message({
-          message: '请输入文件名',
+    delPaper(id) {
+      paperDel({id:id}).then(res=> {
+        this.$notify({
+          title: '提示信息',
+          message: '删除成功',
           type: 'error'
         })
-        return false
-      }
-      paprerWord({name: this.topicName, isMine: this.checked ? 1 : 0}).then(res=>{
-        this.$message({
-          message: '保存成功',
-          type: 'success'
-        })
-        this.visible2 = false
-        console.log(res)
+        this.myList()
       })
     },
-    removeAll() {
-      cacheDelall().then( res=> {
-        this.clear = true
-        this.$store.dispatch('page/setCount', res.data.count)
-        this.$store.dispatch('page/setScore', 0)
-        this.$message({
-          message: '删除成功',
-          type: 'success'
-        })
+    toEdit(id) {
+      this.$store.dispatch('page/setPaper', id).then(()=> {
+        this.$router.push(this.role[0].children[0].path)
+      })
+    },
+    choosePage(current) {
+			this.page = current
+			this.myList()
+		},
+    myList() {
+      this.loading = true
+			myPaper({pageNumber: this.page,pageSize: 10}).then( res=> {
+        if(res.data.papers.length < 1 && this.page > 1) {
+          this.page = this.page--
+          this.myList()
+        } else {
+          this.total = res.data.totalRow
+          this.list = [] = res.data.papers
+          this.loading = false
+        } 
       })
     }
   }
 }
 </script>
+
 <style lang="scss" scoped>
-  .main-box {
-    min-width: 800px;
-    min-height: 100%;
-    margin: 0 auto;
-    padding: 10px;
-    
-  }
-  .saveCache {
-    > p:nth-child(1) {
-      font-size:14px;
-      font-weight:400;
-      color:rgba(19,20,21,1);
-    }
+  .pageinat {
+    margin: 20px 0;
   }
 </style>
-<style lang="scss">
-.title-box {
-  background: rgb(240,242,245);
-  padding: 10px 0;
-  .el-radio-button:first-child .el-radio-button__inner {
-    border-radius: 0;
-  }
-}
-</style>
-
-
-
