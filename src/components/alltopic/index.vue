@@ -97,10 +97,11 @@
           <div class="all-main-bottom">
             <span>ID: {{item.id}}</span>
             <span>题型: {{item.type}}</span>
-            <span>使用次数: {{}}</span>
-            <span>本校使用次数: {{}}</span>
+            <span>类型: {{item.part}}</span>
+            <span>使用次数: {{item.count}}</span>
+            <span>本校使用次数: {{item.tantCount}}</span>
             <span>
-              <el-button type="text" @click="lookAnswer(index)">查看答案</el-button>
+              <!-- <el-button type="text" @click="lookAnswer(index)">查看答案</el-button> -->
             </span>
             <span class="show-topic-btn">
               <el-button v-if="item.opentopic" type="text" size="mini" @click="openTopic(index)">收起<i class="el-icon-arrow-up el-icon--right"></i></el-button>
@@ -198,6 +199,8 @@ export default {
           e.opentopic = false;
         })
         this.loading = false
+      }).catch(()=> {
+        this.loading = false
       })
     },
     addTopic(id) {
@@ -217,6 +220,7 @@ export default {
             message: '添加成功',
             type: 'success'
           })
+          this.pageList()
         })
       } 
       
@@ -250,7 +254,6 @@ export default {
   vertical-align: top;
 }
 .check-center {
-  height: 36px;
   line-height: 36px;
 }
 
@@ -290,13 +293,13 @@ export default {
 
 }
 .items-height {
-  height: 200px;
+  max-height: 200px;
   overflow: hidden;
 }
 
 .show-allheight{
   height: 100%;
-  min-height: 200px;
+  max-height: 100%;
   overflow: auto;
 }
 .show-topic-btn {

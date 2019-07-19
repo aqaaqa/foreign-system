@@ -33,12 +33,12 @@
         <li class="all-main-list" v-for="(item,index) in obj.data" :key="index">
           <div class="all-main-bottom">
             <div>
-              <span>ID: {{15456754356}}</span>
-              <span>题型: {{'长对话'}}</span>
-              <span>使用次数: {{23}}</span>
-              <span>本校使用次数: {{25}}</span>
+              <span>ID: {{item.id}}</span>
+              <span>题型: {{item.part}}</span>
+              <span>使用次数: {{item.count}}</span>
+              <span>本校使用次数: {{item.tantCount}}</span>
               <span>
-                <el-button size="mini" type="text" style="font-size: 12px;" @click="lookAnswer(index,indexList)">查看答案</el-button>
+                <!-- <el-button size="mini" type="text" style="font-size: 12px;" @click="lookAnswer(index,indexList)">查看答案</el-button> -->
               </span>
             </div>
             <div>
@@ -72,9 +72,9 @@
               <p>{{item.directions.en}}</p>
               <p>{{item.directions.zh}}</p>
             </div>
-            <div class="video-box" v-if="item.part == '听力'">
+            <div class="video-box" v-if="item.part == '听力题'">
               <div class="audio-box" >
-                <VueAudio :theUrl="audios.url" :theControlList="audios.controlList"/>
+                <VueAudio :theUrl="item.mp3" :theControlList="audios.controlList"/>
               </div>
               <el-button type="info" size="small" plain @click="dialogVisible = true">查看脚本</el-button>
             </div>
@@ -121,7 +121,6 @@ export default {
       ],
       dialogVisible: false,
       audios: {
-        url:'/static/img/1.mp3',
         controlList: "noDownload noSpeed onlyOnePlaying"
       },
     }
@@ -273,6 +272,8 @@ export default {
           count: res.data.count,
           paperId: res.data.paperId
         })
+      }).catch(() => {
+        this.loading1 = false
       })
     } else {
       listSeled().then( res=> {
@@ -342,7 +343,6 @@ export default {
 }
 
 .check-center {
-  height: 30px;
   line-height: 30px;
 }
 .check-right {

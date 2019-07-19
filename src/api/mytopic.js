@@ -4,11 +4,11 @@ import request from '@/utils/request'
  * 我的试卷
  * @param {*} data 
  */
-export function myPaper(data) {
+export function myPaper(params) {
   return request({
-      url: '/paper/myPaper',
-      method: 'post',
-      data
+      url: '/front/paper/myPaper',
+      method: 'get',
+      params
   })
 }
 
@@ -18,7 +18,7 @@ export function myPaper(data) {
  */
 export function paperDel(data) {
   return request({
-      url: '/paper/delete',
+      url: '/front/paper/delete',
       method: 'post',
       data
   })
@@ -30,7 +30,7 @@ export function paperDel(data) {
  */
 export function paperEdit(data) {
   return request({
-      url: '/paper/edit',
+      url: '/front/paper/edit',
       method: 'post',
       data
   })
@@ -42,7 +42,7 @@ export function paperEdit(data) {
  */
 export function paperSave(data) {
   return request({
-      url: '/paper/save',
+      url: '/front/paper/save',
       method: 'post',
       data
   })
@@ -54,7 +54,7 @@ export function paperSave(data) {
  */
 export function paperInfo(data) {
   return request({
-      url: 'paper/info',
+      url: '/front/paper/info',
       method: 'get',
       data
   })

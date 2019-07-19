@@ -17,8 +17,8 @@
             style="text-align:center"
             align="center"
             width="50">
-          <template v-if="showAnswer">
-            <span class="fonts">{{list.correct[$index]}}</span>
+          <template v-if="showAnswer" slot-scope="scope">
+            <span class="fonts">{{list.correct[scope.$index]}}</span>
           </template>
           </el-table-column>
         </el-table>

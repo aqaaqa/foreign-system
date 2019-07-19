@@ -154,8 +154,9 @@
 
 <script>
 import { validUsername, validPhone, validEmail, validPass } from '@/utils/validate'
-import { getObjArr } from '@/utils/role'
+import { getObjArr, saveObjArr } from '@/utils/role'
 import { userSchool, register, sms } from '@/api/user'
+
 export default {
   name: 'Login',
   data() {
@@ -180,8 +181,8 @@ export default {
       codeSend: false,
       //登录
       loginForm: {
-        username: 'user1',
-        password: '123456'
+        username: getObjArr('userName') || '',
+        password: ''
       },
       //注册
       signForm: {
@@ -273,10 +274,14 @@ export default {
           this.loading = true
           this.$store.dispatch('user/login', this.loginForm).then( data => {
             this.loading = false
+            saveObjArr('userName', this.loginForm.username)
             this.$store.dispatch('user/getRole', data).then(res=> {
               this.$router.addRoutes(res) //动态添加路由
               this.$router.push({ path: this.redirect || '/' })
               // next({ ...to, replace: true })
+            }).catch(() => {
+              this.loading = false
+              this.$store.dispatch('user/postError')
             })
           }).catch(() => {
             this.loading = false
@@ -320,7 +325,8 @@ export default {
           type: 'success'
         })
         this.loginCheck = 'login'
-        this.loginForm.username = this.signForm.email
+        saveObjArr('userName', this.signForm.email)
+        // this.loginForm.username = this.signForm.email
       })
     }
   }
@@ -360,7 +366,7 @@ $fc: rgb(24, 144, 255);
       padding: 5px 5px 5px 15px;
       color: $light_gray;
       height: 32px;
-      caret-color: $light_gray;
+      caret-color: #000;
 
       &:-webkit-autofill {
         box-shadow: 0 0 0px 1000px $light_gray inset !important;

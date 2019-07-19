@@ -18,7 +18,7 @@ export function login(data) {
  */
 export function register(data) {
   return request({
-    url: '/user/register',
+    url: '/front/user/register',
     method: 'post',
     data
   })
@@ -30,7 +30,7 @@ export function register(data) {
  */
 export function sms(data) {
   return request({
-    url: '/user/sms',
+    url: '/front/user/sms',
     method: 'post',
     data
   })
@@ -54,7 +54,7 @@ export function logout() {
  */
 export function roleList() {
     return request({
-        url: '/base/menu',
+        url: '/front/base/menu',
         method: 'post'
     })
 }
@@ -66,7 +66,7 @@ export function roleList() {
  */
 export function userSchool() {
   return request({
-      url: '/user/school',
+      url: '/front/user/school',
       method: 'post',
   })
 }
@@ -77,7 +77,7 @@ export function userSchool() {
  */
 export function activateBase(data) {
   return request({
-      url: '/quest/active',
+      url: '/front/quest/active',
       method: 'post',
       data
   })

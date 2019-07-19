@@ -42,7 +42,7 @@
         <!-- <el-checkbox v-model="checked">同时保存在我的试卷中</el-checkbox> -->
         <div style="text-align: right; margin-top: 10px">
           <el-button size="mini" type="text" @click="visible2 = false">取消</el-button>
-          <el-button type="primary" size="mini" @click="exportPaper">确定</el-button>
+          <el-button type="primary" size="mini" @click="exportPaper" :loading="loading">确定</el-button>
         </div>
       </div>
     </el-popover>
@@ -64,7 +64,7 @@
         <el-input v-else style="margin: 10px 0;" v-model.trim="name" size="mini" placeholder="请输入试卷名称"></el-input>
         <div style="text-align: right; margin-top: 10px">
           <el-button size="mini" type="text" @click="visible = false">取消</el-button>
-          <el-button type="primary" size="mini" @click="savePaper">确定</el-button>
+          <el-button type="primary" size="mini" @click="savePaper" :loading="loading1">确定</el-button>
         </div>
       </div>
     </el-popover>
@@ -90,6 +90,8 @@ export default {
   },
   data() {
     return {
+      loading: false,
+      loading1: false,
       postion: 'all',
       clear: false,
       topicName: '',
@@ -154,14 +156,22 @@ export default {
         data.name = this.saves.paperName
         data.paperId = this.saves.paperId
       }
+      this.loading1 = true
       paperSave(data).then(res=> {
         this.$notify({
           message: '保存成功',
           type: 'success'
         })
+        this.loading1 = false
         this.visible = false
         this.$store.dispatch('page/setPaper', '')
         this.$router.push('/paper/index')
+      }).catch(() => {
+        this.$message({
+          message: '试卷保存失败',
+          type: 'error'
+        })
+        this.loading1 = false
       })
       
       
@@ -175,12 +185,14 @@ export default {
         })
         return false
       }
+      this.loading = true
       paperSave({name: this.topicName}).then(res=>{
         const { port, ip, addr, paperId } = res.data
         this.$message({
           message: '试题成功保存到我的试卷',
           type: 'success'
         })
+        this.loading = false
         this.visible2 = false
         let url = window.location.href
         let ports = url.substring(0, url.indexOf('/#'))
@@ -188,6 +200,12 @@ export default {
         let a = document.createElement('a')
         a.href =`${ports}${addr}?paperId=${paperId}`
         a.click();
+      }).catch(() => {
+        this.$message({
+          message: '试卷保存失败',
+          type: 'error'
+        })
+        this.loading = false
       })
     },
     removeAll() {

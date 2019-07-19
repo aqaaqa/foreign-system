@@ -2,7 +2,7 @@
   <div class="main-wrap" v-loading="audio.waiting">
     <!-- 这里设置了ref属性后，在vue组件中，就可以用this.$refs.audio来访问该dom元素 -->
     <audio ref="audio" class="dn" 
-    src="http://freshly-ground.com/data/audio/sm2/water-drop.mp3" :preload="audio.preload"
+    :src="theUrl" :preload="audio.preload"
     @play="onPlay" 
     @error="onError"
     @waiting="onWaiting"
@@ -47,7 +47,6 @@
     props: {
       theUrl: {
         type: String,
-        required: true,
       },
       theSpeeds: {
         type: Array,
@@ -63,7 +62,8 @@
     name: 'VueAudio',
     data() {
       return {
-        url: this.theUrl || 'http://devtest.qiniudn.com/secret base~.mp3',
+        // http://freshly-ground.com/data/audio/sm2/water-drop.mp3
+        url: this.theUrl || 'http://freshly-ground.com/data/audio/sm2/water-drop.mp3',
         audio: {
           currentTime: 0,
           maxTime: 0,
@@ -211,9 +211,9 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
-  .main-wrap{
+  // .main-wrap{
     // padding: 10px 10px 10px 0;
-  }
+  // }
   .audio-show {
     width:220px;
     height: 32px;

@@ -8,16 +8,14 @@
     font-weight:400;
     color:rgba(0,0,0,0.85);
     &:nth-child(1){
-      height:20px;
-      line-height:20px;
+      line-height:26px;
     }
     &:nth-child(2) {
       width:600px;
       height:32px;
       line-height: 32px;
       border-bottom: 1px solid #ccc;
-      margin-left: 20px;
-      margin-top: 4px;
+      margin-left: 10px;
     }
   }
   

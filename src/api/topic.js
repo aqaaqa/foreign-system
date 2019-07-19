@@ -6,7 +6,7 @@ import request from '@/utils/request'
  */
 export function questList(data) {
   return request({
-    url:'/quest/list',
+    url:'/front/quest/list',
     method: 'post',
     data
   })
@@ -18,7 +18,7 @@ export function questList(data) {
  */
 export function listSeled(data) {
   return request({
-    url:'/quest/listSeled',
+    url:'/front/quest/listSeled',
     method: 'post',
     data
   })
@@ -31,7 +31,7 @@ export function listSeled(data) {
  */
 export function questTypes() {
   return request({
-    url:'/quest/types',
+    url:'/front/quest/types',
     method: 'post'
   })
 }
@@ -42,7 +42,7 @@ export function questTypes() {
  */
 export function cacheAdd(data) {
   return request({
-    url:'/cache/add',
+    url:'/front/cache/add',
     method: 'post',
     data
   })
@@ -54,7 +54,7 @@ export function cacheAdd(data) {
  */
 export function cacheDel(data) {
   return request({
-    url:'/cache/del',
+    url:'/front/cache/del',
     method: 'post',
     data
   })
@@ -67,7 +67,7 @@ export function cacheDel(data) {
  */
 export function cacheDelall(data) {
   return request({
-    url:'/cache/delAll',
+    url:'/front/cache/delAll',
     method: 'post',
     data
   })
@@ -79,7 +79,7 @@ export function cacheDelall(data) {
  */
 export function cacheUp(data) {
   return request({
-    url:'/cache/up',
+    url:'/front/cache/up',
     method: 'post',
     data
   })
@@ -91,7 +91,7 @@ export function cacheUp(data) {
  */
 export function cacheDown(data) {
   return request({
-    url:'/cache/down',
+    url:'/front/cache/down',
     method: 'post',
     data
   })
@@ -104,7 +104,7 @@ export function cacheDown(data) {
  */
 export function cacheRep(data) {
   return request({
-    url:'/cache/repQes',
+    url:'/front/cache/repQes',
     method: 'post',
     data
   })
@@ -116,7 +116,7 @@ export function cacheRep(data) {
  */
 export function cacheUpdate(data) {
   return request({
-    url:'/quest/update',
+    url:'/front/quest/update',
     method: 'post',
     data
   })
@@ -128,7 +128,7 @@ export function cacheUpdate(data) {
  */
 export function paprerWord(params) {
   return request({
-    url:'/paper/download',
+    url:'/front/paper/download',
     method: 'get',
     params
   })

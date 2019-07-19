@@ -33,10 +33,10 @@
         <li class="all-main-list" v-for="(item,index) in obj.data" :key="index">
           <div class="all-main-bottom">
             <div>
-              <span>ID: {{15456754356}}</span>
+              <!-- <span>ID: {{15456754356}}</span>
               <span>题型: {{'长对话'}}</span>
               <span>使用次数: {{23}}</span>
-              <span>本校使用次数: {{25}}</span>
+              <span>本校使用次数: {{25}}</span> -->
               <span>
                 <el-button size="mini" type="text" style="font-size: 12px;" @click="lookAnswer(index,indexList)">查看答案</el-button>
               </span>
@@ -286,7 +286,6 @@ export default {
 }
 
 .check-center {
-  height: 30px;
   line-height: 30px;
 }
 .check-right {

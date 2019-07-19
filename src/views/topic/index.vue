@@ -9,12 +9,12 @@
     <el-table-column
       prop="name"
       label="试卷名称"
-      min-width="180">
+      min-width="160">
     </el-table-column>
     <el-table-column
       prop="createTime"
       label="创建时间"
-      width="180">
+      width="140">
     </el-table-column>
     <el-table-column
       prop="school"
@@ -22,7 +22,8 @@
     </el-table-column>
     <el-table-column
       prop="username"
-      label="创建者">
+      label="创建者"
+      min-width="200">
     </el-table-column>
     <el-table-column
       prop="paperType"
@@ -38,7 +39,7 @@
       label="总分">
     </el-table-column>
     <el-table-column
-      min-width="320"
+      min-width="280"
       label="操作">
       <div slot-scope="scope">
         <el-button type="text" size="mini" @click="exportWord(scope.row.paperId)">
@@ -102,7 +103,7 @@ export default {
       let url = window.location.href
       let ports = url.substring(0, url.indexOf('/#'))
       let a = document.createElement('a')
-      a.href =`${ports}${addr}?paperId=${id}`
+      a.href =`${ports}/${addr}?paperId=${id}`
       a.click();
     },
     delPaper(id) {
@@ -110,7 +111,7 @@ export default {
         this.$notify({
           title: '提示信息',
           message: '删除成功',
-          type: 'error'
+          type: 'success'
         })
         this.myList()
       })
@@ -127,8 +128,8 @@ export default {
     myList() {
       this.loading = true
 			myPaper({pageNumber: this.page,pageSize: 10}).then( res=> {
-        if(res.data.papers.length < 1 && this.page > 1) {
-          this.page = this.page--
+        if(!res.data.papers.length && this.page > 1) {
+          this.page = Number(this.page) -1
           this.myList()
         } else {
           this.total = res.data.totalRow
