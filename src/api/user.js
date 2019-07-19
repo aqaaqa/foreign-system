@@ -18,7 +18,7 @@ export function login(data) {
  */
 export function register(data) {
   return request({
-    url: '/front/user/register',
+    url: '/user/register',
     method: 'post',
     data
   })
@@ -30,7 +30,7 @@ export function register(data) {
  */
 export function sms(data) {
   return request({
-    url: '/front/user/sms',
+    url: '/user/sms',
     method: 'post',
     data
   })
@@ -66,7 +66,7 @@ export function roleList() {
  */
 export function userSchool() {
   return request({
-      url: '/front/user/school',
+      url: '/user/school',
       method: 'post',
   })
 }

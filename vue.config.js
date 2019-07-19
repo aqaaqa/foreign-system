@@ -22,7 +22,7 @@ module.exports = {
    * Detail: https://cli.vuejs.org/config/#publicpath
    */
   // /tech-resource/
-  publicPath: '/',
+  publicPath: '/tech-resource/',
   outputDir: 'dist',
   assetsDir: 'static',
   lintOnSave: false,
