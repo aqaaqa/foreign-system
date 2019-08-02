@@ -90,10 +90,11 @@
     <el-dialog
       :visible.sync="dialogVisible"
       width="60%"
+      title="听力脚本"
       >
-      <span>这是一段信息</span>
+      <p v-html="list.article"></p>
       <span slot="footer" class="dialog-footer">
-        <el-button type="primary" size="mini" @click="dialogVisible = false">确 定</el-button>
+        <el-button type="primary" size="mini" @click="dialogVisible = false">关 闭</el-button>
       </span>
     </el-dialog>
   </div>

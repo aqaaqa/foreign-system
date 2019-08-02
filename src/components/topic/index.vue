@@ -12,8 +12,9 @@
       <language2 v-else-if="list.type == '匹配'" :itemList="list" />
       <!-- <language2 v-else-if='list.type == "匹配"' :item="list"  /> -->
       <language3 v-else-if="list.type == '改写'" :itemList="list" />
-      <language5 v-else-if='list.type == "选词填空" && list.article' :item="list" />
-      <language4 v-else-if='list.type == "选词填空"' :item="list" />
+      
+      <language4 v-else-if='list.type == "单句填空"' :item="list" />
+      <language5 v-else-if='list.type == "短文填空"' :item="list" />
       <language6 v-else-if="list.type == '提示填空'" :itemList="list" />
       <language7 v-else-if="list.type == '网格填空'" :itemList="list" />
       <language8 v-else-if='list.type == "完形填空"' :item="list" />
@@ -35,13 +36,14 @@
       <read4 v-if="list.type == '简答'" :itemList="list" />
       <speak3 v-else-if="list.type == '朗读'" :itemList="list" />
       <speak2 v-else-if="list.type == '讨论'" :itemList="list" />
+      <speak4 v-else-if="'对话，辩论'.indexOf(list.type) > -1" :itemList="list" />
     </template>
   </div>
 </template>
 
 <script>
 import { listen1, listen3, listen4, listen2, listen5, language1, language2, language3, language4, language5, language6, language7, language8, read1, read2, read3, read4,
-write2,speak2, speak3} from './topictype'
+write2,speak2, speak3, speak4} from './topictype'
 
 export default {
   name: 'topic',
@@ -83,7 +85,8 @@ export default {
     read4,
     write2,
     speak2,
-    speak3
+    speak3,
+    speak4
   },
   created() {
     

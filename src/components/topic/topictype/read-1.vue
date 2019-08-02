@@ -1,8 +1,5 @@
 <template>
   <div class="read1">
-    <!-- <div class="video-box">
-      <el-button size="mini" @click="lookAnswer">查看脚本</el-button>
-    </div> -->
     <div class="read1-main">
       <div class="read1-article" v-html="item.article"></div>
       <ul class="read1-topic">
