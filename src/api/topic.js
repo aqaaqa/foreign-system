@@ -24,14 +24,14 @@ export function listSeled(data) {
   })
 }
 
-
 /**
+ * /front/quest/types
  * 所属题型
  * @param {*} params 
  */
 export function questTypes() {
   return request({
-    url:'/front/quest/types',
+    url:'front/quest/partType',
     method: 'post'
   })
 }

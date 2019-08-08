@@ -1,5 +1,6 @@
 <template>
-  <div>
+  <div style="display:inline-block">
+    <p v-if="itemList.title" class="topic-title" v-html="itemList.title"></p>
     <table cellspacing="0" cellspadding="0" border="0" :id='itemList.id'>
       <tbody v-html="html" class="listen-3-border"></tbody>
     </table>
@@ -60,9 +61,10 @@
         let that = this
         let arr2 = [];
         for (let index = 0; index < this.arr.length; index++) {
-          let a = this.arr[index].replace(/(_)+(\d)?(_)+/g, function (a) {
-            return that.correct[0]
-          });
+          // let a = this.arr[index].replace(/(_)+(\d)?(_)+/g, function (a) {
+          //   return that.correct[0]
+          // });
+          let a = this.arr[index]
           arr2.push(a);
         }
 
@@ -84,10 +86,11 @@
           let tr = '<tr>'
           for (let j = 0; j < this.last; j++) {
             let td = '<td>' +
-              arr[this.index].replace(/___\d+___/g, function (v) {
-                f++
-                return '<input type="text" class="line" value="' + f + '"/>'
-              }) +
+            arr[this.index]
+              // arr[this.index].replace(/___\d+___/g, function (v) {
+              //   f++
+              //   return '<input type="text" class="line" value="' + f + '"/>'
+              // }) +
               '</td>'
             tr += td
             this.index++
@@ -110,6 +113,13 @@
 
   table {
     border-collapse: collapse;
+    margin-top: 20px;
+  }
+  .topic-title {
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 24px;
+    text-align: center;
     margin-top: 20px;
   }
 

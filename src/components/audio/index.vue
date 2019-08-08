@@ -285,5 +285,8 @@
       background: #fff;
     }
   }
+  .el-loading-mask {
+    z-index: 10;
+  }
 </style>
 

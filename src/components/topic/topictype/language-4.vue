@@ -60,7 +60,8 @@ export default {
     let list = JSON.parse(JSON.stringify(this.item.detail))
     let listFilter = list.map(e=> {
       let replauceList = e.steam.map((j,index) => {
-        let c = j.replace(/_+/g,`<i class='listen2-answer'>${e.correct[index]}</i>`)
+        let c = j
+        // let c = j.replace(/_+/g,`<i class='listen2-answer'>${e.correct[index]}</i>`)
         j = c
         return j
       })

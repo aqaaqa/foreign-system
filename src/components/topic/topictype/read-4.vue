@@ -1,11 +1,16 @@
 <template>
   <div class="read4">
-    <ul class="lang3-main">
+    <p v-if="item.part == '阅读'" v-html="item.article" class="article-main"></p>
+    <ul v-if="item.part == '口语'" class="lang3-main1">
+      <li v-for= "(items, index) in list" :key="index">
+        <p v-html="items.steam[0]"></p>
+      </li>
+    </ul>
+    <ul v-else class="lang3-main">
       <li v-for= "(items, index) in list" :key="index">
         <p v-html="items.steam[0]"></p>
         <p>
-          <span v-show="showAnswer">
-            {{items.correct}}
+          <span v-show="showAnswer" v-html="items.correct">
           </span>
         </p>
       </li>
@@ -61,6 +66,10 @@ export default {
   @import "~@/styles/topic/lang3.scss";
   .read4 {
     width: 600px;
+  }
+  .article-main, .lang3-main1 {
+    font-size: 14px;
+    line-height: 26px;
   }
 </style>
 

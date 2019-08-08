@@ -10,17 +10,17 @@
           border>
           <el-table-column>
           <template slot-scope="scope">
-            <span class="fonts">{{scope.row}}</span>
+            <span class="fonts" v-html="scope.row"></span>
           </template>
           </el-table-column>
-          <el-table-column
+          <!-- <el-table-column
             style="text-align:center"
             align="center"
             width="50">
           <template v-if="showAnswer" slot-scope="scope">
-            <span class="fonts">{{list.correct[scope.$index]}}</span>
+            <span class="fonts" v-html="list.correct[scope.$index]"></span>
           </template>
-          </el-table-column>
+          </el-table-column> -->
         </el-table>
       </div>
 
@@ -35,7 +35,7 @@
           style="">
           <el-table-column>
           <template slot-scope="scope">
-            <span class="fonts">{{scope.row}}</span>
+            <span class="fonts" v-html="scope.row"></span>
           </template>
           </el-table-column>
         </el-table>

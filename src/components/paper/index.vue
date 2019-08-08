@@ -22,7 +22,7 @@
             {{obj.part ? obj.part + '　' + obj.data.length : ''}}
           </div>
           <div>
-            <span>此题总分: {{obj.score}}</span>
+            <span>模块总分: {{obj.score}}</span>
             <div class="move-scope">
               <el-button size="mini" type="primary" icon="el-icon-caret-top" style="background:rgba(239,247,255,1); color:#BFDEFF;" @click="moveUp(indexList, obj)"></el-button>
               <el-button size="mini" type="primary" icon="el-icon-caret-bottom" style="background:rgba(222,238,255,1); color:#007AFF;" @click="moveDown(indexList, list.length, obj)"></el-button>
@@ -42,7 +42,7 @@
               </span>
             </div>
             <div>
-              <el-tag size="small">此题总分: {{obj.score}}</el-tag>
+              <el-tag size="small">模块总分: {{obj.score}}</el-tag>
               <div class="scores-input">
                 <label>小题分数: </label>
                 <el-input size="mini" style="text-align:right; " placeholder="0" v-model="item.score" @blur.prevent="changeScore(item.score, item.id, index, indexList)">

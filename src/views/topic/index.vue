@@ -73,7 +73,8 @@
 </template>
 
 <script>
-import { myPaper, paperDel, paperInfo } from '@/api/mytopic'
+import { myPaper, paperDel, paperInfo, paperEdit } from '@/api/mytopic'
+import {  } from '@/api/mytopic'
 import { mapGetters } from 'vuex'
 
 export default {
@@ -117,9 +118,14 @@ export default {
       })
     },
     toEdit(id) {
-      this.$store.dispatch('page/setPaper', id).then(()=> {
-        this.$router.push(this.role[0].children[0].path)
+      paperEdit({paperId: id}).then(res=> {
+        this.$store.dispatch('page/setPaper', id).then(()=> {
+          this.$router.push(this.role[0].children[0].path)
+        })
+      }).catch(() => {
+        this.loading1 = false
       })
+      
     },
     choosePage(current) {
 			this.page = current

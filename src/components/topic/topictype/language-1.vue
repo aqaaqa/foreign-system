@@ -5,14 +5,12 @@
       <ul class="read1-topic">
         <li v-for="(items, index) in list" :key="index">
           <p>
-            <span style="display:inline-block; vertical-align:top" :style="{marginLeft:(index > 0 ? '16px': '')}" v-for="(s,index) in items.steam" :key="index">{{s}}</span>
+            <span style="display:inline-block; vertical-align:top" :style="{marginLeft:(index > 0 ? '16px': '')}" v-for="(s,index) in items.steam" :key="index" v-html="s"></span>
             <!-- <span style="display:inline-block; vertical-align:top;">{{}}</span> -->
             <!-- <span style="display:inline-block; vertical-align:top" v-html="items.steam[0].replace(/\\n/g,'<br/>')"></span> -->
           </p>
           <p class="read1-changes" :class="items.line ? 'line' : ''">
-            <span v-for="(change, indexs) in items.options" :key="indexs" :style="change.indexOf(items.correct[0]+'.') ==0 && showAnswer ? 'color: #409EFF' : ''">
-              {{change}}
-            </span>
+            <span v-for="(change, indexs) in items.options" :key="indexs" :style="change.indexOf(items.correct[0]+'.') ==0 && showAnswer ? 'color: #409EFF' : ''" v-html="change"></span>
           </p>
         </li>
       </ul>

@@ -5,7 +5,7 @@
       </div>
       <div class="language8-box" v-if="itemAll.detail&&itemAll.detail.length!=0">
         <div class="language8-options" v-for="(item,index) in itemAll.detail" :key="index">
-          <div v-for='(liItem, liIde) in item.options' :key="liIde">{{liItem}}</div>
+          <div v-for='(liItem, liIde) in item.options' :key="liIde" v-html="liItem"></div>
         </div>
       </div>
       
@@ -37,7 +37,7 @@ export default {
     itemAll () {
       var zm = "ABCDEFGHI";
       var opAr = this.item.article;
-      opAr = opAr.replace(/(_)+([0-9]{0,2})?(_)+/g,'<span class="line" style=" border-bottom: 1px #000 solid;line-height:20px;display: inline-block;width:100px;height:20px;text-align:center"></span>');
+      // opAr = opAr.replace(/(_)+([0-9]{0,2})?(_)+/g,'<span class="line" style=" border-bottom: 1px #000 solid;line-height:20px;display: inline-block;width:100px;height:20px;text-align:center"></span>');
       this.item.opAr = opAr;
       this.id = this.item.id;
       var correctArr = [];

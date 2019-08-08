@@ -1,6 +1,6 @@
 <template>
   <div class="main-box">
-    <sticky :z-index="10">
+    <sticky :z-index="1000">
       <div class="title-box">
         <el-button v-if="saves.paperId" type="primary" icon="el-icon-back" size="mini" @click="backPaper"></el-button>
         <el-radio-group size="mini" v-model="postion">

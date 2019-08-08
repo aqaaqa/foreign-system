@@ -1,11 +1,13 @@
 <template>
   <div class="listen4">
+    
     <div class="listen4-detail" v-if='itemAll.detail && itemAll.detail.length != 0'>
+      <div class="listen4-artic" v-html="itemAll.article"></div>
       <div v-for='(dItem, index) in itemAll.detail' :key="index">
         <div v-for='(sItem, sIdx) in dItem.steam' :key="sIdx" class="listen4-steam">
-          <span class="listen4-num">{{sIdx+1}}. </span>
-          <div class="listen4-sentence">
-            {{sItem}} <span class="listen4-line">{{isShow ? dItem.ftCorrect[sIdx] : ''}}</span>
+          <!-- <span class="listen4-num">{{sIdx+1}}. </span> -->
+          <div class="listen4-sentence" v-html="sItem">
+            <!-- <span class="listen4-line">{{isShow ? dItem.ftCorrect[sIdx] : ''}}</span> -->
           </div>
         </div>
       </div>
@@ -68,13 +70,20 @@ export default {
 
 <style lang="scss" scoped>
 .listen4{
-  width:1000px;
+  width:800px;
   margin-top: 20px;
+  .listen4-artic {
+    font-size:14px;
+    font-weight:400;
+    color:rgba(0,0,0,0.85);
+    line-height:22px;
+    margin-bottom: 10px;
+  }
   .listen4-steam{
     display: flex;
     justify-content: flex-start;
     align-items: flex-start;
-    margin-bottom:16px;
+    margin-bottom:4px;
     .listen4-num{
       width:24px;
       line-height: 22px;

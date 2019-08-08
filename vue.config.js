@@ -21,9 +21,9 @@ module.exports = {
    * In most cases please use '/' !!!
    * Detail: https://cli.vuejs.org/config/#publicpath
    */
-  // /tech-resource/
+  // /teach-resource
   publicPath: '/',
-  outputDir: 'dist',
+  outputDir: 'tr-teacher',
   assetsDir: 'static',
   lintOnSave: false,
   productionSourceMap: false,

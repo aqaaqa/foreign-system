@@ -51,7 +51,7 @@ service.interceptors.response.use(
       Message({
         message: res.msg || 'Error',
         type: 'error',
-        duration: 5 * 1000
+        duration: 2 * 1000
       })
       return Promise.reject(new Error(res.message || 'Error'))
     } else {
@@ -59,18 +59,25 @@ service.interceptors.response.use(
     }
   },
   error => {
-    // || (error+1).indexOf('500') > -1
+    // || 
     if((error+1).indexOf('401') > -1 ) {
       // console.log(router)
       store.dispatch('user/postError')
       router.push(`/login?redirect=${router.app._route.fullPath}`)
-    } 
-    Message({
-      message: error.msg,
-      type: 'error',
-      duration: 5 * 1000
-    })
-    return Promise.reject(error)
+      Message({
+        message: '网络超时，请重试',
+        type: 'error',
+        duration: 2 * 1000
+      })
+    } else {
+      Message({
+        message: '网络问题,请稍后重试',
+        type: 'error',
+        duration: 2 * 1000
+      })
+      return Promise.reject(error)
+    }
+    
   }
 )
 

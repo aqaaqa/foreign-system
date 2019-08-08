@@ -3,7 +3,7 @@
     <el-form size="mini" ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" auto-complete="on" label-position="left">
 
       <div class="title-container">
-        <h3 class="title">外研社新标准英语测评系统</h3>
+        <h3 class="title">外研社新标准英语同步测试系统</h3>
       </div>
 
       <div class="login-table">
@@ -23,7 +23,7 @@
           <el-input
             ref="username"
             v-model="loginForm.username"
-            placeholder="账户"
+            placeholder="邮箱"
             name="username"
             type="text"
             tabindex="1"
@@ -449,9 +449,9 @@ $fc: rgb(24, 144, 255);
 
   .login-form {
     position: relative;
-    width: 400px;
+    width: 500px;
     max-width: 100%;
-    padding: 10% 35px 0;
+    padding: 5% 35px 0;
     margin: 0 auto;
     overflow: hidden;
   }
@@ -548,6 +548,9 @@ $fc: rgb(24, 144, 255);
 .login-bottom {
   position: fixed;
   bottom: 20px;
+  left:0;
+  right: 0;
+  margin: 0 auto;
   width: 328px;
   font-size: 12px;
   color: rgb(117, 117, 117);
@@ -555,9 +558,11 @@ $fc: rgb(24, 144, 255);
     display: flex;
     align-items: center;
     justify-content: space-around;
+    line-height: 30px;
   }
   p:nth-child(2) {
     text-align: center;
+    line-height: 30px;
   }
 
 }

@@ -10,10 +10,11 @@
       <!-- 选项 -->
       <div class="search-check">
         <!-- 题型 -->
-        <div class="check-center">
-          <label class="check-title">所属题型:</label>
+        <div class="check-center" v-for="(item,index) in types" :key="index">
+          <label class="check-title">{{item.label}}</label>
           <div class="check-right">
-            <el-radio  v-for="(name,index) in types" :key="index" v-model="radio" :label="name">{{name}}</el-radio>
+            <el-radio v-model="radio" :label="'全部|'+item.label" @change="handleChange">全部</el-radio>
+            <el-radio v-for="(name,index) in item.options" :key="index" v-model="radio" :label="name+'|'+item.label" @change="handleChange">{{name}}</el-radio>
           </div>
         </div>
         <!-- 主要选择 -->
@@ -89,20 +90,40 @@
       <ul class="all-main">
         <li class="all-main-list" v-for="(item,index) in list" :key="index">
           <div class="add-btn">
-            <el-button size="mini" type="primary" icon="el-icon-circle-plus-outline" @click="addTopic(item.id)">添加</el-button>
+            <el-button size="mini" type="primary" icon="el-icon-circle-plus-outline" @click="addTopic(item.id)">{{changeTopic ? '替换' : '添加'}}</el-button>
           </div>
           <div class="items-height" :class="item.opentopic ? 'show-allheight' : ''">
-            <TopicMain :allitem="item"></TopicMain>
+             <div class="all-main-title">{{item.name}}</div>
+              <div class = "lisetn2-title" v-if="item.directions && item.directions.en">
+                <p>{{item.directions.en}}</p>
+                <p>{{item.directions.zh}}</p>
+              </div>
+              <div class="video-box" v-if="item.part == '听力'">
+                <div class="audio-box" >
+                  <VueAudio :theUrl="item.mp3" :theControlList="audios.controlList"/>
+                </div>
+                <el-button type="info" size="small" plain @click="showArt(item.article)">查看脚本</el-button>
+              </div>
+              <!-- <p v-if="item.title" class="topic-title" v-html="item.title"></p> -->
+              <TopicMain :allitem="item"></TopicMain>
           </div>
           <div class="all-main-bottom">
             <span>ID: {{item.id}}</span>
-            <span>题型: {{item.type}}</span>
+            <span>题型: {{item.type.indexOf('>') > -1 ? item.type.substr(0,item.type.indexOf('>')) :item.type}}</span>
             <span>类型: {{item.part}}</span>
             <span>使用次数: {{item.count}}</span>
             <span>本校使用次数: {{item.tantCount}}</span>
-            <span>
-              <!-- <el-button type="text" @click="lookAnswer(index)">查看答案</el-button> -->
-            </span>
+            <div style="display: inline-block; height: 20px;" v-if="item.detail[0].correct && item.detail[0].correct[0]">
+              <el-popover trigger="click" placement="top">
+                <div style="margin-top: 10px; max-width: 500px;" v-for="(a, index) in item.detail" :key="index">
+                <p style='padding-left: 20px;line-height: 22px;' v-for="(items, indexs) in a.correct" :key="indexs+'.'" v-html="items"></p>
+                </div>
+                <span slot="reference">
+                  <el-button type="text">查看答案</el-button>
+                </span>
+              </el-popover>
+            </div>
+            
             <span class="show-topic-btn">
               <el-button v-if="item.opentopic" type="text" size="mini" @click="openTopic(index)">收起<i class="el-icon-arrow-up el-icon--right"></i></el-button>
               <el-button v-else type="text" size="mini" @click="openTopic(index)">展开<i class="el-icon-arrow-down el-icon--right"></i></el-button>
@@ -124,12 +145,23 @@
     <div v-else class="null-topic">
       暂无试题
     </div>
-    
+
+    <el-dialog
+      :visible.sync="dialogVisible"
+      width="60%"
+      title="听力脚本"
+      >
+      <p v-html="article"></p>
+      <span slot="footer" class="dialog-footer">
+        <el-button type="primary" size="mini" @click="dialogVisible = false">关 闭</el-button>
+      </span>
+    </el-dialog>
   </div>
   
 </template>
 <script>
 import { mapGetters } from 'vuex'
+import  VueAudio  from '../audio'
 import TopicMain from '../topic/index'
 import { questList, cacheAdd, questTypes, cacheRep } from '@/api/topic'
 
@@ -148,7 +180,14 @@ export default {
       page: 1,
       types: [],
       radio: '全部',
-      loading: false
+      loading: false,
+      details: [],
+      visible2: false,
+      dialogVisible: false,
+      audios: {
+        controlList: "noDownload noSpeed onlyOnePlaying"
+      },
+      article: ''
     }
   },
   computed: {
@@ -157,27 +196,30 @@ export default {
       'changeTopic'
     ])
   },
-  watch: {
-    radio(val) {
-      this.page = 1
-      if(val == '全部') {
-        this.pageList('')
-      } else {
-        this.pageList(val)
-      }
-    }
-  },
   components: {
-    TopicMain
+    TopicMain,
+    VueAudio
   },
   methods: {
+    handleChange(val) {
+      
+      this.page = 1
+      this.pageList()
+    },
+    showArt(art) {
+      this.dialogVisible = true
+      this.article = art
+    },
     searchBtn() {
       console.log(this.search.input)
     },
-    lookAnswer(index) {
-      let keys = JSON.parse(JSON.stringify(this.list[index]))
-      keys.isShow = !keys.isShow
-      this.$set(this.list,[index],keys)
+    lookAnswer(data) {
+      this.visible2 = false
+      this.details = data
+      this.visible2 = true
+      // let keys = JSON.parse(JSON.stringify(this.list[index]))
+      // keys.isShow = !keys.isShow
+      // this.$set(this.list,[index],keys)
     },
     openTopic(index) {
       this.list[index].opentopic = !this.list[index].opentopic
@@ -190,12 +232,18 @@ export default {
 		},
 		pageList(types) {
       this.loading = true
-			questList({id: this.pageId,pageNumber: this.page,pageSize: 10, type: types}).then( res=> {
+      let a = '',b='',c=''
+      if(this.radio) {
+        b = this.radio.split('|')
+        b[0] == '全部' ? a = '' : a = b[0]
+        c= b[1]
+      }
+			questList({id: this.pageId,pageNumber: this.page,pageSize: 10, type: a,part: c}).then( res=> {
         this.total = res.data.totalRow
         this.list = [] = res.data.qests
         this.$store.dispatch('page/setCount', res.data.count)
         this.list.forEach(e=> {
-          e.isShow = false;
+          // e.isShow = false;
           e.opentopic = false;
         })
         this.loading = false
@@ -227,11 +275,32 @@ export default {
     }
   },
   created() {
-    this.pageList()
+    
     questTypes().then( res=> {
-      this.types = res.data
-      this.types.unshift('全部')
-
+      // console.log(res)
+      let list = res.data
+      // this.types.unshift('全部')
+      
+      for(let e in list) {
+        let a = []
+        let k = list[e]
+        for(let i in k) {
+          console.log(k)
+          if(k[i].indexOf('>')>-1) {
+            a.push(k[i].substr(0,k[i].indexOf('>')))
+          } else {
+            a.push(k[i])
+          }
+        }
+        this.types.push({
+          label: e,
+          options: new Set([...a, ...[]])
+        })
+        a=[]
+      }
+      console.log(this.types)
+      this.radio = '全部|'+this.types[0].label
+      this.pageList()
     })
   },
   mounted() {
@@ -250,15 +319,17 @@ export default {
   font-size: 14px;
   font-weight: normal;
   margin-right: 20px;
-  width: 60px;
+  width: 100px;
   vertical-align: top;
+  text-align: right;
+  display: inline-block;
 }
 .check-center {
   line-height: 36px;
 }
 
 .check-right {
-  width: calc(100% - 85px);
+  width: calc(100% - 130px);
   display: inline-block;
   vertical-align: top;
 }
@@ -347,6 +418,43 @@ export default {
   font-size:14px;
   font-weight:500;
   color:rgba(0,0,0,0.85);
+}
+.all-main-title {
+  font-size:14px;
+  font-weight:500;
+  color:rgba(0,0,0,0.85);
+  padding: 16px 0 6px;
+}
+.lisetn2-title {
+  width:700px;
+  padding: 10px 16px;
+  background:rgba(255,250,240,1);
+  border-radius:2px;
+  border:1px solid rgba(255,241,184,1);
+  margin-top: 10px;
+  p {
+    font-size:14px;
+    font-weight:500;
+    color:rgba(0,0,0,0.85);
+    line-height:24px;
+  }
+  p:nth-child(2) {
+    margin-top: 4px;
+  }
+}
+
+.video-box {
+  margin-top: 10px;
+  .audio-box {
+    display: inline-block;
+  }
+}
+.topic-title {
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 24px;
+  text-align: center;
+  margin-top: 20px;
 }
 </style>
 <style lang="scss">

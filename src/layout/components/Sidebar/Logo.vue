@@ -27,7 +27,7 @@ export default {
   data() {
     return {
       collapse: true,
-      title: '外研社新标准英语测评系统',
+      title: '外研社新标准英语同步测试系统',
       logo: 'https://wpimg.wallstcn.com/69a1c46c-eb1c-4b46-8bd4-e9e686ef5251.png'
     }
   }

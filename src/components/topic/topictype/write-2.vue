@@ -2,7 +2,7 @@
   <div class="write2">
     <ul class="write2-main">
       <li v-for= "(items, index) in list" :key="index">
-        <p v-for= "(art, index1) in items.steam" :key="index1">{{art}}</p>
+        <p v-for= "(art, index1) in items.steam" :key="index1" v-html="art"></p>
       </li>
     </ul>
   </div>
@@ -54,7 +54,7 @@ export default {
 
 <style lang="scss" scoped>
 .write2 {
-  width: 600px;
+  width: 800px;
   word-break:break-all;
   p {
     line-height: 28px;

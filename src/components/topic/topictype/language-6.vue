@@ -44,7 +44,8 @@ export default {
     let list = JSON.parse(JSON.stringify(this.item.detail))
     let listFilter = list.map(e=> {
       let replauceList = e.steam.map((j,index) => {
-        let c = j.replace(/_+/g,`<i class='lang6-answer'>${e.correct[index]}</i>`)
+        // let c = j.replace(/_+/g,`<i class='lang6-answer'>${e.correct[index]}</i>`)
+        let c = j
         j = c
         return j
       })
@@ -73,6 +74,9 @@ export default {
 @import "~@/styles/topic/listen2.scss";
 </style>
 <style lang="scss">
+.lang6 {
+  width: 700px;
+}
 .lang6-answer {
   min-width: 56px;
   display:inline-block;

@@ -5,7 +5,7 @@
         <img class="" src="@/assets/activates/activates.jpg">
       </div>
       <div class="act-right">
-        <p>抱歉您！无权限访问此题库</p>
+        <p>抱歉！您无权限访问此题库</p>
         <p>输入激活码，立刻获取权限</p>
         <div class="act-input">
           <el-input size="small" v-for="(item,index) in codes" :key="index" :isnull = 'item.isnull' ref="input" type="text" v-model.trim="item.input" maxlength="1" 

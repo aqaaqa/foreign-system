@@ -5,8 +5,8 @@
         <div v-for='(sItem, sIdx) in dItem.steam' :key="sIdx" class="listen4-steam">
           <!-- <span class="listen4-num">{{sIdx+1}}. </span> -->
           <div class="listen4-sentence">
-            <span>{{sItem}}</span>
-            <span class="listen4-line">{{isShow ? dItem.ftCorrect[sIdx] : ''}}</span>
+            <span v-html="sItem"></span>
+            <!-- <span class="listen4-line">{{isShow ? dItem.ftCorrect[sIdx] : ''}}</span> -->
           </div>
         </div>
       </div>

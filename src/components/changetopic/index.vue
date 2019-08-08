@@ -22,7 +22,7 @@
             {{obj.part ? obj.part + '　' + obj.data.length : ''}}
           </div>
           <div>
-            <span>此题总分: {{obj.score}}</span>
+            <span>模块总分: {{obj.score}}</span>
             <div class="move-scope">
               <el-button size="mini" type="primary" icon="el-icon-caret-top" style="background:rgba(239,247,255,1); color:#BFDEFF;" @click="moveUp(indexList, obj)"></el-button>
               <el-button size="mini" type="primary" icon="el-icon-caret-bottom" style="background:rgba(222,238,255,1); color:#007AFF;" @click="moveDown(indexList, list.length, obj)"></el-button>
@@ -37,12 +37,19 @@
               <span>题型: {{item.part}}</span>
               <span>使用次数: {{item.count}}</span>
               <span>本校使用次数: {{item.tantCount}}</span>
-              <span>
-                <!-- <el-button size="mini" type="text" style="font-size: 12px;" @click="lookAnswer(index,indexList)">查看答案</el-button> -->
-              </span>
+              <div style="display: inline-block; height: 20px;" v-if="item.detail[0].correct && item.detail[0].correct[0]">
+                <el-popover trigger="click" placement="top">
+                  <div style="margin-top: 20px; max-width: 500px; " v-for="(a, index) in item.detail" :key="index">
+                    <p style='padding-left: 20px;line-height: 22px;' v-for="(items, indexs) in a.correct" :key="indexs+'.'" v-html="items"></p>
+                  </div>
+                  <span slot="reference">
+                    <el-button type="text">查看答案</el-button>
+                  </span>
+                </el-popover>
+              </div>
             </div>
             <div>
-              <el-tag size="small">此题总分: {{obj.score}}</el-tag>
+              <el-tag size="small">模块总分: {{obj.score}}</el-tag>
               <div class="scores-input">
                 <label>小题分数: </label>
                 <el-input size="mini" style="text-align:right; " placeholder="0" v-model="item.score" @blur.prevent="changeScore(item.score, item.id, index, indexList)">
@@ -68,16 +75,17 @@
           </div>
           <div class="all-main-center">
             <div class="all-main-title">{{item.name}}</div>
-            <div class = "lisetn2-title" v-if="item.directions">
+            <div class = "lisetn2-title" v-if="item.directions && item.directions.en">
               <p>{{item.directions.en}}</p>
               <p>{{item.directions.zh}}</p>
             </div>
-            <div class="video-box" v-if="item.part == '听力题'">
+            <div class="video-box" v-if="item.part == '听力'">
               <div class="audio-box" >
                 <VueAudio :theUrl="item.mp3" :theControlList="audios.controlList"/>
               </div>
-              <el-button type="info" size="small" plain @click="dialogVisible = true">查看脚本</el-button>
+              <el-button type="info" size="small" plain @click="showArt(item.article)">查看脚本</el-button>
             </div>
+            <!-- <p v-if="item.title" class="topic-title" v-html="item.title"></p> -->
             <TopicMain :allitem="item"></TopicMain>
           </div>
         </li>
@@ -92,7 +100,7 @@
       width="60%"
       title="听力脚本"
       >
-      <p v-html="list.article"></p>
+      <p v-html="article"></p>
       <span slot="footer" class="dialog-footer">
         <el-button type="primary" size="mini" @click="dialogVisible = false">关 闭</el-button>
       </span>
@@ -104,7 +112,6 @@
 import  TopicMain from '../topic/index'
 import  VueAudio  from '../audio'
 import { listSeled, cacheDel, cacheUp, cacheDown, cacheUpdate } from '@/api/topic'
-import { paperEdit } from '@/api/mytopic'
 import { mapGetters } from 'vuex'
 
 export default {
@@ -124,6 +131,7 @@ export default {
       audios: {
         controlList: "noDownload noSpeed onlyOnePlaying"
       },
+      article: ''
     }
   },
   props: ['clear'],
@@ -155,6 +163,10 @@ export default {
     }
   },
   methods: {
+    showArt(art) {
+      this.dialogVisible = true
+      this.article = art
+    },
     searchBtn() {
       console.log(this.search.input)
     },
@@ -262,33 +274,18 @@ export default {
   created() {
     let _this = this
     this.loading1 = true
-    if(this.paper) {
-      paperEdit({paperId: this.paper}).then(res=> {
-        this.allList = res.data.qests
-        this.list = res.data.qests
-        this.allscores()
-        this.loading1 = false
-        this.$emit('savepapers',{
-          paperName: res.data.paperName,
-          count: res.data.count,
-          paperId: res.data.paperId
-        })
-      }).catch(() => {
-        this.loading1 = false
+    listSeled().then( res=> {
+      this.allList = res.data.qests
+      this.list = res.data.qests
+      this.allscores()
+      this.loading1 = false
+      this.$store.dispatch('page/setCount', res.data.count)
+      this.$emit('savepapers',{
+        paperName: res.data.paperName,
+        count: res.data.count,
+        paperId: res.data.paperId
       })
-    } else {
-      listSeled().then( res=> {
-        this.allList = res.data.qests
-        this.list = res.data.qests
-        this.allscores()
-        this.loading1 = false
-        this.$emit('savepapers',{
-          paperName: res.data.paperName,
-          count: res.data.count,
-          paperId: res.data.paperId
-        })
-      })
-    }
+    })
     // listSeled().then( res=> {
     //   this.allList = res.data.qests
     //   this.list = res.data.qests
@@ -499,6 +496,13 @@ export default {
   font-size:14px;
   font-weight:500;
   color:rgba(0,0,0,0.85);
+}
+.topic-title {
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 24px;
+  text-align: center;
+  margin-top: 20px;
 }
 </style>
 <style lang="scss">
