@@ -32,32 +32,6 @@
               <el-radio v-model="search.radio" label="9">短文改错</el-radio>
             </div>
           </div>
-          <div class="check-center">
-            <label class="check-title">所属题型:</label>
-            <div class="check-right">
-              <el-radio v-model="search.radio" label="1">全部</el-radio>
-              <el-radio v-model="search.radio" label="2">完形填空</el-radio>
-              <el-radio v-model="search.radio" label="3">阅读理解</el-radio>
-              <el-radio v-model="search.radio" label="4">单词拼写</el-radio>
-              <el-radio v-model="search.radio" label="5">短文改错</el-radio>
-              <el-radio v-model="search.radio" label="6">快速阅读</el-radio>
-              <el-radio v-model="search.radio" label="7">阅读理解</el-radio>
-              <el-radio v-model="search.radio" label="8">单词拼写</el-radio>
-            </div>
-          </div>
-          <div class="check-center">
-            <label class="check-title">所属题型:</label>
-            <div class="check-right">
-              <el-radio v-model="search.radio" label="1">全部</el-radio>
-              <el-radio v-model="search.radio" label="2">完形填空</el-radio>
-              <el-radio v-model="search.radio" label="3">阅读理解</el-radio>
-              <el-radio v-model="search.radio" label="4">单词拼写</el-radio>
-              <el-radio v-model="search.radio" label="5">短文改错</el-radio>
-              <el-radio v-model="search.radio" label="6">快速阅读</el-radio>
-              <el-radio v-model="search.radio" label="7">阅读理解</el-radio>
-              <el-radio v-model="search.radio" label="8">单词拼写</el-radio>
-            </div>
-          </div>
         </div> -->
 
         <!-- 下拉选项 -->
@@ -98,7 +72,7 @@
                 <p>{{item.directions.en}}</p>
                 <p>{{item.directions.zh}}</p>
               </div>
-              <div class="video-box" v-if="item.part == '听力'">
+              <div class="video-box" v-if="'听力,口语'.indexOf(item.part) > -1 && item.article">
                 <div class="audio-box" >
                   <VueAudio :theUrl="item.mp3" :theControlList="audios.controlList"/>
                 </div>
@@ -149,7 +123,7 @@
     <el-dialog
       :visible.sync="dialogVisible"
       width="60%"
-      title="听力脚本"
+      title="音频脚本"
       >
       <p v-html="article"></p>
       <span slot="footer" class="dialog-footer">
@@ -242,8 +216,8 @@ export default {
         this.total = res.data.totalRow
         this.list = [] = res.data.qests
         this.$store.dispatch('page/setCount', res.data.count)
+        this.$store.dispatch('page/setType', res.data.type || 0 )
         this.list.forEach(e=> {
-          // e.isShow = false;
           e.opentopic = false;
         })
         this.loading = false
@@ -277,15 +251,11 @@ export default {
   created() {
     
     questTypes().then( res=> {
-      // console.log(res)
       let list = res.data
-      // this.types.unshift('全部')
-      
       for(let e in list) {
         let a = []
         let k = list[e]
         for(let i in k) {
-          console.log(k)
           if(k[i].indexOf('>')>-1) {
             a.push(k[i].substr(0,k[i].indexOf('>')))
           } else {
@@ -298,7 +268,6 @@ export default {
         })
         a=[]
       }
-      console.log(this.types)
       this.radio = '全部|'+this.types[0].label
       this.pageList()
     })
@@ -317,7 +286,7 @@ export default {
 
 .check-title {
   font-size: 14px;
-  font-weight: normal;
+  font-weight: bold;
   margin-right: 20px;
   width: 100px;
   vertical-align: top;

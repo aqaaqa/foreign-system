@@ -25,7 +25,7 @@ export function register(data) {
 }
 
 /*
- * 注册
+ * 验证码
  * @param {*} data 
  */
 export function sms(data) {
@@ -80,5 +80,68 @@ export function activateBase(data) {
       url: '/front/quest/active',
       method: 'post',
       data
+  })
+}
+
+
+// 忘记密码
+/*
+ * 图片验证码
+ * @param {*} data 
+ */
+export function imageCode(data) {
+  return request({
+    url: '/passport/imageCode',
+    method: 'post',
+    data
+  })
+}
+
+
+/*
+ * 手机验证码
+ * @param {*} data 
+ */
+export function smsUdpass(data) {
+  return request({
+    url: '/user/smsUdpass',
+    method: 'post',
+    data
+  })
+}
+
+/*
+ * 确定用户
+ * @param {*} data 
+ */
+export function confirmPhone(data) {
+  return request({
+    url: '/user/confirmPhone',
+    method: 'post',
+    data
+  })
+}
+
+/*
+ * 忘记密码
+ * @param {*} data 
+ */
+export function updatePassword(data) {
+  return request({
+    url: '/user/updatePassword',
+    method: 'post',
+    data
+  })
+}
+
+/*
+ * 修改密码
+ * @param {*} data 
+ */
+export function updatePasswordUser(data) {
+  return request({
+    url: '/user/updatePasswordUser',
+    method: 'post',
+    data
   })
 }

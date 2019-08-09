@@ -51,8 +51,7 @@ export default {
   created() {
     let newArrs = this.list.map(e=> {
       for(let a of e.options){
-        let arr = a.split(' ')
-        if(arr.length > 5) {
+        if(a.length > 30) {
           return e.line = true
         }
       }

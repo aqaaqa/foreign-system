@@ -8,6 +8,7 @@ const getters = {
   pageId: state => state.page.pageId,
   menu: state => state.page.menu,
   count: state => state.page.count,
+  type: state => state.page.type,
   score: state => state.page.score,
   changeTopic: state => state.page.changeTopic,
   changeTab: state => state.page.changeTab,

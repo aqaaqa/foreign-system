@@ -79,7 +79,7 @@
               <p>{{item.directions.en}}</p>
               <p>{{item.directions.zh}}</p>
             </div>
-            <div class="video-box" v-if="item.part == '听力'">
+            <div class="video-box" v-if="'听力,口语'.indexOf(item.part) > -1 && item.article">
               <div class="audio-box" >
                 <VueAudio :theUrl="item.mp3" :theControlList="audios.controlList"/>
               </div>
@@ -98,7 +98,7 @@
     <el-dialog
       :visible.sync="dialogVisible"
       width="60%"
-      title="听力脚本"
+      title="音频脚本"
       >
       <p v-html="article"></p>
       <span slot="footer" class="dialog-footer">
@@ -334,7 +334,7 @@ export default {
 
 .check-title {
   font-size: 14px;
-  font-weight: normal;
+  font-weight: bold;
   margin-right: 20px;
   width: 60px;
   vertical-align: top;

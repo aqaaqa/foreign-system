@@ -37,6 +37,12 @@ export const constantRoutes = [
     hidden: true
   },
   {
+    path: '/reset',
+    hidden: true,
+    component: () => import('@/views/login/reset'),
+  },
+  
+  {
     path: '/404',
     component: () => import('@/views/404'),
     hidden: true
@@ -56,14 +62,20 @@ export const constantRoutes = [
       }
     },
     {
+      path: '/resetpass',
+      hidden: true,
+      component: () => import('@/views/login/resetpass'),
+    },
+    
+    {
       path: '/activate',
       component: Layout,
       name: 'activate',
       hidden: true,
       meta: { title: '激活页面', icon: 'activate' },
       component: () => import('@/views/activate/index'),
-    }]
-  }
+    }
+  ]}
 ]
 
 const createRouter = () => new Router({

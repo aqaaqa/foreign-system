@@ -53,7 +53,7 @@ service.interceptors.response.use(
         type: 'error',
         duration: 2 * 1000
       })
-      return Promise.reject(new Error(res.message || 'Error'))
+      return Promise.reject(new Error(res.msg || 'Error'))
     } else {
       return res
     }

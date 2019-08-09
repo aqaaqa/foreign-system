@@ -17,6 +17,16 @@
               首页
             </el-dropdown-item>
           </router-link>
+          <router-link to="/resetpass">
+            <el-dropdown-item>
+              重置密码
+            </el-dropdown-item>
+          </router-link>
+          <a href="http://hm.corpuscloud.cn/teach-resource/produce/index.html" target="_black">
+            <el-dropdown-item>
+              后台
+            </el-dropdown-item>
+          </a>
           <el-dropdown-item divided>
             <span style="display:block;" @click="logout">退出</span>
           </el-dropdown-item>

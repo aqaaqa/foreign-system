@@ -134,3 +134,16 @@ export function paprerWord(params) {
   })
 }
 
+
+// front/quest/addReview
+/**
+ * 添加整套试题
+ * @param {*} params 
+ */
+export function addReview(data) {
+  return request({
+    url:'front/quest/addReview',
+    method: 'post',
+    data
+  })
+}

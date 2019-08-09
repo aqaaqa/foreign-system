@@ -36,13 +36,14 @@
       <speak3 v-else-if="list.type == '朗读题'" :itemList="list" />
       <speak2 v-else-if="list.type == '讨论题'" :itemList="list" />
       <speak4 v-else-if="'对话题，辩论题'.indexOf(list.type) > -1" :itemList="list" />
+      <speak6 v-else-if='list.type == "复述题"'  :item='list'/>
     </template>
   </div>
 </template>
 
 <script>
 import { listen1, listen3, listen4, listen2, listen5, language1, language2, language3, language4, language5, language6, language7, language8, read1, read2, read3, read4,
-write2,speak2, speak3, speak4} from './topictype'
+write2,speak2, speak3, speak4, speak6} from './topictype'
 
 export default {
   name: 'topic',
@@ -85,7 +86,8 @@ export default {
     write2,
     speak2,
     speak3,
-    speak4
+    speak4,
+    speak6
   },
   created() {
     

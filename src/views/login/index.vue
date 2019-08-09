@@ -1,6 +1,6 @@
 <template>
   <div class="login-container">
-    <el-form size="mini" ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" auto-complete="on" label-position="left">
+    <el-form size="mini" ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" auto-complete="off" label-position="left">
 
       <div class="title-container">
         <h3 class="title">外研社新标准英语同步测试系统</h3>
@@ -27,7 +27,7 @@
             name="username"
             type="text"
             tabindex="1"
-            auto-complete="on"
+            auto-complete="off"
           />
         </el-form-item>
 
@@ -43,17 +43,21 @@
             placeholder="密码"
             name="password"
             tabindex="2"
-            auto-complete="on"
+            auto-complete="off"
             @keyup.enter.native="handleLogin"
           />
           <span class="show-pwd" @click="showPwd">
             <svg-icon :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'" />
           </span>
         </el-form-item>
-        <!-- <div class="user-action">
-          <p>不登录,先逛逛</p>
-          <p>忘记密码</p>
-        </div> -->
+        <div class="user-action">
+          <p></p>
+          <p>
+            <router-link to="/reset">
+              忘记密码
+            </router-link>
+          </p>
+        </div>
         <el-button :loading="loading" size="small" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">登录</el-button>
       </div>
       <div v-show="loginCheck == 'newlogin'" class="sign-input" >
@@ -65,7 +69,7 @@
             name="email"
             type="email"
             tabindex="1"
-            auto-complete="on"
+            auto-complete="off"
           />
         </el-form-item>
         <el-form-item prop="pass" >
@@ -77,7 +81,7 @@
             name="pass"
             type="password"
             tabindex="1"
-            auto-complete="on"
+            auto-complete="off"
           />
         </el-form-item>
         <el-form-item prop="confirmPass" >
@@ -89,7 +93,7 @@
             name="confirmPass"
             type="password"
             tabindex="1"
-            auto-complete="on"
+            auto-complete="off"
           />
         </el-form-item>
         <el-select class="school" v-model="signForm.tenantId" placeholder="选择学校" size="small">
@@ -107,7 +111,7 @@
             name="phone"
             type="tel"
             tabindex="1"
-            auto-complete="on" 
+            auto-complete="off" 
             v-model="signForm.mobile" 
             maxlength="11"
             >
@@ -126,7 +130,7 @@
               name="code"
               type="text"
               tabindex="1"
-              auto-complete="on"
+              auto-complete="off"
             />
           </el-form-item>
           <el-form-item class="code-btn" :class="codeSend ? 'sends' : ''">
@@ -239,19 +243,19 @@ export default {
       if(this.codeSend) {
         return
       } else if(validPhone(this.signForm.mobile)) {
-        this.codeSend = true
-        let _this = this;
-        var num = 60, 
-        time = setInterval(function () {
-          num--;
-          _this.codeText = num+'秒后，重新发送';
-          if (num <= 0) {
-            clearInterval(time);
-            _this.codeText = '重新发送';
-            _this.codeSend = false;
-          }
-        }, 1000);
         sms({mobile: this.signForm.mobile}).then( res=> {
+          this.codeSend = true
+          let _this = this;
+          var num = 60, 
+          time = setInterval(function () {
+            num--;
+            _this.codeText = num+'秒后，重新发送';
+            if (num <= 0) {
+              clearInterval(time);
+              _this.codeText = '重新发送';
+              _this.codeSend = false;
+            }
+          }, 1000);
           this.$notify({
             title: '提示信息',
             message: '验证码发送成功，请注意查收',

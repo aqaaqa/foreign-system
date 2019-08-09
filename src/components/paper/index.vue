@@ -279,7 +279,7 @@ export default {
 
 .check-title {
   font-size: 14px;
-  font-weight: normal;
+  font-weight: bold;
   margin-right: 20px;
   width: 60px;
   vertical-align: top;

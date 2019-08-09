@@ -4,10 +4,12 @@ const state = {
   pageId: getSession('pageId'),
   menu: getObjArr('menu'),
   count: getSession('count'),
+  type: getSession('type'),
   score: getSession('score'),
   changeTopic: getSession('changeTopic'),
   changeTab: getSession('tab'),
-  paper: getSession('paper')
+  paper: getSession('paper'),
+  
 }
 
 const mutations = {
@@ -19,6 +21,9 @@ const mutations = {
   },
   SET_COUNT: (state, count) => {
     state.count = count
+  },
+  SET_TYPE: (state, type) => {
+    state.type = type
   },
   SET_SCORE: (state,score) => {
     state.score = score
@@ -77,6 +82,10 @@ const actions = {
   setCount({commit},data) {
     commit('SET_COUNT', data)
     saveSession('count', data)
+  },
+  setType({commit},data) {
+    commit('SET_TYPE', data)
+    saveSession('type', data)
   }
 }
 

@@ -10,7 +10,7 @@ import { format } from 'path';
 
 NProgress.configure({ showSpinner: false }) // NProgress Configuration
 
-const whiteList = ['/login'] // no redirect whitelist
+const whiteList = ['/login','/reset'] // no redirect whitelist
 var getRouter
 router.beforeEach((to, from, next) => {
   // start progress bar

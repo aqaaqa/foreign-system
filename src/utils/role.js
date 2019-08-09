@@ -15,7 +15,12 @@ export function saveObjArr(name, data) { //localStorage 存储数组对象的方
 }
 
 export function getObjArr(name) { //localStorage 获取数组对象的方法
-  return JSON.parse(localStorage.getItem(name));
+  if(name) {
+    return JSON.parse(localStorage.getItem(name));
+  } else {
+    return ''
+  }
+  
 
 }
 
@@ -29,7 +34,12 @@ export function saveSession(name, data) { //localStorage 存储数组对象的�
 }
 
 export function getSession(name) { //localStorage 获取数组对象的方法
-  return JSON.parse(sessionStorage.getItem(name));
+  if(name && name != 'undefined') {
+    return JSON.parse(sessionStorage.getItem(name));
+  } else {
+    return ''
+  }
+  
 }
 
 export function removeSession(name) { //localStorage 获取数组对象的方法

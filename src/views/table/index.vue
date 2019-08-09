@@ -10,6 +10,12 @@
           </el-badge>
           <el-radio-button v-else label="change">已选试题</el-radio-button>
         </el-radio-group>
+        <div style="display:inline-block; margin-left: 30px;" v-if="postion == 'all' && type=='2'">
+          <el-button size = "mini" plain @click="addReview()">
+            <svg-icon :icon-class="'add'" />
+            添加整套试题
+          </el-button>
+        </div>
         <div style="display:inline-block" v-show="postion == 'change'">
           <el-button v-show= '!saves.paperId' style="margin-left: 12px;" v-popover:popover2 type="primary" size = "mini" plain>
             <svg-icon :icon-class="'word'" />
@@ -81,7 +87,7 @@ import Alltopic from '@/components/alltopic'
 import changetopic from '@/components/changetopic'
 import { mapGetters } from 'vuex'
 import Sticky from '@/components/Sticky' // 粘性header组件
-import { cacheDelall, paprerWord } from '@/api/topic'
+import { cacheDelall, paprerWord, addReview } from '@/api/topic'
 import { paperSave } from '@/api/mytopic'
 
 export default {
@@ -117,7 +123,8 @@ export default {
       'count',
       'score',
       'changeTab',
-      'paper'
+      'paper',
+      'type'
     ]) 
   },
   created() {
@@ -128,6 +135,11 @@ export default {
     
   },
   methods: {
+    addReview() {
+      addReview({id: this.paperId}).then(res => {
+        console.log(res)
+      })
+    },
     backPaper(){
       this.$router.push('/paper/index')
     },
