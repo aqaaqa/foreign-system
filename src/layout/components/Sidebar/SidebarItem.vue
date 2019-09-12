@@ -172,6 +172,7 @@ export default {
       content: "\e6e5";
   }
   .locks {
+    font-style: normal;
     font-size: 14px !important;
     float: right;
     width: 1em !important;

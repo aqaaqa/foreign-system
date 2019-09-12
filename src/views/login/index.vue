@@ -23,7 +23,7 @@
           <el-input
             ref="username"
             v-model="loginForm.username"
-            placeholder="邮箱"
+            placeholder="注册时使用的邮箱或手机号"
             name="username"
             type="text"
             tabindex="1"
@@ -96,14 +96,26 @@
             auto-complete="off"
           />
         </el-form-item>
-        <el-select class="school" v-model="signForm.tenantId" placeholder="选择学校" size="small">
+        <el-form-item prop="confirmPass" >
+          <el-input
+            maxlength="16"
+            ref="school"
+            v-model="signForm.school"
+            placeholder="学校"
+            name="school"
+            type="text"
+            tabindex="1"
+            auto-complete="off"
+          />
+        </el-form-item>
+        <!-- <el-select class="school" v-model="signForm.tenantId" placeholder="学校" size="small">
           <el-option
             v-for="item in options"
             :key="item.value"
             :label="item.fullName"
             :value="item.name">
           </el-option>
-        </el-select>
+        </el-select> -->
         <div class="area-code">
           <el-input placeholder="11位手机号" 
             size="small"
@@ -193,7 +205,8 @@ export default {
         email: '',
         password: '',
         confirm: '',
-        tenantId:'',
+        // tenantId:'',
+        school: '',
         mobile: '',
         captcha: ''
       },
@@ -368,7 +381,7 @@ $fc: rgb(24, 144, 255);
       -webkit-appearance: none;
       border-radius: 0px;
       padding: 5px 5px 5px 15px;
-      color: $light_gray;
+      color: rgb(117,117,117);
       height: 32px;
       caret-color: #000;
 

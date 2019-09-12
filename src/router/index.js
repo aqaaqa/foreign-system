@@ -41,7 +41,11 @@ export const constantRoutes = [
     hidden: true,
     component: () => import('@/views/login/reset'),
   },
-  
+  {
+    path: '/trans',
+    hidden: true,
+    component: () => import('@/views/login/trans'),
+  },
   {
     path: '/404',
     component: () => import('@/views/404'),
@@ -66,7 +70,11 @@ export const constantRoutes = [
       hidden: true,
       component: () => import('@/views/login/resetpass'),
     },
-    
+    {
+      path: '/info',
+      hidden: true,
+      component: () => import('@/views/login/info'),
+    },
     {
       path: '/activate',
       component: Layout,

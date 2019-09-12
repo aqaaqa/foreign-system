@@ -13,6 +13,32 @@ export function login(data) {
 }
 
 /*
+ * 获取用户信息
+ * @param {*} data 
+ */
+export function trans(data) {
+  return request({
+    url: 'passport/transinfo',
+    method: 'post',
+    data
+  })
+}
+
+
+/*
+ * 获取地址
+ * @param {*} data 
+ */
+export function ssoLoginUrl(data) {
+  return request({
+    url: 'passport/ssoLoginUrl',
+    method: 'post',
+    data
+  })
+}
+
+
+/*
  * 注册
  * @param {*} data 
  */
@@ -145,3 +171,29 @@ export function updatePasswordUser(data) {
     data
   })
 }
+
+
+/*
+* 个人信息
+* @param {*} data 
+*/
+export function userInfo(data) {
+ return request({
+   url: 'front/user/user',
+   method: 'post',
+   data
+ })
+}
+
+
+/*
+* 个人信息修改
+* @param {*} data 
+*/
+export function userInfoEdit(data) {
+  return request({
+    url: 'front/user/edit',
+    method: 'post',
+    data
+  })
+ }

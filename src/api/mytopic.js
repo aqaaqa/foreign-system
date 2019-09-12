@@ -4,11 +4,11 @@ import request from '@/utils/request'
  * 我的试卷
  * @param {*} data 
  */
-export function myPaper(params) {
+export function myPaper(data) {
   return request({
       url: '/front/paper/myPaper',
-      method: 'get',
-      params
+      method: 'post',
+      data
   })
 }
 
@@ -55,11 +55,23 @@ export function paperSave(data) {
 export function paperInfo(data) {
   return request({
       url: '/front/paper/info',
-      method: 'get',
+      method: 'post',
       data
   })
 }
 
+
+/*
+ * 错误上报
+ * @param {*} data 
+ */
+export function paperError(data) {
+  return request({
+      url: '/front/paper/error',
+      method: 'post',
+      data
+  })
+}
 
 // /*
 //  * 删除全部已选试题

@@ -17,18 +17,9 @@
       width="140">
     </el-table-column>
     <el-table-column
-      prop="school"
-      label="学校">
-    </el-table-column>
-    <el-table-column
       prop="username"
       label="创建者"
       min-width="200">
-    </el-table-column>
-    <el-table-column
-      prop="paperType"
-      min-width="100"
-      label="题型">
     </el-table-column>
     <el-table-column
       prop="count"
@@ -39,13 +30,23 @@
       label="总分">
     </el-table-column>
     <el-table-column
-      min-width="280"
+      min-width="300"
       label="操作">
       <div slot-scope="scope">
-        <el-button type="text" size="mini" @click="exportWord(scope.row.paperId)">
-          <svg-icon :icon-class="'word'" />
-          导出为word文档
-        </el-button>
+        <a :href="exportWord1(scope.row.paperId)">
+          <!-- <el-button type="text" size="mini" @click="exportWord(scope.row.paperId)"> -->
+          <el-button type="text" size="mini">
+            <svg-icon :icon-class="'word'" />
+            导出word
+          </el-button>
+        </a>
+        <a :href="exportWord1(scope.row.paperId,'again')">
+          <!-- <el-button type="text" size="mini" @click="exportWord(scope.row.paperId)"> -->
+          <el-button type="text" size="mini" style="color: #E6A23C">
+            <svg-icon :icon-class="'change'"  />
+            重新导出word
+          </el-button>
+        </a>
         <el-button type="text" size="mini" @click="toEdit(scope.row.paperId)">
           <svg-icon :icon-class="'form'" />
           编辑
@@ -53,6 +54,10 @@
         <el-button type="text" size="mini" style="color: #ff3B30" @click="delPaper(scope.row.paperId)">
           <svg-icon :icon-class="'del'" />
           删除
+        </el-button>
+        <el-button type="text" size="mini" style="color: #ff3B30" @click="paperError(scope.row.paperId)">
+          <svg-icon :icon-class="'remove'" />
+          错误上报
         </el-button>
       </div>
     </el-table-column>
@@ -68,13 +73,28 @@
       :page-size="10">
     </el-pagination>
   </div>
+
+
+  <el-dialog title="错误信息" :visible.sync="dialogFormVisible">
+    <el-form :model="form" size="mini">
+      <el-form-item label="word版本" :label-width="formLabelWidth">
+        <el-input v-model="form.msg.version" auto-complete="off"></el-input>
+      </el-form-item>
+      <el-form-item label="其他信息" :label-width="formLabelWidth">
+        <el-input v-model="form.msg.other" auto-complete="off"></el-input>
+      </el-form-item>
+    </el-form>
+    <div slot="footer" class="dialog-footer">
+      <el-button @click="dialogFormVisible = false" size="mini">取 消</el-button>
+      <el-button type="primary" @click="erroePost" size="mini">确 定</el-button>
+    </div>
+  </el-dialog>
 </div>
   
 </template>
 
 <script>
-import { myPaper, paperDel, paperInfo, paperEdit } from '@/api/mytopic'
-import {  } from '@/api/mytopic'
+import { myPaper, paperDel, paperInfo, paperEdit,paperError } from '@/api/mytopic'
 import { mapGetters } from 'vuex'
 
 export default {
@@ -84,7 +104,16 @@ export default {
       page: 1,
       total: 0,
       list : [],
-      info: {}
+      info: {},
+      form:{
+        msg:{
+          version: '',
+          other: '',
+        },
+        paperId: ''
+      },
+      dialogFormVisible: false,
+      formLabelWidth: '120px;'
     }
   },
   computed: {
@@ -97,15 +126,45 @@ export default {
     paperInfo().then(res=> {
       this.info = res.data
     })
-  },
+  },  
   methods: {
+    paperError(id) {
+      this.form.paperId = id
+      this.dialogFormVisible = true
+    },
+    erroePost() {
+      paperError(this.form).then(res=> {
+        this.$message.success('提交成功')
+        
+        this.dialogFormVisible = false
+        this.form = {
+          msg:{
+            version: '',
+            other: '',
+          },
+          paperId: ''
+        }
+      })
+    },
     exportWord(id) {
       const { ip, port, addr} = this.info
       let url = window.location.href
       let ports = url.substring(0, url.indexOf('/#'))
       let a = document.createElement('a')
-      a.href =`${ports}/${addr}?paperId=${id}`
+      a.href =`${ports}${addr}?paperId=${id}`
       a.click();
+    },
+    exportWord1(id,again) {
+      let url = window.location.href
+      let ports = url.substring(0, url.indexOf('/#'))
+      const { addr } = this.info
+      let adds = ''
+      if(again) {
+        adds = '/front/paper/reBuild'
+      } else {
+        adds = addr
+      }
+      return `${ports}${adds}?paperId=${id}`
     },
     delPaper(id) {
       paperDel({id:id}).then(res=> {

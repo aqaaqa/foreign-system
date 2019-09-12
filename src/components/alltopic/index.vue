@@ -72,9 +72,15 @@
                 <p>{{item.directions.en}}</p>
                 <p>{{item.directions.zh}}</p>
               </div>
-              <div class="video-box" v-if="'听力,口语'.indexOf(item.part) > -1 && item.article">
+              <!-- <div class="video-box" v-if="(item.part == '听力' || item.type=='复述题') && item.mp3Stem">
+                题干音频：
                 <div class="audio-box" >
-                  <VueAudio :theUrl="item.mp3" :theControlList="audios.controlList"/>
+                  <VueAudio :theUrl="item.mp3Path+item.mp3Stem" :theControlList="audios.controlList"/>
+                </div>
+              </div> -->
+              <div class="video-box" v-if="(item.part == '听力' || item.type=='复述题') && item.article">
+                <div class="audio-box" v-if="item.mp3">
+                  <VueAudio :theUrl="item.mp3Path+item.mp3" :theControlList="audios.controlList"/>
                 </div>
                 <el-button type="info" size="small" plain @click="showArt(item.article)">查看脚本</el-button>
               </div>
@@ -89,8 +95,8 @@
             <span>本校使用次数: {{item.tantCount}}</span>
             <div style="display: inline-block; height: 20px;" v-if="item.detail[0].correct && item.detail[0].correct[0]">
               <el-popover trigger="click" placement="top">
-                <div style="margin-top: 10px; max-width: 500px;" v-for="(a, index) in item.detail" :key="index">
-                <p style='padding-left: 20px;line-height: 22px;' v-for="(items, indexs) in a.correct" :key="indexs+'.'" v-html="items"></p>
+                <div style="max-width: 500px;" v-for="(a, index) in item.detail" :key="index">
+                <p style='line-height: 24px;' v-for="(items, indexs) in a.correct" :key="indexs+'.'" v-html="items"></p>
                 </div>
                 <span slot="reference">
                   <el-button type="text">查看答案</el-button>
@@ -122,10 +128,10 @@
 
     <el-dialog
       :visible.sync="dialogVisible"
-      width="60%"
+      width="600"
       title="音频脚本"
       >
-      <p v-html="article"></p>
+      <p class="answer-br" v-html="article"></p>
       <span slot="footer" class="dialog-footer">
         <el-button type="primary" size="mini" @click="dialogVisible = false">关 闭</el-button>
       </span>
@@ -211,6 +217,9 @@ export default {
         b = this.radio.split('|')
         b[0] == '全部' ? a = '' : a = b[0]
         c= b[1]
+      }
+      if(types) {
+        this.page = 1 
       }
 			questList({id: this.pageId,pageNumber: this.page,pageSize: 10, type: a,part: c}).then( res=> {
         this.total = res.data.totalRow
@@ -414,6 +423,7 @@ export default {
 
 .video-box {
   margin-top: 10px;
+  font-size: 14px;
   .audio-box {
     display: inline-block;
   }

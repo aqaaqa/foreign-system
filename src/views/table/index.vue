@@ -75,7 +75,7 @@
       </div>
     </el-popover>
     <template>
-      <alltopic v-if=" postion == 'all'" @changeTab="changeTabs"></alltopic>
+      <alltopic ref="alltopic" v-if=" postion == 'all'" @changeTab="changeTabs"></alltopic>
       <changetopic v-else-if="postion == 'change'" @changeTab="changeTabs" @savepapers='papers' :clear = "clear"></changetopic>
     </template>
 
@@ -124,7 +124,8 @@ export default {
       'score',
       'changeTab',
       'paper',
-      'type'
+      'type',
+      'pageId'
     ]) 
   },
   created() {
@@ -136,8 +137,20 @@ export default {
   },
   methods: {
     addReview() {
-      addReview({id: this.paperId}).then(res => {
-        console.log(res)
+      addReview({id: this.pageId}).then(res => {
+        if(this.$refs.alltopic.list.length > 0) {
+          this.$message({
+            message: '复习题添加成功',
+            type: 'success'
+          })
+          this.$refs.alltopic.pageList(1)
+        } else {
+          this.$message({
+            message: '当前试卷暂无可添加试题',
+            type: 'error'
+          })
+        }
+        
       })
     },
     backPaper(){
@@ -152,7 +165,6 @@ export default {
     },
     //保存或者生成新的
     savePaper() {
-      
       let data = {}
       //1 保存   2覆盖
       if(this.radio == 1) {
@@ -208,10 +220,9 @@ export default {
         this.visible2 = false
         let url = window.location.href
         let ports = url.substring(0, url.indexOf('/#'))
-        // 'http://' + ip + ':' + ip + addr + '?paperId = ' + paperId
-        let a = document.createElement('a')
-        a.href =`${ports}${addr}?paperId=${paperId}`
-        a.click();
+        // let a = document.createElement('a')
+        window.location.href =`${ports}${addr}?paperId=${paperId}`
+        // a.click();
       }).catch(() => {
         this.$message({
           message: '试卷保存失败',

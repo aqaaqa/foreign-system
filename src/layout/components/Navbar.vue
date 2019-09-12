@@ -17,16 +17,21 @@
               首页
             </el-dropdown-item>
           </router-link>
-          <router-link to="/resetpass">
-            <el-dropdown-item>
-              重置密码
-            </el-dropdown-item>
-          </router-link>
-          <a href="http://hm.corpuscloud.cn/teach-resource/produce/index.html" target="_black">
+          <!-- <a href="http://hm.corpuscloud.cn/teach-resource/produce/index.html" target="_black">
             <el-dropdown-item>
               后台
             </el-dropdown-item>
-          </a>
+          </a> -->
+          <!-- <router-link to="/info">
+            <el-dropdown-item>
+              个人信息
+            </el-dropdown-item>
+          </router-link> -->
+          <!-- <router-link to="/resetpass">
+            <el-dropdown-item>
+              重置密码
+            </el-dropdown-item>
+          </router-link> -->
           <el-dropdown-item divided>
             <span style="display:block;" @click="logout">退出</span>
           </el-dropdown-item>
@@ -59,7 +64,8 @@ export default {
     },
     async logout() {
       await this.$store.dispatch('user/logout')
-      this.$router.push(`/login?redirect=${this.$route.fullPath}`)
+      // this.$router.push(`/login?redirect=${this.$route.fullPath}`)
+      window.location.href = 'http://www.unischool.cn/unischool/member/login?SiteID=42&Referer=http://test.unischool.cn/teach-resource/passport/trans'
     }
   }
 }

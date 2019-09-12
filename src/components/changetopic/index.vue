@@ -39,8 +39,8 @@
               <span>本校使用次数: {{item.tantCount}}</span>
               <div style="display: inline-block; height: 20px;" v-if="item.detail[0].correct && item.detail[0].correct[0]">
                 <el-popover trigger="click" placement="top">
-                  <div style="margin-top: 20px; max-width: 500px; " v-for="(a, index) in item.detail" :key="index">
-                    <p style='padding-left: 20px;line-height: 22px;' v-for="(items, indexs) in a.correct" :key="indexs+'.'" v-html="items"></p>
+                  <div style="max-width: 500px; " v-for="(a, index) in item.detail" :key="index">
+                    <p style='line-height: 24px;' v-for="(items, indexs) in a.correct" :key="indexs+'.'" v-html="items"></p>
                   </div>
                   <span slot="reference">
                     <el-button type="text">查看答案</el-button>
@@ -79,9 +79,15 @@
               <p>{{item.directions.en}}</p>
               <p>{{item.directions.zh}}</p>
             </div>
-            <div class="video-box" v-if="'听力,口语'.indexOf(item.part) > -1 && item.article">
+            <!-- <div class="video-box" v-if="(item.part == '听力' || item.type=='复述题') && item.mp3Stem">
+              题干音频：
               <div class="audio-box" >
-                <VueAudio :theUrl="item.mp3" :theControlList="audios.controlList"/>
+                <VueAudio :theUrl="item.mp3Path+item.mp3Stem" :theControlList="audios.controlList"/>
+              </div>
+            </div> -->
+            <div class="video-box" v-if="(item.part == '听力' || item.type=='复述题') && item.article">
+              <div class="audio-box" v-if="item.mp3">
+                <VueAudio :theUrl="item.mp3Path+item.mp3" :theControlList="audios.controlList"/>
               </div>
               <el-button type="info" size="small" plain @click="showArt(item.article)">查看脚本</el-button>
             </div>
@@ -97,10 +103,10 @@
 
     <el-dialog
       :visible.sync="dialogVisible"
-      width="60%"
+      width="600"
       title="音频脚本"
       >
-      <p v-html="article"></p>
+      <p class="answer-br" v-html="article"></p>
       <span slot="footer" class="dialog-footer">
         <el-button type="primary" size="mini" @click="dialogVisible = false">关 闭</el-button>
       </span>
@@ -209,9 +215,7 @@ export default {
         return false
       } else {
         cacheUp({oindex: index, index: -1}).then(res=> {
-          let a = this.list[index-1]
-          this.$set(this.list, index, a)
-          this.$set(this.list, index-1, obj)
+          this.lists()
         })
       }
       
@@ -221,9 +225,7 @@ export default {
         return false
       } else {
         cacheUp({oindex: indexList, index: index }).then(res=> {
-          let a = this.list[indexList].data[index-1]
-          this.$set(this.list[indexList].data, index, a)
-          this.$set(this.list[indexList].data, index-1, obj)
+          this.lists()
         })
         
       }
@@ -234,9 +236,7 @@ export default {
         return false
       } else {
         cacheDown({oindex: indexList, index: index}).then(res=>{
-          let a = this.list[indexList].data[index+1]
-          this.$set(this.list[indexList].data, index, a)
-          this.$set(this.list[indexList].data, index+1, obj)
+          this.lists()
         })
         
       }
@@ -246,9 +246,7 @@ export default {
         return false
       } else {
         cacheDown({oindex: index, index: -1}).then(res=>{
-          let a = this.list[index+1]
-          this.$set(this.list, index, a)
-          this.$set(this.list, index+1, obj)
+          this.lists()
         })
         
       }
@@ -269,23 +267,26 @@ export default {
     changes(id) {
       this.$store.dispatch('page/setTopic', id)
       this.$emit('changeTab')
+    },
+    lists() {
+      this.loading1 = true
+      listSeled().then( res=> {
+        this.allList = res.data.qests
+        this.list = res.data.qests
+        this.allscores()
+        this.loading1 = false
+        this.$store.dispatch('page/setCount', res.data.count)
+        this.$emit('savepapers',{
+          paperName: res.data.paperName,
+          count: res.data.count,
+          paperId: res.data.paperId
+        })
+      })
     }
   },
   created() {
-    let _this = this
-    this.loading1 = true
-    listSeled().then( res=> {
-      this.allList = res.data.qests
-      this.list = res.data.qests
-      this.allscores()
-      this.loading1 = false
-      this.$store.dispatch('page/setCount', res.data.count)
-      this.$emit('savepapers',{
-        paperName: res.data.paperName,
-        count: res.data.count,
-        paperId: res.data.paperId
-      })
-    })
+    
+    this.lists()
     // listSeled().then( res=> {
     //   this.allList = res.data.qests
     //   this.list = res.data.qests
@@ -336,7 +337,7 @@ export default {
   font-size: 14px;
   font-weight: bold;
   margin-right: 20px;
-  width: 60px;
+  width: 100px;
   vertical-align: top;
 }
 
@@ -344,7 +345,7 @@ export default {
   line-height: 30px;
 }
 .check-right {
-  width: calc(100% - 85px);
+  width: calc(100% - 120px);
   display: inline-block;
   vertical-align: top;
 }
@@ -481,6 +482,7 @@ export default {
 
 .video-box {
   margin-top: 10px;
+  font-size: 14px;
   .audio-box {
     display: inline-block;
   }
@@ -551,11 +553,30 @@ export default {
   padding: 10px 20px;
   .el-radio {
     // margin-right: 0px;
-    margin-bottom: 18px;
+    margin-bottom: 0px;
     margin-right: 15px;
   }
   .el-radio__inner {
     display: none;
+  }
+}
+
+.answer-br {
+  font-size: 14px;
+  line-height: 26px;
+  width: 480px;
+  span:nth-child(3n+1) {
+    display: inline-block;
+    vertical-align: top;
+    padding-right: 4px;
+    width: 30px;
+    text-align: right;
+    box-sizing: border-box;
+  }
+  span:nth-child(3n+2) {
+    display: inline-block;
+    vertical-align: top;
+    width: calc(100% - 30px);
   }
 }
 </style>

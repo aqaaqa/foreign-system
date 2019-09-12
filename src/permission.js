@@ -6,11 +6,12 @@ import 'nprogress/nprogress.css' // progress bar style
 import { getToken } from '@/utils/auth' // get token from cookie
 import getPageTitle from '@/utils/get-page-title'
 import { format } from 'path';
+import { ssoLoginUrl, trans } from './api/user'
 
 
 NProgress.configure({ showSpinner: false }) // NProgress Configuration
 
-const whiteList = ['/login','/reset'] // no redirect whitelist
+const whiteList = ['/login','/reset','/trans'] // no redirect whitelist
 var getRouter
 router.beforeEach((to, from, next) => {
   // start progress bar
@@ -40,7 +41,8 @@ router.beforeEach((to, from, next) => {
           // remove token and go to login page to re-login
           store.dispatch('user/resetToken')
           Message.error(error || 'Has Error')
-          next(`/login?redirect=${to.path}`)
+          // next(`/login?redirect=${to.path}`)
+          returnUrl()
           NProgress.done()
         }
       } else {
@@ -58,7 +60,8 @@ router.beforeEach((to, from, next) => {
       next()
     } else {
       // other pages that do not have permission to access are redirected to the login page.
-      next(`/login?redirect=${to.path}`)
+      // next(`/login?redirect=${to.path}`)
+      returnUrl()
       NProgress.done()
     }
   }
@@ -68,3 +71,7 @@ router.afterEach(() => {
   // finish progress bar
   NProgress.done()
 })
+
+export function returnUrl() {
+  window.location.href = 'http://www.unischool.cn/unischool/member/login?SiteID=42&Referer=http://test.unischool.cn/teach-resource/passport/trans'
+}

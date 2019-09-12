@@ -1,7 +1,7 @@
 <template>
   <div class="language5">
     <div class="language5-detail">
-      <div v-for="(item, index) in list" :key='index'>
+      <div v-for="(item, index) in itemAll.detail" :key='index'>
         <table class="language5-options">
           <tr v-for="(wgItem,wgIndex) in item.wordsGroup" :key="wgIndex"><td v-for="(wItem,wIde) in wgItem" :key="wIde">{{wItem}}</td></tr>
         </table>
@@ -32,43 +32,27 @@ export default {
   watch: {
     item:{
       handler(val) {
-        this.showAnswer = val.isShow
-        this.$nextTick(function() {
-          this.viewAnswer()
-        })
         
       },
-      deep:true
+      deep:true,
+      immediate: true
     }
   },
   computed: {
     itemAll () {
+      this.item.detail.forEach(ele => {
+        var words = ele.select_words;
+        var count = 5;
+        var leg = words.length;
+        var n = 0;
+        this.wordsAll = []
+        this.words_Group(words,n);
+        ele.wordsGroup = this.wordsAll;
+      });
       return this.item
     }
   },
   created() {
-    this.item.detail.forEach(ele => {
-      var words = ele.select_words;
-      var count = 5;
-      var leg = words.length;
-      var n = 0;
-      this.wordsAll = []
-      this.words_Group(words,n);
-      ele.wordsGroup = this.wordsAll;
-    });
-
-    let list = JSON.parse(JSON.stringify(this.item.detail))
-    let listFilter = list.map(e=> {
-      let replauceList = e.steam.map((j,index) => {
-        let c = j
-        // let c = j.replace(/_+/g,`<i class='listen2-answer'>${e.correct[index]}</i>`)
-        j = c
-        return j
-      })
-      e.steam = replauceList
-      return e
-    })
-    this.listFilter = listFilter
   },
   methods: {
     words_Group (wordsAll,n) {
@@ -107,6 +91,8 @@ export default {
   updated () {
   },
   mounted () {
+    
+    
   }
 
 }

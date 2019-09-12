@@ -63,7 +63,8 @@ service.interceptors.response.use(
     if((error+1).indexOf('401') > -1 ) {
       // console.log(router)
       store.dispatch('user/postError')
-      router.push(`/login?redirect=${router.app._route.fullPath}`)
+      // router.push(`/login?redirect=${router.app._route.fullPath}`)
+      window.location.href = 'http://www.unischool.cn/unischool/member/login?SiteID=42&Referer=http://test.unischool.cn/teach-resource/passport/trans'
       Message({
         message: '网络超时，请重试',
         type: 'error',

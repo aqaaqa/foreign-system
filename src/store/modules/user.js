@@ -1,4 +1,4 @@
-import { login, logout, roleList, activateBase } from '@/api/user'
+import { login, logout, roleList, activateBase, trans } from '@/api/user'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 import { saveObjArr, getObjArr, removeSession, filterAsyncRouter, getState, removeObjArr } from '@/utils/role'
 import { resetRouter } from '@/router'
@@ -35,6 +35,22 @@ const actions = {
     const { username, password } = userInfo
     return new Promise((resolve, reject) => {
       login({ username: username.trim(), password: password }).then(response => {
+        const { data } = response
+        commit('SET_TOKEN', data.userId)
+        commit('SET_NAME', data.username)
+        commit('SET_AVATAR', 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif' )
+        setToken(data.userId)
+        saveObjArr('name', data.username)
+        resolve(data)
+      }).catch(error => {
+        reject(error)
+      })
+    })
+  },
+
+  trans({ commit }) {
+    return new Promise((resolve, reject) => {
+      trans().then(response => {
         const { data } = response
         commit('SET_TOKEN', data.userId)
         commit('SET_NAME', data.username)
@@ -93,7 +109,7 @@ const actions = {
   getNewRole({ commit},params) {
     return new Promise((resolve, reject) => {
       activateBase({baseId:params.id,actKey: params.code}).then(response => {
-        console.log(response)
+        // console.log(response)
         const { data } = response
         const { items } = data
         let getRouter = filterAsyncRouter(getState(items)) //过滤路由

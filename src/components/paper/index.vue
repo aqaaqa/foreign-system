@@ -89,7 +89,7 @@
 
     <el-dialog
       :visible.sync="dialogVisible"
-      width="60%"
+      width="600"
       >
       <p v-html="list.article"></p>
       <span slot="footer" class="dialog-footer">
