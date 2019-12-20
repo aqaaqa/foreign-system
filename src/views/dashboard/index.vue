@@ -6,6 +6,7 @@
       <a target="_blank" :href="href">
         查看操作指南
       </a>
+      <p>为确保您的使用体验，建议您使用Chrome（谷歌）或360极速浏览器。</p>
     </div>
   </div>
 </template>
@@ -42,11 +43,18 @@ export default {
       img {
         width: 240px;
       }
-      p {
+      > p:nth-child(2) {
         font-size:26px;
         font-weight:500;
         color:rgba(0,91,158,1);
         padding: 30px;
+      }
+       > p:nth-child(4) {
+        font-size:16px;
+        font-weight:500;
+        color:rgb(177, 0, 0);
+        padding: 30px;
+        text-align: center;
       }
 
       a {

@@ -8,6 +8,7 @@
       <!-- <span v-if="name == '我的试卷'">{{name}}</span> -->
     <!-- </transition-group> -->
     <span v-if="name == 'paper'" class="fontSize">/ 我的试卷</span>
+    <!-- <span style="vertical-align: top; padding-left: 10px; font-size:14px; color: rgb(255, 59, 48)">为确保您的使用体验，建议您使用Chrome（谷歌）或360极速浏览器</span> -->
   </el-breadcrumb>
 </template>
 

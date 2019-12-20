@@ -22,7 +22,7 @@ module.exports = {
    * Detail: https://cli.vuejs.org/config/#publicpath
    */
   // /teach-resource
-  publicPath: '/teach-resource',
+  publicPath: process.env.NODE_ENV === 'development' ? '/' : '/teach-resource',
   outputDir: 'tr-teacher',
   assetsDir: 'static',
   lintOnSave: false,
@@ -38,7 +38,7 @@ module.exports = {
       // change xxx-api/login => mock/login
       // detail: https://cli.vuejs.org/config/#devserver-proxy
       [process.env.VUE_APP_BASE_API]: {
-        target: `http://192.168.0.18`,
+        target: `http://192.168.3.113:81`,
         changeOrigin: true,
         pathRewrite: {
           ['^' + process.env.VUE_APP_BASE_API]: ''

@@ -27,6 +27,10 @@ if (process.env.NODE_ENV === 'production') {
   mockXHR()
 }
 
+// import { IEVersion } from './utils/auth'
+// if(IEVersion()) {
+//   alert('为确保您的使用体验，建议使用Chrome（谷歌）或360极速浏览器')
+// }
 // set ElementUI lang to EN
 Vue.use(ElementUI, { locale })
 

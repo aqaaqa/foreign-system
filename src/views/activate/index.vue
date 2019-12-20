@@ -8,10 +8,11 @@
         <p>抱歉！您无权限访问此题库</p>
         <p>输入激活码，立刻获取权限</p>
         <div class="act-input">
-          <el-input size="small" v-for="(item,index) in codes" :key="index" :isnull = 'item.isnull' ref="input" type="text" v-model.trim="item.input" maxlength="1" 
+          <!-- <el-input size="small" v-for="(item,index) in codes" :key="index" :isnull = 'item.isnull' ref="input" type="text" v-model.trim="item.input" maxlength="1" 
           @keyup.native="getCode(item.input, index, $event)" 
           @keydown.native="valueIsNull(item.input, index, $event)">
-          </el-input>
+          </el-input> -->
+          <el-input v-model="input" maxlength="8" size="max" placeholder=""></el-input>
         </div>
         <el-button class="btns" size="small" type="primary" @click="submitAct()">激 活</el-button>
         
@@ -40,6 +41,7 @@ export default {
         {input:'',isnull: true},
         {input:'',isnull: true}
       ],
+      input: '',
       redirect: undefined,
       base: ''
     }
@@ -62,20 +64,35 @@ export default {
   methods: {
     submitAct() {
       var codeStr = ''
-      for(var code of this.codes) {
-        if(!code.input) {
-          this.$notify({
-            title: '提示信息',
-            message: '请输入激活码',
-            type: 'error'
-          })
-          return false
-        }
-        codeStr = codeStr + code.input
+      // for(var code of this.codes) {
+      //   if(!code.input) {
+      //     this.$notify({
+      //       title: '提示信息',
+      //       message: '请输入激活码',
+      //       type: 'error'
+      //     })
+      //     return false
+      //   }
+      //   codeStr = codeStr + code.input
+      // }
+      console.log(this.input.length)
+      if(!this.input) {
+        this.$notify({
+          title: '提示信息',
+          message: '请输入激活码',
+          type: 'error'
+        })
+        return false
+      } else if('6,8'.indexOf(this.input.length) ==-1) {
+        this.$notify({
+          title: '提示信息',
+          message: '激活码长度为6位或8位',
+          type: 'error'
+        })
+        return false
       }
-
       
-      store.dispatch('user/getNewRole', { id: this.base ,code: codeStr}).then(res=> {
+      store.dispatch('user/getNewRole', { id: this.base ,code: this.input}).then(res=> {
         // console.log(res)
         this.$notify({
           title: '提示信息',
@@ -169,19 +186,33 @@ export default {
 
 <style lang="scss">
 .act-input {
-  .el-input {
-    width: 32px;
-    float: left;
-    height: 32px;
-    margin-right: 10px;
-    input {
-      padding: 0px;
-      text-align: center;
-    }
-  }
+  // .el-input {
+  //   width: 32px;
+  //   float: left;
+  //   height: 32px;
+  //   margin-right: 10px;
+  //   input {
+  //     padding: 0px;
+  //     text-align: center;
+  //   }
+  // }
   // input {
   //   width: 20px;
   //   float: left;
   // }
+
+  .el-input {
+    width: 300px;
+    float: left;
+    height: 32px;
+    margin-right: 10px;
+    input {
+      padding: 10px;
+      text-align: left;
+      letter-spacing:10px;
+      font-weight: 500;
+      font-size: 14px;
+    }
+  }
 }
 </style>
