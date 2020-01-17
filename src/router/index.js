@@ -82,7 +82,15 @@ export const constantRoutes = [
       hidden: true,
       meta: { title: '激活页面', icon: 'activate' },
       component: () => import('@/views/activate/index'),
-    }
+    },
+    // {
+    //   path: "/quest0",
+    //   component: "Layout",
+    //   meta: {baseCode: null, bankId: null, baseId: 59, id: null, title: "必修第一册", type: null, status: null},
+    //   name: "必修第一册",
+    //   state: 1,
+    //   component: () => import('@/views/table/index'),
+    // }
   ]}
 ]
 

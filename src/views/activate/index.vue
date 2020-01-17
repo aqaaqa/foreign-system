@@ -211,7 +211,7 @@ export default {
       text-align: left;
       letter-spacing:10px;
       font-weight: 500;
-      font-size: 14px;
+      font-size: 24px;
     }
   }
 }

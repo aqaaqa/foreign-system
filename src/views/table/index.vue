@@ -47,6 +47,7 @@
         <el-input style="margin: 10px 0;" v-model.trim="topicName" size="mini" placeholder="请输入试卷名称"></el-input>
         <!-- <el-checkbox v-model="checked">同时保存在我的试卷中</el-checkbox> -->
         <div style="text-align: right; margin-top: 10px">
+          <p class="hint-texts">用户可对导出文档的内容及版式进行个性化编辑</p>
           <el-button size="mini" type="text" @click="visible2 = false">取消</el-button>
           <el-button type="primary" size="mini" @click="exportPaper" :loading="loading">确定</el-button>
         </div>
@@ -69,6 +70,7 @@
         <el-input v-if= 'radio == 2' style="margin: 10px 0;" :disabled="radio == 2" v-model.trim="saves.paperName" size="mini" placeholder="请输入试卷名称"></el-input>
         <el-input v-else style="margin: 10px 0;" v-model.trim="name" size="mini" placeholder="请输入试卷名称"></el-input>
         <div style="text-align: right; margin-top: 10px">
+          <p class="hint-texts">用户可对导出文档的内容及版式进行个性化编辑</p>
           <el-button size="mini" type="text" @click="visible = false">取消</el-button>
           <el-button type="primary" size="mini" @click="savePaper" :loading="loading1">确定</el-button>
         </div>
@@ -263,6 +265,7 @@ export default {
       color:rgba(19,20,21,1);
     }
   }
+
 </style>
 <style lang="scss">
 .title-box {
@@ -271,6 +274,12 @@ export default {
   .el-radio-button:first-child .el-radio-button__inner {
     border-radius: 0;
   }
+}
+.hint-texts {
+  font-size: 12px;
+  color: rgb(226, 53, 53);
+  text-align: left;
+  margin-bottom: 10px;
 }
 </style>
 
