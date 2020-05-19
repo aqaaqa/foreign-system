@@ -1,7 +1,10 @@
 <template>
   <div class="dashboard-container">
     <div>
-      <img src="../../assets/activates/logo.png" alt="">
+      <div class="banenr-box">
+        <img src="../../assets/activates/logo.png" alt="">
+        <a target="_blank" href="https://www.wjx.cn/jq/66397342.aspx">点击参与 一分钟问卷调查</a>
+      </div>
       <p>高中英语同步测试系统</p>
       <a target="_blank" :href="href">
         查看操作指南
@@ -10,7 +13,7 @@
     </div>
   </div>
 </template>
-
+<script type='text/javascript' src='https://www.wjx.cn/handler/jqemed.ashx?activity=66397342&width=760&source=iframe'></script>
 <script>
 import { mapGetters } from 'vuex'
 
@@ -57,7 +60,7 @@ export default {
         text-align: center;
       }
 
-      a {
+      >a {
         display: block;
         margin: 0 auto;
         width:126px;
@@ -75,6 +78,22 @@ export default {
   &-text {
     font-size: 30px;
     line-height: 46px;
+  }
+}
+.banenr-box{
+  position: relative;
+  a {
+    color: #fff;
+    font-weight: 600;
+    font-size: 16px;
+    position: absolute;
+    top: 45%;
+    right: -130px;
+    padding: 15px 20px 15px 45px;
+    // border: 1px solid red;
+    background: red url('../../assets/activates/head.png') no-repeat 15px center;
+    background-size: 30px;
+    border-radius: 5px;
   }
 }
 </style>

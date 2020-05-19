@@ -36,7 +36,7 @@
       <read4 v-if="list.type == '口语简答题'" :itemList="list" />
       <speak3 v-else-if="list.type == '朗读题'" :itemList="list" />
       <speak2 v-else-if="list.type == '讨论题'" :itemList="list" />
-      <speak4 v-else-if="'对话题，辩论题'.indexOf(list.type) > -1" :itemList="list" />
+      <speak4 v-else-if="'对话题,辩论题,演讲题'.indexOf(list.type) > -1" :itemList="list" />
       <speak6 v-else-if='list.type == "复述题"'  :item='list'/>
     </template>
   </div>

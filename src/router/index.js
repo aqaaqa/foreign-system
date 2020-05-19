@@ -37,6 +37,11 @@ export const constantRoutes = [
     hidden: true
   },
   {
+    path: '/survey',
+    hidden: true,
+    component: () => import('@/views/survey'),
+  },
+  {
     path: '/reset',
     hidden: true,
     component: () => import('@/views/login/reset'),
